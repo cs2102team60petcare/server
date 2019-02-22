@@ -1,0 +1,21 @@
+{
+  "name": "petcare",
+  "version": "1.0.0",
+  "description": "CS2102 Project, a web app to manage caretakers and petowners",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "http-errors": "^1.7.2",
+    "morgan": "^1.9.1",
+    "pg": "^7.8.1"
+  }
+}
