@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /* SQL Query */
-var sql_query = 'SELECT * FROM student_info';
+var sql_query = 'SELECT * FROM customers';
 
 app.get('/', function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
