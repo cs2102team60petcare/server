@@ -4,24 +4,17 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');         
-const { Pool } = require('pg')
 
-/* --- V7: Using dotenv     --- */
+
+// Load environment variables
 require('dotenv').load();
 
-const pool = new Pool({
-	connectionString: process.env.DATABASE_URL
-});
-
-pool.connect()
-  .then(client => {
-    console.log('connected')
-    client.release()
-  })
-  .catch(err => console.error('error connecting', err.stack))
+// Import database connections
+const pool = require('./database/connection');
+// Import Routes
+var signUpRouter = require('./routes/signup');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -34,8 +27,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-/* SQL Query */
-var sql_query = 'SELECT * FROM customers';
+/* SQL Query - to be removed later*/
+var sql_query = 'SELECT * FROM student_info';
 
 app.get('/', function(req, res, next) {
 	pool.query(sql_query, (err, data) => {
@@ -43,6 +36,8 @@ app.get('/', function(req, res, next) {
         res.status(200).json(data);
 	});
 });
+// Add routes to app
+app.use('/signup', signUpRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
