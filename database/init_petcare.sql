@@ -42,14 +42,14 @@ create table Users (
 
 create table Owners (
 	user_id 	bigserial primary key,
-	rating 		float4 not null check (rating>0), 
+	-- rating 		float4 not null check (rating>0), 
 	foreign key (user_id) references Users
 ); 
 
 create table CareTakers (
 	user_id 	bigserial primary key, 
 	rating 		float4 not null check (rating>0), 
-	likes 		text[],
+	likes 		text[],   -- trigger 
 	foreign key (user_id) references Users
 ); 
 
@@ -58,15 +58,15 @@ create table CareTakers (
 -- 		   Pets can be easily transferred, with us having the record/history
 create table Pets (
 	pet_id 		bigserial primary key, 
-	owner_id 	bigserial unique not null, 
-	since 		date not null, 
-	rating 		float4 not null check (rating>0), 
-	type 		text, 
+	owner_id 	bigserial not null,  
+	-- rating 		float4 not null check (rating>0), 
+	type 		text,  -- trigger
 	description text, 
 	ageInMonths integer check (ageInMonths>0), 
 	foreign key (owner_id) references Owners
 ); 
 
+-- need a trigger
 create table Owns (
 	pet_id 		bigserial, 
 	owner_id 	bigserial, 
@@ -77,6 +77,7 @@ create table Owns (
 	foreign key (owner_id) references Owners
 ); 
 
+-- trigger to check if it has been test
 create table Requests (
 	request_id 		bigserial primary key, 
 	message 		text not null, 
