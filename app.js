@@ -4,13 +4,15 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');         
+var session = require('express-session');
+var passport = require('./config/passportconfig');
 
+// Import database connections
+const pool = require('./database/connection');
 
 // Load environment variables
 require('dotenv').load();
 
-// Import database connections
-const pool = require('./database/connection');
 // Import Routes
 var signUpRouter = require('./routes/signup');
 
@@ -18,6 +20,16 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
+// Authentication 
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: false,
+  cookie: { maxAge: 60000, secure: false }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(logger('dev'));
 app.use(express.json());
