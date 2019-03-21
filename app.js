@@ -10,9 +10,6 @@ var passport = require('./config/passportconfig');
 // Import database connections
 const pool = require('./database/connection');
 
-// Load environment variables
-require('dotenv').load();
-
 // Import Routes
 var signUpRouter = require('./routes/signup');
 
