@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');         
 var session = require('express-session');
 var passport = require('./config/passportconfig');
-
+var flash = require('connect-flash');
 // Import database connections
 const pool = require('./database/connection');
 
@@ -28,9 +28,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(flash()); 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
@@ -45,6 +46,18 @@ app.get('/', function(req, res, next) {
         res.status(200).json(data);
 	});
 });
+
+app.get('/login', function(req, res,next) {
+  console.log(req.body);
+  res.render('loginform', { title: 'Login to Petcare' });
+});
+
+
+
+app.post('/login', passport.authenticate('local', {successRedirect :'/signup',
+                                                  failureRedirect :'/login',
+                                                  failureFlash :true}));
+                                                  
 // Add routes to app
 app.use('/signup', signUpRouter);
 
