@@ -1,9 +1,9 @@
-const { Pool } = require('pg');
+const { Pool } = require('pg')
 
 // Load environment variables
-require('dotenv').load();
+require('dotenv').load()
 
-const pool = new Pool({connectionString:process.env.DATABASE_URL});
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 pool.connect()
   .then(client => {
@@ -12,4 +12,4 @@ pool.connect()
   })
   .catch(err => console.error('error connecting ' + process.env.DATABASE_URL, err.stack))
 
-module.exports = pool;  
+module.exports = pool
