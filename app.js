@@ -6,8 +6,6 @@ var logger = require('morgan')
 var session = require('express-session')
 var passport = require('./config/passportconfig')
 var flash = require('connect-flash')
-// Import database connections
-const pool = require('./database/connection')
 
 // Import Routes
 var signUpRouter = require('./routes/signup')
