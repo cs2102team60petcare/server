@@ -39,17 +39,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/* SQL Query - to be removed later */
-var SQLQUERY = 'SELECT * FROM student_info'
-
 app.get('/', function (req, res, next) {
-  pool.query(SQLQUERY, (err, data) => {
-    if (err) {
-      next(err)
-    }
-    console.log(data)
-    res.status(200).json(data)
-  })
+  res.render('home', { title: 'PetCare Main Page' })
 })
 
 app.get('/login', function (req, res, next) {
