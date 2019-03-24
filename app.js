@@ -57,10 +57,13 @@ app.get('/login', function (req, res, next) {
   res.render('loginform', { title: 'Login to Petcare' })
 })
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/signup',
+app.post('/login', passport.authenticate('local', { successRedirect: '/home',
   failureRedirect: '/login',
   failureFlash: true }))
 
+app.get('/home', function (req, res, next) {
+  res.render('home', { title: 'Welcome to PetCare Home' })
+})
 // Add routes to app
 app.use('/signup', signUpRouter)
 
