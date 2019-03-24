@@ -21,7 +21,7 @@ passport.use('local', new localStrategy({
               done(null, user);
             } else {
               console.log('Username and password does not match');
-              done(null, false, {message : "Incorrect username and password"});
+              done(null, false, {message : "Incorrect username and-or password"});
             }
       });
          

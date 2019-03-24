@@ -1,7 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var logger = require('morgan');         
 var session = require('express-session');
@@ -18,12 +17,16 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// Load environment variables
+require('dotenv').load();
+
 // Authentication 
 app.use(session({
-  secret: 'secret',
+  secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false,
-  cookie: { maxAge: 60000, secure: false }
+  httpOnly : true,
+  cookie: { maxAge: 360000, secure: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -32,7 +35,6 @@ app.use(flash());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
