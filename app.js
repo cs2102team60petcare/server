@@ -38,12 +38,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 app.get('/', function (req, res, next) {
-  res.render('home', { title: 'PetCare Main Page' })
+  res.render('index', { title: 'PetCare Main Page' })
 })
 
 app.get('/login', function (req, res, next) {
   console.log(req.body)
-  res.render('loginform', { title: 'Login to Petcare' })
+  res.render('login', { title: 'Login to Petcare' })
 })
 
 app.post('/login', passport.authenticate('local', { successRedirect: '/home',
@@ -52,6 +52,15 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/home',
 
 app.get('/home', function (req, res, next) {
   res.render('home', { title: 'Welcome to PetCare Home' })
+})
+
+app.get('/search', function (req, res, next) {
+  console.log('search ping');
+  res.render('search', {title : "Search page"})
+})
+
+app.get('/contact', function (req, res, next) {
+  res.render('contact');
 })
 // Add routes to app
 app.use('/signup', signUpRouter)
