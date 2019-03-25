@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+
 	<!-- Page Title -->
     <title>Welcome To PetCare</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+
 	<!-- CSS for Styling -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
 	<!-- JavaScript for Interactivity -->
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
@@ -17,19 +20,14 @@
   </head>
   <body>
     <h1><%= title%></h1>
-		<form action="signup/confirmParticulars" method ="POST">
+		<form action="" method ="POST" enctype="application/x-www-form-urlencoded">
 			<div class="form-group">
 				<label for="email">Email</label>
-				<input class="form-control" id="email" aria-describedby="matricHelp" placeholder="Enter your email address">
-				<small id="matricHelp" class="form-text text-muted">Do not share your matric number with anyone else.</small>
-			</div>
-			<div class="form-group">
-				<label for="name">First and Last Name</label>
-				<input class="form-control" id="name" placeholder="Enter your full name">
+				<input class="form-control" id="email" type="text" name="username" aria-describedby="matricHelp" placeholder="Enter your email address">
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
-				<input class="form-control" id="password" type="password" placeholder="Enter your password">
+				<input class="form-control" id="password" type="password" name="password" placeholder="Enter your password">
 				<!-- An element to toggle between password visibility -->
 				<input type="checkbox" onclick="showPassword()" >Show Password
 			</div>

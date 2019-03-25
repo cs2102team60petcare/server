@@ -1,0 +1,4 @@
+language: node_js
+
+script: >-
+    ./config/travis/run-checks.sh

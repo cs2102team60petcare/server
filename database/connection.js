@@ -1,14 +1,15 @@
 const { Pool } = require('pg')
 
-const pool = new Pool({
-	connectionString: process.env.DATABASE_URL
-});
+// Load environment variables
+require('dotenv').load()
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL })
 
 pool.connect()
   .then(client => {
     console.log('connected')
     client.release()
   })
-  .catch(err => console.error('error connecting', err.stack))
+  .catch(err => console.error('error connecting ' + process.env.DATABASE_URL, err.stack))
 
-module.exports = pool;  
+module.exports = pool
