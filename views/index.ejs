@@ -9,8 +9,8 @@
     <title>Company Website</title>
 
     <!-- Bootstrap -->
-    <link href="/public/stylesheets/bootstrap-theme.css" rel="stylesheet">
-    <link href="/public/stylesheets/styling.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="styling.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 
   </head>
@@ -20,7 +20,7 @@
         <div class = "container-fluid">
             <div class ="navbar-header">
                 <a class = "navbar-brand" href= "#">
-                    <img src="/public/images/paw.png" class ="logo">
+                    <img src="images/paw.png" class ="logo">
                 </a>
                 <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
                     <span class ="sr-only">Toggle navigation</span>
@@ -32,11 +32,11 @@
             </div>
             <div class="navbar-collapse collapse" id ="navbarCollapse">
                 <ul class ="nav navbar-nav">
-                    <li><a href="/views/index.ejs">Home</a></li>
-                    <li><a href="/views/signup.ejs">Signup</a></li>
-                    <li><a href="/views/login.ejs">Login</a></li>
-                    <li><a href="/views/search.ejs">Search</a></li>   
-                    <li><a href="/views/contact.ejs">Contact</a></li>  
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="signup.html">Signup</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="search.html">Search</a></li>   
+                    <li><a href="contact.html">Contact</a></li>  
                 </ul>
             </div>
         </div>
@@ -53,30 +53,21 @@
         <div class="container"> 
             <div class="row">
                 <div class= "col-md-4">
-                    <img src="/public/images/Priceit.png" class="bodyimage">
-                    <h2>Price it</h2>
-                    <p>Choose the most appopriate price plan for your own customised pet service!</p>
-                </div>
-                <div class= "col-md-4">
-                    <img src="/public/images/Planit.png" class="bodyimage">
+                    <a href ="search.html"> <img src="images/Planit.png" class="bodyimage"></a>
                     <h2>Plan it</h2>
                     <p>Looking for a quick getaway but no one to look after your pets? Plan ahead with GrabPet!</p>
-                </div>
-                 <div class= "col-md-4">
-                    <img src="/public/images/Careit.png" class="bodyimage">
+                    </div>
+                <div class= "col-md-4">
+                     <a href = "search.html"> <img src="images/Careit.png" class="bodyimage"> </a>
                     <h2>Care it</h2>
                     <p>Love pets and have time to spare? Signup now as a pet caretaker! </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>  
     </div>
-      
-    <!-- Create Find Button -->
-    <div class="find"> 
-        <div class = "container">
-            <a href = "/views/search.ejs" class = "btn"> Find a caretaker now! </a>
-        </div>
-    </div>
+
     <!-- Create Footer -->
     <div class ="footer">
       <div class ="container-fluid">
@@ -86,6 +77,6 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="/public/javascripts/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
