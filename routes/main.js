@@ -11,4 +11,7 @@ router.use('/signup', signUpRoute)
 
 router.get('/', mainController.getMainPage)
 
+router.get('/profile' , function(req, res, next) {
+    res.render('profile')
+})
 module.exports = router

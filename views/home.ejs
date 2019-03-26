@@ -1,39 +1,59 @@
+<!--index.html-->
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-	<!-- Page Title -->
-    <title>Welcome To PetCare Home</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-	<!-- CSS for Styling -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-	<!-- JavaScript for Interactivity -->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Company Website</title>
 
-	<!-- ADDED JavaScript -->
-	<script src="javascripts/formsScript.js"></script>
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/styling.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 
   </head>
   <body>
-    <h1><%= title%></h1>
-		<form action="signup/confirmParticulars" method ="POST">
-			<div class="form-group">
-				<label for="email">Email</label>
-				<input class="form-control" id="email" aria-describedby="matricHelp" placeholder="Enter your email address">
-				<small id="matricHelp" class="form-text text-muted">Do not share your matric number with anyone else.</small>
-			</div>
-			<div class="form-group">
-				<label for="name">First and Last Name</label>
-				<input class="form-control" id="name" placeholder="Enter your full name">
-			</div>
-			<div class="form-group">
-				<label for="password">Password</label>
-				<input class="form-control" id="password" type="password" placeholder="Enter your password">
-				<!-- An element to toggle between password visibility -->
-				<input type="checkbox" onclick="showPassword()" >Show Password
-			</div>
-			<button type="submit" class="btn btn-primary" onclick="show()">Submit</button>
-		</form>
+    <!-- Create Nav Bar -->
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="../home">Home</a></li>
+                    <li><a href="../signup">Signup</a></li>
+                    <li><a href="../login">Login</a></li>
+                    <li><a href="../search">Search</a></li>   
+                    <li><a href="../contact">Contact</a></li>  
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Create Header --> 
+    <div class="jumbotron">
+        <div class ="container">
+            <h1> Welcome to PetCare - Pet Sharing Community<h1>
+						<h3>A totally new experience for you and our little friends.</h3>
+        </div>
+    </div>
+      
+  
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="javascripts/bootstrap.min.js"></script>
   </body>
 </html>

@@ -6,7 +6,7 @@ var logger = require('morgan')
 var session = require('express-session')
 var passport = require('./config/passportconfig')
 var flash = require('connect-flash')
-var routes = require('./routes/main')
+
 var app = express()
 
 // view engine setup
@@ -24,8 +24,6 @@ app.use(session({
 }))
 app.use(passport.initialize())
 app.use(passport.session())
-
-
 app.use(flash())
 app.use(logger('dev'))
 app.use(express.json())
@@ -35,7 +33,12 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
 // Add routes
+var routes = require('./routes/main')
 app.use('/', routes)
+
+app.post('/login', passport.authenticate('local', { successRedirect: '/home',
+  failureRedirect: '/home',
+  failureFlash: true }))
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

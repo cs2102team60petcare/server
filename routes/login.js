@@ -4,7 +4,5 @@ var loginController = require('../controllers/loginController')
 
 router.get('/' , loginController.getLoginPage)
 
-router.post('/login', loginController.login)
-
 
 module.exports = router

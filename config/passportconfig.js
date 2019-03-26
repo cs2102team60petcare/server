@@ -5,6 +5,7 @@ const pool = require('../database/connection')
 passport.use('local', new localStrategy({
   passReqToCallback: true
 }, function (req, email, password, done) {
+  console.log(req.body)
   console.log('called local strategy')
   console.log(email + ' ' + password)
   var findUserQuery = "select * from users where email = 'teojunjie@gmail.com'"
