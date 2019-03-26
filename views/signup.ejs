@@ -1,7 +1,12 @@
 <html>
 <head>
 <title>Signup form</title>
+<<<<<<< HEAD
+    <link rel="stylesheet" type="text/css" href="/public/stylesheets/style1.css">
+    <script src="radio.js"></script>
+=======
     <link rel="stylesheet" type="text/css" href="stylesheets/style1.css">
+>>>>>>> 0687baab75211291e23cbab5219a8abe784b75ed
 <body>
     <div class="signupbox">
     <img src="images/paw.png" class="paw">
@@ -16,8 +21,17 @@
             <p>Confirm New Password</p>
             <input type="password" name="" placeholder="Confirm New Password">
 
-            <label>Owner <input type="radio" name="Owner" value ="Owner"></label>  
-            <label>Caretaker <input type="radio" name="Caretaker" value ="Caretaker"></label> 
+            <table>
+                <tr>
+                    <td align="left" height="45">
+                        <label>Owner <input type="radio" class="radioBtn" name="radio" id="Radio" value="Owner" required checked>
+                        <label>Caretaker<input class="radioBtn" type="radio" name="radio" id="Radio" value="Caretaker" required >
+                        <div class="Pets" style="display:none">Insert pets</div>
+                    </td>
+                </tr>
+            </table>
+            
+            
             <p>Pet Preference</p>
             <select name = "pet-type" id="pet-type">
                 <option value = "Dog"> Dog </option>
