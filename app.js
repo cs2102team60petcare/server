@@ -36,10 +36,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 var routes = require('./routes/main')
 app.use('/', routes)
 
-app.post('/login', passport.authenticate('local', { successRedirect: '/home',
-  failureRedirect: '/home',
-  failureFlash: true }))
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
