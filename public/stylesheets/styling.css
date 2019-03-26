@@ -46,6 +46,8 @@ body {
 }
 
 .col-md-4{
+    margin-left: 80px;
+    margin-right: 80px;
     text-align:center;
     color: #fff;
 }
@@ -54,10 +56,11 @@ body {
     font-size: 15px;
 }
 /*Style contact button*/
+/*
 .find {
     text-align:center;
     margin-top: 30px;
-    margin-bottom: 300px;
+    margin-bottom: 30px;
 }
 
 .btn {
@@ -76,6 +79,7 @@ body {
     color: white;
     border: none;
 }
+*/
 /*Style footer*/
 .footer{  
     background-color: rgba(0,0,0,0.5);
