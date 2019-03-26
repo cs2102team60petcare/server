@@ -1,17 +1,5 @@
-drop table if exists ADMINS cascade;
-drop table if exists MANAGERS cascade;
-drop table if exists USERS cascade;
-drop table if exists OWNERS cascade;
-drop table if exists CARETAKERS cascade;
-drop table if exists PETS cascade;
-drop table if exists OWNS cascade;
-drop table if exists REQUESTS cascade;
-drop table if exists SENDS cascade;
-drop table if exists HANDLES cascade;
-drop table if exists SERVICES cascade;
-drop table if exists BIDS cascade;
-drop table if exists TASKS cascade;
-drop table if exists REVIEWS cascade;
+drop schema if exists public; 
+create schema public; 
 
 create table MANAGERS (
 	manager_id 	bigserial primary key,
@@ -50,8 +38,8 @@ create table PETS (
 	biography 	text,
 	born 		date not null, 
 	since 		date not null, 
-	till 		date
-	foreign key (owner_id) references OWNERS(user_id)
+	till 		date,
+	foreign key (owner_id) references OWNERS (user_id)
 );
 
 create table Owns (
@@ -80,42 +68,39 @@ create table Handles (
 	assigned	timestamp,
 	justification	text,	--by manager
 	primary key (manager_id, request_id),
-	foreign key (manager_id) references MANAGER,
+	foreign key (manager_id) references MANAGERS,
 	foreign key (request_id) references REQUESTS
 );
 
--- <Offers> collapsed into this
+-- <Wants> collapsed into this
 create table SERVICES (
 	service_id		bigserial primary key,
-	caretaker_id 	bigserial not null,
+	owner_id 		bigserial not null,
+	pet_id 			bigserial not null, 
 	starting 		timestamp not null,
 	ending 			timestamp not null,
 	status 			text not null, 
-	minWage			integer not null check (minWage > 0),
-	foreign key (caretaker_id) references caretakers
+	money			integer not null check (money > 0),
+	foreign key (owner_id) references OWNERS, 
+	foreign key (pet_id) references PETS
 );
 
--- <Places> collapsed into this
-create table BIDS (
-	bid_id		bigserial primary key,
-	money 		integer not null check (money > 0),
-	note		text,
-	status 		integer not null, 
-	pet_id 		bigserial not null,
-	owner_id 	bigserial not null,
-	service_id 	bigserial not null,
-	foreign key (pet_id) references PETS,
-	foreign key (owner_id) references OWNERS,
-	foreign key (service_id) references SERVICES
-);
+create table BidsFor (
+	caretaker_id 	bigserial not null, 
+	service_id 		bigserial not null, 
+	foreign key (caretaker_id) references CARETAKERS, 
+	foreign key (service_id) references SERVICES, 
+	primary key (caretaker_id, service_id)
+); 
 
-
--- <Creates> collapsed into this
+-- <Creates>, <Gets> collapsed into this
 create table TASKS (
-	task_id 	bigserial primary key,
-	status 		integer not null,
-	bid_id 		bigserial not null,
-	foreign key (bid_id) references BIDS
+	task_id 		bigserial primary key,
+	service_id 		bigserial not null,
+	caretaker_id 	bigserial not null, 
+	status 			integer not null,
+	foreign key (caretaker_id) references CARETAKERS, 
+	foreign key (service_id) references SERVICES
 );
 
 -- <Gives>, <Receives>, <Has> collapsed into this
