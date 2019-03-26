@@ -3,19 +3,20 @@
 <title>Signup form</title>
     <link rel="stylesheet" type="text/css" href="stylesheets/style1.css">
     <script src="radio.js"></script>
+    <script src="javascripts/formsScript.js"></script>
 <body>
     <div class="signupbox">
     <img src="images/paw.png" class="paw">
         <h1>Signup Here</h1>
-        <form>    
+        <form action="/signup/confirmParticulars" method ="POST" enctype="application/x-www-form-urlencoded">  
             <p>Username</p>
-            <input type="text" name="" placeholder="Enter Username"> 
+            <input id ="username" type="text" name="username" placeholder="Enter Username"> 
             <p>Email</p>
-            <input type="email" name="" placeholder="Enter Email">
+            <input type="email" name="email" placeholder="Enter Email">
             <p>New Password</p>
-            <input type="password" name="" placeholder="Enter New Password">
+            <input type="password" name="password" placeholder="Enter New Password">
             <p>Confirm New Password</p>
-            <input type="password" name="" placeholder="Confirm New Password">
+            <input type="password" name="confirmPassword" placeholder="Confirm New Password">
 
             <table>
                 <tr>
@@ -36,7 +37,8 @@
                 <option value = "NIL"> NIL </option>
             </select>
 
-            <input type="submit" name="" value="Signup">
+	        <button type="submit">Submit</button>
+
         </form>
         
     </div>

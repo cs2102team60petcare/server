@@ -6,7 +6,7 @@ router.get('/', signUpController.signUp)
 
 router.post('/confirmParticulars', function (req, res, next) {
   console.log(req.body)
-  return res.status(200).json(req)
+  return res.status(200).json(req.body)
 })
 
 module.exports = router
