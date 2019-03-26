@@ -1,4 +1,4 @@
-drop schema if exists public; 
+drop schema if exists public CASCADE; 
 create schema public; 
 
 create table MANAGERS (
@@ -88,6 +88,7 @@ create table SERVICES (
 create table BidsFor (
 	caretaker_id 	bigserial not null, 
 	service_id 		bigserial not null, 
+	status 			integer not null, 
 	foreign key (caretaker_id) references CARETAKERS, 
 	foreign key (service_id) references SERVICES, 
 	primary key (caretaker_id, service_id)
