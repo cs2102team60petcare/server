@@ -6,18 +6,14 @@ var logger = require('morgan')
 var session = require('express-session')
 var passport = require('./config/passportconfig')
 var flash = require('connect-flash')
-
-// Import Routes
-var signUpRouter = require('./routes/signup')
-
+var routes = require('./routes/main')
 var app = express()
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-
 // Load environment variables
 require('dotenv').load()
-
 // Authentication
 app.use(session({
   secret: process.env.SESSION_SECRET,
@@ -29,6 +25,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
+
 app.use(flash())
 app.use(logger('dev'))
 app.use(express.json())
@@ -37,24 +34,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-app.get('/', function (req, res, next) {
-  res.render('home', { title: 'PetCare Main Page' })
-})
-
-app.get('/login', function (req, res, next) {
-  console.log(req.body)
-  res.render('loginform', { title: 'Login to Petcare' })
-})
-
-app.post('/login', passport.authenticate('local', { successRedirect: '/home',
-  failureRedirect: '/login',
-  failureFlash: true }))
-
-app.get('/home', function (req, res, next) {
-  res.render('home', { title: 'Welcome to PetCare Home' })
-})
-// Add routes to app
-app.use('/signup', signUpRouter)
+// Add routes
+app.use('/', routes)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
