@@ -8,4 +8,5 @@ router.post('/confirmParticulars', function (req, res, next) {
   console.log(req.body)
   return res.status(200).json(req)
 })
+
 module.exports = router
