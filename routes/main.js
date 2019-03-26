@@ -9,6 +9,6 @@ router.use('/login', loginRoute)
 router.use('/home', homeRoute)
 router.use('/signup', signUpRoute)
 
-router.get('/', mainController.getIndexPage)
+router.get('/', mainController.getMainPage)
 
 module.exports = router
