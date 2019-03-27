@@ -16,7 +16,7 @@ create table USERS (
 	phone 		varchar(20) unique not null,
 	address 	json not null,
 	password	char(60) not null,
-	created 	timestamp not null
+	created 	timestamp not null default NOW()
 );
 
 create table OWNERS (
@@ -57,7 +57,7 @@ create table REQUESTS (
 	request_id 		bigserial primary key,
 	message 		text not null,
 	status 			integer not null,
-	created 		timestamp not null, 
+	created 		timestamp not null default NOW(), 
 	user_id 		bigserial not null,
 	foreign key (user_id) references USERS
 );
