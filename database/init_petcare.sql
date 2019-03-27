@@ -33,13 +33,12 @@ create table CARETAKERS (
 
 create table PETS (
 	pet_id 		bigserial primary key,
-	owner_id 	bigserial not null,
+	name 		text not null, 
 	type 		text not null, 
 	biography 	text,
 	born 		date not null, 
 	since 		date not null, 
-	till 		date,
-	foreign key (owner_id) references OWNERS (user_id)
+	till 		date
 );
 
 create table Owns (
@@ -56,7 +55,7 @@ create table Owns (
 create table REQUESTS (
 	request_id 		bigserial primary key,
 	message 		text not null,
-	status 			integer not null,
+	status 			integer not null default 0,
 	created 		timestamp not null default NOW(), 
 	user_id 		bigserial not null,
 	foreign key (user_id) references USERS
@@ -79,7 +78,7 @@ create table SERVICES (
 	pet_id 			bigserial not null, 
 	starting 		timestamp not null,
 	ending 			timestamp not null,
-	status 			text not null, 
+	status 			integer not null default 1, 
 	money			integer not null check (money > 0),
 	foreign key (owner_id) references OWNERS, 
 	foreign key (pet_id) references PETS
@@ -88,7 +87,7 @@ create table SERVICES (
 create table BidsFor (
 	caretaker_id 	bigserial not null, 
 	service_id 		bigserial not null, 
-	status 			integer not null, 
+	status 			integer not null default 1, 
 	foreign key (caretaker_id) references CARETAKERS, 
 	foreign key (service_id) references SERVICES, 
 	primary key (caretaker_id, service_id)
@@ -99,14 +98,14 @@ create table TASKS (
 	task_id 		bigserial primary key,
 	service_id 		bigserial not null,
 	caretaker_id 	bigserial not null, 
-	status 			integer not null,
+	status 			integer not null default 1,
 	foreign key (caretaker_id) references CARETAKERS, 
 	foreign key (service_id) references SERVICES
 );
 
 -- <Gives>, <Receives>, <Has> collapsed into this
 create table Reviews (
-	reviewNum		integer not null check (reviewNum > 0),
+	reviewNum		integer,	--increment with trigger
 	note 			text,
 	stars 			integer not null check (stars>=0 and stars<=5),
 	task_id			bigserial not null,
