@@ -30,15 +30,16 @@ passport.use('local', new localStrategy({
 }))
 
 passport.serializeUser(function(user, done) {
-    done(null, user.email)
+    done(null, user.user_id)
 })
 
-passport.deserializeUser(function(email, done) {
-    pool.query(queries.loginQuery, [email], (err, data) => {
+passport.deserializeUser(function(id, done) {
+    pool.query(queries.deserializeQuery, [id], (err, data) => {
         if (err) {
             return done(err)
         } else {
-            return done(null, email)
+            var user = data.rows[0]
+            return done(null, user)
         }
     })
 })
