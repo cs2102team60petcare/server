@@ -11,9 +11,14 @@ router.use('/home', homeRoute)
 router.use('/signup', signUpRoute)
 router.use('/logout', logoutRoute)
 
+const loggedInOnly = (req, res, next) => {
+  if (req.isAuthenticated()) next();
+  else res.redirect("/login");
+};
+
 router.get('/', mainController.getMainPage)
 
-router.get('/profile' , function(req, res, next) {
+router.get('/profile' , loggedInOnly, function(req, res, next) {
     res.render('profile')
 })
 module.exports = router
