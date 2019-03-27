@@ -16,11 +16,16 @@ app.set('view engine', 'ejs')
 require('dotenv').load()
 // Authentication
 app.use(session({
+  // use the dB to store sessions @psyf
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false,
-  httpOnly: true,
-  cookie: { maxAge: 360000, secure: false }
+  cookie: { maxAge: 180000, 
+            secure: false, 
+            httpOnly: true,   //protects against Cross Site Scripting  
+          }, 
+  name: "id"    //SECURITY NOTE: making it harder to tell we're using express-session
+  //courtesy of: https://lockmedown.com/securing-node-js-managing-sessions-express-js/
 }))
 app.use(passport.initialize())
 app.use(passport.session())
