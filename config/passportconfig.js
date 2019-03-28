@@ -22,7 +22,6 @@ passport.use('local', new localStrategy({
                     //REDIRECT to home page with appropriate header change @teojunjie
                     done(null, user)
                 } else {
-                    //REDIRECT to LOGIN PAGE WITH MESSAGE @teojunjie
                     done(null, false, { message: 'Incorrect username or password' })
                 }
             });
@@ -31,22 +30,16 @@ passport.use('local', new localStrategy({
 }))
 
 passport.serializeUser(function(user, done) {
-    console.log(user)
     done(null, user.user_id)
 })
 
 passport.deserializeUser(function(id, done) {
-    var findIdQuery = "SELECT * FROM users where user_id = '2'"
-    pool.query(findIdQuery, (err, data) => {
+    pool.query(queries.deserializeQuery, [id], (err, data) => {
         if (err) {
             return done(err)
-        }
-        var user = data.rows[0]
-        console.log(user)
-        if (user) {
-            done(null, user)
         } else {
-            done(null, false, { message: 'Incorrect username and password' })
+            var user = data.rows[0]
+            return done(null, user)
         }
     })
 })
