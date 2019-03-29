@@ -4,6 +4,10 @@
 drop schema if exists public CASCADE; 
 create schema public; 
 
+/*
+ * A USER can be an OWNER or a CARETAKER
+ * (i.e Covering Constraint and Overlapping Constraint satisfied)
+ */
 create table USERS (
 	user_id 	bigserial primary key,
 	name 		text not null,
@@ -52,7 +56,8 @@ create table PETS (
 	name 		text not null, 
 	type 		text not null, 
 	biography 	text,
-	born 		date not null
+	born 		date not null, 
+	death		date
 );
 
 create table Owns (
@@ -75,7 +80,7 @@ create table CARETAKERS (
 -- <Offers> collapsed into this
 create table SERVICES (
 	service_id		bigserial primary key,
-	caretaker_id 		bigserial not null,
+	caretaker_id 	bigserial not null,
 	starting 		timestamp not null,
 	ending 			timestamp not null,
 	status 			integer not null default 1, 
@@ -84,29 +89,31 @@ create table SERVICES (
 );
 
 -- <Places> Collapsed into this
+-- status: 0=rejected, 1=pending, 2=success 
 create table BIDS (
 	bid_id		bigserial primary key,
 	money 		integer check (money>0),
-	status 			integer not null default 1, 
+	status 		integer not null default 1 check (status>-1 and status<3), 
 	owner_id 	bigserial not null,
 	pet_id 		bigserial not null,
 	service_id 	bigserial not null,
 	foreign key (pet_id) references Pets,
 	foreign key (owner_id) references Owners,
-	foreign key (service_id) references Services
+	foreign key (service_id) references SERVICES
 );
 
 -- <Creates> collapsed into this
+-- status: 1=upcoming, 2=finished
 create table TASKS (
 	task_id 		bigserial primary key,
-	bid_id 		bigserial not null,
-	status 			integer not null default 1,
+	bid_id 			bigserial not null unique,
+	status 			integer not null default 1 check (status=1 or status=2),
 	foreign key (bid_id) references BIDS
 );
 
 -- <Gives>, <Receives>, <Has> collapsed into this
 create table REVIEWS (
-	reviewNum		integer,	--increment with trigger
+	reviewNum		integer,	--increment with trigger?
 	note 			text,
 	stars 			integer not null check (stars>=0 and stars<=5),
 	task_id			bigserial not null,
