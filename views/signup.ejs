@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>Signup form</title>
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/styling.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style1.css">
+    <script src="radio.js"></script>
+    <script src="javascripts/formsScript.js"></script>
+<body>
+    <!-- Create Nav Bar -->
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="../home">Home</a></li>
+                    <li><a href="../signup">Signup</a></li>
+                    <li><a href="../login">Login</a></li>
+                    <li><a href="../search">Search</a></li>   
+                    <li><a href="../contact">Contact</a></li>  
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="signupbox">
+    <img src="images/paw.png" class="paw">
+        <h1>Signup Here</h1>
+        <form action="" method ="POST" enctype="application/x-www-form-urlencoded">  
+            <p>Username</p>
+            <input id ="username" type="text" name="username" placeholder="Enter Username"> 
+            <p>Email</p>
+            <input type="email" name="email" placeholder="Enter Email">
+            <p>New Password</p>
+            <input type="password" name="password" placeholder="Enter New Password">
+            <p>Confirm New Password</p>
+            <input type="password" name="confirmPassword" placeholder="Confirm New Password">
+
+            <table>
+                <tr>
+                    <td align="left" height="45">
+                        <label>Owner <input type="radio" class="radioBtn" name="radio" id="Radio" value="Owner" required checked>
+                        <label>Caretaker<input class="radioBtn" type="radio" name="radio" id="Radio" value="Caretaker" required >
+                        <div class="Pets" style="display:none">Insert pets</div>
+                    </td>
+                </tr>
+            </table>
+            
+            
+            <p>Pet Preference</p>
+            <select name = "pet-type" id="pet-type">
+                <option value = "Dog"> Dog </option>
+                <option value = "Cat"> Cat </option>
+                <option value = "Snake"> Snake </option>
+                <option value = "NIL"> NIL </option>
+            </select>
+
+	        <button type="submit">Submit</button>
+
+        </form>
+        
+    </div>
+
+</body>
+</head>
+</html>

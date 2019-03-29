@@ -3,7 +3,11 @@ const { Pool } = require('pg')
 // Load environment variables
 require('dotenv').load()
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL })
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl : true 
+
+})
 
 pool.connect()
   .then(client => {
