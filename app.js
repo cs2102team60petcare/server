@@ -14,7 +14,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 // Load environment variables
 require('dotenv').load()
-Authentication
+//Authentication
 app.use(session({
   // use the dB to store sessions @psyf
   secret: process.env.SESSION_SECRET,
