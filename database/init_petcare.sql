@@ -72,7 +72,7 @@ create table Owns (
 
 create table CARETAKERS (
 	user_id 	bigserial primary key,
-	rating 		float4 not null check (rating >= 0),
+	rating 		float4 not null default 0 check (rating >= 0),
 	likes 		text[] not null,
 	foreign key (user_id) references USERS
 );
@@ -82,7 +82,7 @@ create table SERVICES (
 	service_id		bigserial primary key,
 	caretaker_id 	bigserial not null,
 	starting 		timestamp not null,
-	ending 			timestamp not null,
+	ending 			timestamp not null check (ending > starting),
 	status 			integer not null default 1, 
 	minWage			integer not null check (minWage > 0),
 	foreign key (caretaker_id) references CARETAKERS
@@ -94,6 +94,8 @@ create table BIDS (
 	bid_id		bigserial primary key,
 	money 		integer check (money>0),
 	status 		integer not null default 1 check (status>-1 and status<3), 
+	starting 	timestamp not null, 
+	ending 		timestamp not null check (ending > starting), 
 	owner_id 	bigserial not null,
 	pet_id 		bigserial not null,
 	service_id 	bigserial not null,

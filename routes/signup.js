@@ -20,7 +20,7 @@ router.post('/', function (req, res, next) {
 
   bcrypt.genSalt(saltRounds, function(err, salt) {
     bcrypt.hash(req.body.password, salt, function(err, hash) {
-      pool.query(queries.signupUserInsert, [req.body.username, req.body.email, 019379123, '{}', hash], (err) => {
+      pool.query(queries.signupUserInsert, [req.body.username, req.body.email, 019379123, '{}', hash], (err, res1) => {
       	if (err) { 
       		console.log(err) 
       	} else {
