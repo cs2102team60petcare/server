@@ -21,10 +21,10 @@
 
         <% for(var i=0; i < bids.length; i++) { %>
             <tr>
-                <td><%= bids[i].oid %></td>
-                <td><%= bids[i].starttime %></td>
-                <td><%= bids[i].endtime %></td>
-                <td><%= bids[i].bidplaced %></td>
+                <td><%= bids[i].bid_id %></td>
+                <td><%= bids[i].starting %></td>
+                <td><%= bids[i].ending %></td>
+                <td><%= bids[i].money %></td>
                 <td><%= bids[i].status %></td>
             </tr>
         <% } %>

@@ -24,18 +24,16 @@
     <table id="myTable">
         <tr id="HeadRow">
             <td>Services ID</td>
-            <td>Pet Type</td>
             <td>Start Date</td>
             <td>End Date</td>
             <td>minWage</td>
         </tr>
         <% for(var i=0; i < service.length; i++) { %>
                <tr>
-                 <td><%= service[i].sid %></td>
-                 <td><%= service[i].petType %></td>
-                 <td><%= service[i].startDate %></td>
-                 <td><%= service[i].endDate %></td>
-                 <td><%= service[i].minWage %></td>
+                 <td><%= service[i].service_id %></td>
+                 <td><%= service[i].starting %></td>
+                 <td><%= service[i].ending %></td>
+                 <td><%= service[i].minwage %></td>
                </tr>
             <% } %>
 
