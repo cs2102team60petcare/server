@@ -14,7 +14,7 @@
 
 module.exports = {
 	/* ACCESS RELATED QUERIES */
-    loginQuery: "SELECT user_id, email, password FROM users WHERE email=$1;",
+    loginQuery: "SELECT user_id, name , email, password FROM users WHERE email=$1;",
     deserializeQuery: "SELECT user_id, name  FROM users WHERE user_id=$1;", //used for sessions
     
     userExistsQuery: "SELECT user_id FROM users WHERE email=$1;",	//make sure to check before signup
