@@ -18,7 +18,7 @@ module.exports = {
     deserializeQuery: "SELECT user_id, name  FROM users WHERE user_id=$1;", //used for sessions
     
     userExistsQuery: "SELECT user_id FROM users WHERE email=$1;",	//make sure to check before signup
-    signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5);",
+    signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     signupOwnerInsert: "INSERT INTO owners (user_id) VALUES ($1);",
     signupCareTakerInsert:  "INSERT INTO caretakers (user_id, likes) VALUES ($1, $2);",
 
