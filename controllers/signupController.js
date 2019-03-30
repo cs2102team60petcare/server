@@ -32,7 +32,7 @@ exports.signUpCareTaker = function (req, res, next) {
           throw e
         } finally {
           client.release()
-          res.status(200).json({"Transaction " : "Successful"})
+          res.redirect("../bids")
         }
       })().catch(e => console.error(e.stack))
       
@@ -72,7 +72,7 @@ exports.signUpOwner = function (req, res, next) {
           throw e
         } finally {
           client.release()
-          res.status(200).json({"Transaction " : "Successful"})
+          res.redirect("../services")
         }
 
       })().catch(e => setImmediate(() => { throw e }))    })
