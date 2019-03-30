@@ -16,9 +16,12 @@ module.exports = {
 	/* ACCESS RELATED QUERIES */
     loginQuery: "SELECT user_id, name , email, password FROM users WHERE email=$1;",
     deserializeQuery: "SELECT user_id, name  FROM users WHERE user_id=$1;", //used for sessions
-    userExistsQuery: "SELECT 1 FROM users WHERE email=$1;",	//make sure to check before signup
-
+    
+    userExistsQuery: "SELECT user_id FROM users WHERE email=$1;",	//make sure to check before signup
     signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5);",
+    signupOwnerInsert: "INSERT INTO owners (user_id) VALUES ($1);",
+    signupCareTakerInsert:  "INSERT INTO caretakers (user_id, likes) VALUES ($1, $2);",
+
     signupPetInsert: "INSERT INTO pets (owner_id, name, type, biography, born, since) VALUES ($1, $2, $3, $4, $5, $6);",
 
     /* PROFILE RELATED QUERIES */
