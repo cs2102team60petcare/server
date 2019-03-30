@@ -41,6 +41,14 @@ app.use(bodyParser.urlencoded({ extended: true }))
 var routes = require('./routes/main')
 app.use('/', routes)
 
+app.get('/services',function (req, res, next) {
+res.render('servicesPage', {service: [
+{ sid: 1, petType: 'Dog' ,startDate: 310319 ,endDate: 090419, minWage: 20},
+{ sid: 2, petType: 'Cat' ,startDate: 310319 ,endDate: 100419, minWage: 15},
+{ sid: 3, petType: 'Snake' ,startDate: 310319 ,endDate: 110419, minWage: 1500}
+]})
+})
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
