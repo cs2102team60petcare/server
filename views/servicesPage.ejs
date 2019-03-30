@@ -28,8 +28,18 @@
             <td>Start Date</td>
             <td>End Date</td>
             <td>minWage</td>
-            
         </tr>
+        <% for(var i=0; i < service.length; i++) { %>
+               <tr>
+                 <td><%= service[i].sid %></td>
+                 <td><%= service[i].petType %></td>
+                 <td><%= service[i].startDate %></td>
+                 <td><%= service[i].endDate %></td>
+                 <td><%= service[i].minWage %></td>
+               </tr>
+            <% } %>
+
+  
     </table>
 
 </body>
