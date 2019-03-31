@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>Signup form</title>
+    <!-- Bootstrap -->
+    <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="../stylesheets/styling.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="../stylesheets/style1.css">
+    <script src="../javascripts/radio.js"></script>
+    <script src="../javascripts/formsScript.js"></script>
+<body>
+    <!-- Create Nav Bar -->
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="../images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="../login">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="signupbox">
+    <img src="../images/paw.png" class="paw">
+        <h1>Signup Here As an Owner</h1>
+        <form action="" method ="POST" enctype="application/x-www-form-urlencoded">  
+            <p>Username</p>
+            <input id ="username" type="text" name="username" placeholder="Enter Username"> 
+            <p>Email</p>
+            <input type="email" name="email" placeholder="Enter Email">
+            <p>Password</p>
+            <input type="password" name="password" placeholder="Enter New Password">
+            <p>Phone Number</p>
+            <input type="text" name="number" placeholder="Enter Phone Number"
+            <p>Address</p>
+            <input type ="text" name="address" placeholder="Enter Address">
+	        <button type="submit">Submit</button>
+
+        </form>
+        
+    </div>
+    
+
+</body>
+</head>
+</html>
