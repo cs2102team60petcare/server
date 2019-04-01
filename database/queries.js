@@ -49,13 +49,19 @@ module.exports = {
     //TODO: @Psyf Need trigger to ensure starting, ending, TYPE compatibility and money is valid too 
     placeBidInsert: "INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);",
 
-
-    //----------------------- TESTED UNTIL HERE --------------------------------//
-
     // Use when Caretaker is removing a service (can't do it if already a task)
-    // Note: No edits. You can remove and add again if needed.
-    // TODO @ Psyf NOTE: This will trigger and update with  {can't remove if already task}, {"UPDATE Bids SET status=0 WHERE service_id=$1;"}
-    removeServiceUpdate: "UPDATE Services SET status=0 WHERE service_id=$1;"
+    // NOTE: No edits. You can remove and add again if needed.
+    // NOTE: triggers removingService  
+    removeServiceUpdate: "UPDATE Services SET status=0 WHERE service_id=$1;",
+
+    /* REQUEST or SUPPORTTICKET RELATED QUERIES */
+    sendRequestInsert: "INSERT INTO Requests (message, user_id) VALUES ($1, $2);",
+    getUnassignedRequests: "SELECT * FROM Requests WHERE status=0;",
+    getRequestsAssignedToMe: "SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 ORDER by status OFFSET $2 LIMIT $3;", 
+    
+    rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
+    
+    //----------------------- TESTED UNTIL HERE --------------------------------//
 
     // Use when Owners want to retract a bid (CAN do even if already a task)
     // Again, you can only remove and add bids, no edits. 
@@ -63,16 +69,15 @@ module.exports = {
     // Trigger for "UPDATE Bids SET status=1 WHERE owner_id<>$1 and bid_id=$2;" 
     // + "UPDATE Services SET status=1 WHERE service_id=$3;" 
     // + DELETE Task if this was a successful bid
-    retractBidUpdate: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;"
+    retractBidUpdate: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;",
 
     // Use when caretaker accepts a bid 
     // TODO @Psyf Trigger
-    //  "UPDATE Bids SET status=0 WHERE caretaker_id<>$1 and service_id=$2;" +
+    // make sure no other accepted bids present 
+    //  "UPDATE Bids SET status=0 WHERE bid_id<>$1 and service_id=$2;" +
     //  "INSERT INTO Tasks (service_id, caretaker_id) VALUES ($1, $2);" +
     //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
-    acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;"
-
-    rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
+    acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;",
 
     /* REVIEW RELATED QUERIES */
     sendReviewInsert: "BEGIN TRANSACTION;" +
@@ -80,8 +85,6 @@ module.exports = {
         "UPDATE Caretakers SET ratings=($1/((SELECT count(*) FROM Reviews WHERE caretaker_id=$4))*5);" +
         "COMMIT;",
 
-    /* REQUEST or SUPPORTTICKET RELATED QUERIES */
-    sendRequestInsert: "INSERT INTO Requests (message, user, user_id) VALUES ($1, $2, $3);",
-    getUnassignedRequests: "SELECT * FROM Requests WHERE status=0;",
-    getRequestsAssignedToMe: "SELECT * From Requests NATURAL JOIN Handles WHERE manager_id=$1 ORDER by status OFFSET $2 LIMIT $3;"
+    // Triggers Handle
+    assignRequestToMe: "UPDATE Requests SET;"
 }

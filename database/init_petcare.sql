@@ -19,10 +19,11 @@ create table USERS (
 );
 
 -- <Sends> collapsed into it
+-- status: 0=unattended, 1=attending, 2=solved
 create table REQUESTS (
 	request_id 		bigserial primary key,
 	message 		text not null,
-	status 			integer not null default 0,
+	status 			integer not null default 0 check (status>-1 and status<3),
 	created 		timestamp not null default NOW(), 
 	user_id 		bigserial not null,
 	foreign key (user_id) references USERS
@@ -78,12 +79,13 @@ create table CARETAKERS (
 );
 
 -- <Offers> collapsed into this
+-- status: 0=retracted, 1=available, 2=taken
 create table SERVICES (
 	service_id		bigserial primary key,
 	caretaker_id 	bigserial not null,
 	starting 		timestamp not null,
 	ending 			timestamp not null check (ending > starting),
-	status 			integer not null default 1, 
+	status 			integer not null default 1 check (status>-1 and status<3), 
 	minWage			integer not null check (minWage > 0),
 	foreign key (caretaker_id) references CARETAKERS
 );
@@ -126,3 +128,34 @@ create table REVIEWS (
 	foreign key (owner_id) references OWNERS,
 	primary key (caretaker_id, reviewNum)
 );
+
+-- Init data
+INSERT INTO users (name, email, phone, address, password) VALUES ('saifum', 'saifum@u.nus.edu', '123456', '{"address": "pgph"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+insert into caretakers (user_id, likes) values (1, '{Dog, Cat}'); 
+INSERT INTO users (name, email, phone, address, password) VALUES ('jj', 'jj@u.nus.edu', '123457', '{"address": "ke7"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+insert into owners (user_id) values (2); 
+insert into managers (email, username, password, phone) values ('admin@u.nus.edu')
+
+INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'Tom is a cat.', '2016-06-23');
+INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 2, '2016-06-23');
+
+-- a Task Creation Flow
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-01 20:28:32', '2019-04-01 20:28:33', 50, 1);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 20:28:32', '2019-04-01 20:28:33', 60, 2, 1, 1, 2); 
+insert into TASKS (bid_id) values (1); 
+
+------TRIGGERS------------
+create or replace function removeService() returns trigger as $$ 
+declare isTask integer; 
+begin
+	-- can't remove if Task exists (i.e a successful bid exists)
+	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
+	if isTask > 0 then raise notice 'Cannot remove as task exists.'; return null; 
+	-- reject all ongoing bids 
+	else UPDATE Bids SET status=0 WHERE service_id=new.service_id; return new; end if; 
+end; $$ language plpgsql; 
+
+create trigger removingService
+before update on services
+for each row
+execute procedure removeService(); 
