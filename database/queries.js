@@ -46,7 +46,8 @@ module.exports = {
     seeBidsQuery: "SELECT * FROM Bids B NATURAL JOIN Services S" +
         "WHERE S.service_id=$1 ORDER BY B.money desc;",
 
-    //TODO: @Psyf Need trigger to ensure starting, ending, TYPE compatibility and money is valid too 
+    //Triggers placingBid
+    //TODO @Psyf pet compatibility 
     placeBidInsert: "INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);",
 
     // Use when Caretaker is removing a service (can't do it if already a task)
@@ -61,6 +62,8 @@ module.exports = {
     
     rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
     
+
+
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
     // Use when Owners want to retract a bid (CAN do even if already a task)

@@ -134,7 +134,7 @@ INSERT INTO users (name, email, phone, address, password) VALUES ('saifum', 'sai
 insert into caretakers (user_id, likes) values (1, '{Dog, Cat}'); 
 INSERT INTO users (name, email, phone, address, password) VALUES ('jj', 'jj@u.nus.edu', '123457', '{"address": "ke7"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into owners (user_id) values (2); 
-insert into managers (email, username, password, phone) values ('admin@u.nus.edu')
+insert into managers (email, username, password, phone) values ('manager@u.nus.edu', 'manager', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '123458'); 
 
 INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'Tom is a cat.', '2016-06-23');
 INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 2, '2016-06-23');
@@ -159,3 +159,18 @@ create trigger removingService
 before update on services
 for each row
 execute procedure removeService(); 
+
+create or replace function placeBid()
+returns trigger as $$ 
+declare earliest timestamp; latest timestamp;
+begin
+	select starting, ending into earliest, latest from services where service_id=new.service_id; 
+	if new.starting < earliest then raise notice 'Starts later.'; return null; 
+	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
+	else return new; end if; 
+end; $$ language plpgsql; 
+
+create trigger placingBid
+before insert on Bids 
+for each row
+execute procedure placeBid(); 
