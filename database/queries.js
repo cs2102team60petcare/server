@@ -52,27 +52,27 @@ module.exports = {
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
-    // Use when Caretaker is removing a service
-    // Note: No edits. You can remove and add again if needed. 
-    removeServiceUpdate: "BEGIN TRANSACTION;" +
-        "UPDATE BidsFor SET status=0 WHERE service_id=$1;" +
-        "UPDATE Services SET status=0 WHERE service_id=$1;" +
-        "COMMIT;",
+    // Use when Caretaker is removing a service (can't do it if already a task)
+    // Note: No edits. You can remove and add again if needed.
+    // TODO @ Psyf NOTE: This will trigger and update with  {can't remove if already task}, {"UPDATE Bids SET status=0 WHERE service_id=$1;"}
+    removeServiceUpdate: "UPDATE Services SET status=0 WHERE service_id=$1;"
 
+    // Use when Owners want to retract a bid (CAN do even if already a task)
     // Again, you can only remove and add bids, no edits. 
-    retractBidUpdate: "BEGIN TRANSACTION;" +
-        "UPDATE BidsFor SET status=0 WHERE caretaker_id=$1 and service_id=$2;" +
-        "UPDATE BidsFor SET status=1 WHERE caretaker_id<>$1 and service_id=$2;" +
-        "UPDATE Services SET status=1 WHERE service_id=$2;" +
-        "COMMIT;", //by owners themselves  
+    // TODO @Psyf 
+    // Trigger for "UPDATE Bids SET status=1 WHERE owner_id<>$1 and bid_id=$2;" 
+    // + "UPDATE Services SET status=1 WHERE service_id=$3;" 
+    // + DELETE Task if this was a successful bid
+    retractBidUpdate: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;"
 
-    acceptBidUpdate: "BEGIN TRANSACTION;" +
-        "UPDATE BidsFor SET status=2 WHERE caretaker_id=$1 and service_id=$2;" +
-        "UPDATE BidsFor SET status=0 WHERE caretaker_id<>$1 and service_id=$2;" +
-        "INSERT INTO Tasks (service_id, caretaker_id) VALUES ($1, $2);" +
-        "UPDATE Services SET status=2 WHERE service_id=$2;" +
-        "COMMIT;",
-    rejectBidUpdate: "UPDATE BidsFor SET status=0 WHERE caretaker_id=$1 and service_id=$2;",
+    // Use when caretaker accepts a bid 
+    // TODO @Psyf Trigger
+    //  "UPDATE Bids SET status=0 WHERE caretaker_id<>$1 and service_id=$2;" +
+    //  "INSERT INTO Tasks (service_id, caretaker_id) VALUES ($1, $2);" +
+    //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
+    acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;"
+
+    rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
 
     /* REVIEW RELATED QUERIES */
     sendReviewInsert: "BEGIN TRANSACTION;" +
