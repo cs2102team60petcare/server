@@ -72,7 +72,7 @@ create table Owns (
 
 create table CARETAKERS (
 	user_id 	bigserial primary key,
-	rating 		float4 not null default 0 check (rating >= 0),
+	rating 		float4 not null default 0,
 	likes 		text[] not null,
 	foreign key (user_id) references USERS
 );
