@@ -55,7 +55,8 @@ module.exports = {
     // Use when Caretaker is removing a service (can't do it if already a task)
     // NOTE: No edits. You can remove and add again if needed.
     // NOTE: triggers removingService  
-    removeServiceUpdate: "UPDATE Services SET status=0 WHERE service_id=$1;",
+    removeServiceUpdate1: "UPDATE Services SET status=0 WHERE service_id=$1;",
+    removeServiceUpdate2: "UPDATE Bids SET status=0 WHERE service_id=$1;", 
 
     /* REQUEST or SUPPORTTICKET RELATED QUERIES */
     sendRequestInsert: "INSERT INTO Requests (message, user_id) VALUES ($1, $2);",

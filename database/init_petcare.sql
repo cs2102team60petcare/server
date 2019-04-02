@@ -175,9 +175,8 @@ declare isTask integer;
 begin
 	-- can't remove if Task exists (i.e a successful bid exists)
 	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
-	if isTask > 0 then raise notice 'Cannot remove as task exists.'; return null; 
-	-- reject all ongoing bids 
-	else UPDATE Bids SET status=0 WHERE service_id=new.service_id; return new; end if; 
+	if isTask > 0 then raise notice 'Cannot remove as task exists.'; return null;  
+	else return new; end if; 
 end; $$ language plpgsql; 
 
 create trigger removingService
