@@ -170,6 +170,7 @@ insert into bids (starting, ending, money, owner_id, pet_id, service_id, status)
 insert into TASKS (bid_id) values (2); 
 
 ------TRIGGERS------------
+-- Trigger 1
 create or replace function removeService() returns trigger as $$ 
 declare isTask integer; 
 begin
@@ -184,6 +185,7 @@ before update on services
 for each row
 execute procedure removeService(); 
 
+-- Trigger 2
 create or replace function placeBid()
 returns trigger as $$ 
 declare earliest timestamp; 
@@ -211,6 +213,7 @@ before insert on Bids
 for each row
 execute procedure placeBid(); 
 
+-- Trigger 3
 create or replace function offerService() 
 returns trigger as $$ 
 declare oldStart timestamp; oldEnd timestamp; 
@@ -230,6 +233,7 @@ before insert on services
 for each row
 execute procedure offerService(); 
 
+-- Trigger 4
 create or replace function sendReview() 
 returns trigger as $$ 
 declare lastNum integer; endTime timestamp; 
@@ -248,3 +252,15 @@ create trigger sendingReview
 before insert on Reviews 
 for each row 
 execute procedure sendReview(); 
+
+-- Trigger 5
+create or replace function deleteTask()
+returns trigger as $$ begin 
+	if old.status=2 then raise notice 'Cant delete as task is finished.'; return null; 
+	else return new; end if; 
+end; $$ language plpgsql; 
+
+create trigger deletingTask
+before delete on Tasks
+for each row
+execute procedure deleteTask(); 

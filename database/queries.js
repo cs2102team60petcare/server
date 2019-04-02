@@ -7,7 +7,8 @@ module.exports = {
 
     //TODO: @Psyf no deletion yet. 
     // call them SOFT deletes
-    //WARNING: Use signUpUserInsert in a Transaction with one of the next two 
+    // WARNING: Use signUpUserInsert in a Transaction with one of the next two 
+    // TODO @ JJ 
     signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     signupOwnerInsert: "INSERT INTO owners (user_id) VALUES ($1);",
 
@@ -16,6 +17,7 @@ module.exports = {
     careTakerLikesRemove: "DELETE FROM likes where caretaker_id=$1 and type=$2;",
 
     // WARNING: Use signupPetInsert with the next query in a transaction
+    // TODO @ JJ 
     signupPetInsert: "INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4);",
     ownsPetInsert: "INSERT INTO owns (pet_id, owner_id, since) VALUES ($1, $2, $3);",
 
@@ -55,6 +57,7 @@ module.exports = {
     // Use when Caretaker is removing a service (can't do it if already a task)
     // NOTE: No edits. You can remove and add again if needed.
     // NOTE: triggers removingService  
+    // TODO @ JJ 
     removeServiceUpdate1: "UPDATE Services SET status=0 WHERE service_id=$1;",
     removeServiceUpdate2: "UPDATE Bids SET status=0 WHERE service_id=$1;", 
 
@@ -74,6 +77,14 @@ module.exports = {
     //TODO @Psyf Trigger to ensure time 
     taskCompletedupdate: "UPDATE Tasks SET status=2 where task_id=$1;",
 
+   // Use when Owners want to retract a bid (CAN do even if already a task)
+    // Again, you can only remove and add bids, no edits. 
+    // Trigger deletingTask ensures finished tasks/bids can't be deleted (both soft and hard)
+    // TODO @ JJ 
+    retractBidUpdate1: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;",
+    retractBidUpdate2: "UPDATE Bids SET status=1 WHERE owner_id<>$1 and service_id=$2;", 
+    retractBidUpdate3: "UPDATE Services SET status=1 WHERE service_id=$1;",
+    retractBidUpdate4: "DELETE FROM Task where task_id=$1;",
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
@@ -87,14 +98,6 @@ module.exports = {
     searchAvailableServicesCaretaker: " and U.name=$", 
     searchAvailableServiesPetType1: " and $",
     searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
-
-    // Use when Owners want to retract a bid (CAN do even if already a task)
-    // Again, you can only remove and add bids, no edits. 
-    // TODO @Psyf 
-    // Trigger for "UPDATE Bids SET status=1 WHERE owner_id<>$1 and bid_id=$2;" 
-    // + "UPDATE Services SET status=1 WHERE service_id=$3;" 
-    // + DELETE Task if this was a successful bid
-    retractBidUpdate: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;",
 
     // Use when caretaker accepts a bid 
     // TODO @Psyf Trigger
