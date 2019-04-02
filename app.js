@@ -187,6 +187,10 @@ app.get('/caretakerprofile', function (req, res, next) {
   })
 })
 
+app.get('/managerprofile', function (req, res ,next) {
+  res.render('managerprofile')
+})
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
