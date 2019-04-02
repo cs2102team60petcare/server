@@ -162,11 +162,26 @@ execute procedure removeService();
 
 create or replace function placeBid()
 returns trigger as $$ 
-declare earliest timestamp; latest timestamp;
+declare earliest timestamp; 
+		latest timestamp; 
+		preferences text[]; 
+		likesType text; 
+		petType text; 
+		compatibility boolean;  
 begin
-	select starting, ending into earliest, latest from services where service_id=new.service_id; 
+	select starting, ending into earliest, latest from services where service_id=new.service_id;
+	select likes into preferences from caretakers natural join services where service_id=new.service_id limit 1; 
+	select type into petType from pets where pet_id=new.pet_id;  	
+	compatibility:= false; 
+	foreach likesType in array preferences
+	loop
+		if likesType=petType then compatibility:=true; EXIT; 
+		end if; 
+	end loop; 
 	if new.starting < earliest then raise notice 'Starts later.'; return null; 
 	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
+	elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 
+	elseif (select status from services where service_id=new.service_id)=2 then raise notice 'Bidding closed.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
 

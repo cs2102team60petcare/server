@@ -47,7 +47,6 @@ module.exports = {
         "WHERE S.service_id=$1 ORDER BY B.money desc;",
 
     //Triggers placingBid
-    //TODO @Psyf pet compatibility 
     placeBidInsert: "INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);",
 
     // Use when Caretaker is removing a service (can't do it if already a task)
