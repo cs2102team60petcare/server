@@ -6,6 +6,7 @@ module.exports = {
     userExistsQuery: "SELECT user_id FROM users WHERE email=$1;", //todo: @ jj used as check before signup 
 
     //TODO: @Psyf no deletion yet. 
+    // call them SOFT deletes
     //WARNING: Use signUpUserInsert in a Transaction with one of the next two 
     signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     signupOwnerInsert: "INSERT INTO owners (user_id) VALUES ($1);",
@@ -64,9 +65,11 @@ module.exports = {
     rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
     
     // Trigger sendReview()
-    // TODO @ psyf Should I have a delete review? 
-    sendReviewInsert: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
-
+    // TODO @ JJ This is a transaction
+    sendReviewInsert1: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
+    sendReviewInsert2: "UPDATE Tasks set status=2 where task_id=$1;",    //$1 = $3 from above  
+    sendReviewInsert3: "UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=$1)/(select count(*) from reviews where caretaker_id=$1));",  //$4 = $1 from above
+    
     //TODO @Psyf Trigger to ensure time 
     taskCompletedupdate: "UPDATE Tasks SET status=2 where task_id=$1;",
 
