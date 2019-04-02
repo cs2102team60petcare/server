@@ -61,9 +61,14 @@ module.exports = {
     
     rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
     
-
+    // Trigger sendReview()
+    // TODO @ psyf Should I have a delete review? 
+    sendReviewInsert: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
+    
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
+
+    //taskCompletedupdate:
 
     // Use when Owners want to retract a bid (CAN do even if already a task)
     // Again, you can only remove and add bids, no edits. 
@@ -80,12 +85,6 @@ module.exports = {
     //  "INSERT INTO Tasks (service_id, caretaker_id) VALUES ($1, $2);" +
     //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
     acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;",
-
-    /* REVIEW RELATED QUERIES */
-    sendReviewInsert: "BEGIN TRANSACTION;" +
-        "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);" +
-        "UPDATE Caretakers SET ratings=($1/((SELECT count(*) FROM Reviews WHERE caretaker_id=$4))*5);" +
-        "COMMIT;",
 
     // Triggers Handle
     assignRequestToMe: "UPDATE Requests SET;"

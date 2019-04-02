@@ -120,7 +120,7 @@ create table REVIEWS (
 	reviewNum		integer,	--increment with trigger?
 	note 			text,
 	stars 			integer not null check (stars>=0 and stars<=5),
-	task_id			bigserial not null,
+	task_id			bigserial unique not null,
 	caretaker_id 	bigserial,
 	owner_id 		bigserial not null,
 	foreign key (task_id) references TASKS,
@@ -140,9 +140,9 @@ INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'Tom is a ca
 INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 2, '2016-06-23');
 
 -- a Task Creation Flow
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-01 20:00:00', '2019-04-01 21:00:00', 50, 2);
--- insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 20:28:32', '2019-04-01 20:28:33', 60, 2, 1, 1, 2); 
--- insert into TASKS (bid_id) values (1); 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-01 20:00:00', '2019-04-03 21:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 20:28:32', '2019-04-03 20:28:33', 60, 2, 1, 1, 2); 
+insert into TASKS (bid_id) values (1); 
 
 ------TRIGGERS------------
 create or replace function removeService() returns trigger as $$ 
@@ -208,3 +208,26 @@ create trigger offeringService
 before insert on services
 for each row
 execute procedure offerService(); 
+
+create or replace function sendReview() 
+returns trigger as $$ 
+declare lastNum integer; endTime timestamp; 
+begin 
+	select coalesce(max(reviewnum), 0) into lastNum from reviews where caretaker_id=new.caretaker_id; 
+	select ending into endTime from tasks natural join bids where task_id=new.task_id; 
+	
+	if endTime > NOW() then raise notice 'Wait till the task is over to send review.'; return null; 
+	end if;
+		
+	-- TODO @ Psyf defensive coding by making sure owner and caretaker actually related to num. 
+
+	new.reviewnum = lastNum+1; 
+	UPDATE Tasks set status=2 where task_id=new.task_id;  
+	UPDATE Caretakers SET rating=(new.stars/new.reviewnum*5);
+	return new; 
+end; $$ language plpgsql;
+
+create trigger sendingReview
+before insert on Reviews 
+for each row 
+execute procedure sendReview(); 
