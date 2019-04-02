@@ -34,8 +34,8 @@ module.exports = {
     getMyPetsQuery: "SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;",
 
     // Use when Caretaker is offering new service
-    // minWage is per hour. This is because people can bid for a chunk of his time. 
     // Note: One task per service, even if the caretaker has free time. 
+    // Triggers offeringService 
     offerServiceInsert: "INSERT INTO services (caretaker_id, starting, ending, minWage) VALUES ($1, $2, $3, $4);",
 
     serviceHistoryQuery: "SELECT S.service_id, T.task_id, S.status, S.starting, S.ending, T.status, S.minWage, B.money, B.owner_id, B.pet_id" +

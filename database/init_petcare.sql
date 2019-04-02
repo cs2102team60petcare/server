@@ -140,9 +140,9 @@ INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'Tom is a ca
 INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 2, '2016-06-23');
 
 -- a Task Creation Flow
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-01 20:28:32', '2019-04-01 20:28:33', 50, 1);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 20:28:32', '2019-04-01 20:28:33', 60, 2, 1, 1, 2); 
-insert into TASKS (bid_id) values (1); 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-01 20:00:00', '2019-04-01 21:00:00', 50, 2);
+-- insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 20:28:32', '2019-04-01 20:28:33', 60, 2, 1, 1, 2); 
+-- insert into TASKS (bid_id) values (1); 
 
 ------TRIGGERS------------
 create or replace function removeService() returns trigger as $$ 
@@ -189,3 +189,22 @@ create trigger placingBid
 before insert on Bids 
 for each row
 execute procedure placeBid(); 
+
+create or replace function offerService() 
+returns trigger as $$ 
+declare oldStart timestamp; oldEnd timestamp; 
+begin
+	for oldStart, oldEnd in select starting, ending from services where caretaker_id=new.caretaker_id and status<>0
+	loop
+		if new.starting >= oldStart and new.starting <= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null; 
+		elseif new.ending >= oldStart and new.ending <= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null;
+		elseif new.starting <= oldStart and new.ending >= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null;
+		else return new; 
+		end if; 
+	end loop; 
+end; $$ language plpgsql; 
+
+create trigger offeringService 
+before insert on services
+for each row
+execute procedure offerService(); 
