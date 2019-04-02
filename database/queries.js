@@ -67,21 +67,22 @@ module.exports = {
     // TODO @ psyf Should I have a delete review? 
     sendReviewInsert: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
 
-    // use the base string + other strings
-    // use for the filter in the owner_home page 
-    // add num accordingly at the end of every non-base string (or $)
-    searchAvailableServicesBase: "Select * from Caretakers C " +
-        "natural join Users U join Services S on (C.user_id=S.caretaker_id) where S.status=1", 
-    serachAvailableServicesStarting: " and S.starting>=$", 
-    searchAvailableServicesEnding: " and S.ending<=$",  
-    searchAvailableServicesCaretaker: " and U.name=$", 
-    
-
+    //TODO @Psyf Trigger to ensure time 
+    taskCompletedupdate: "UPDATE Tasks SET status=2 where task_id=$1;",
 
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
-    //taskCompletedupdate:
+    // use the base string + other strings
+    // use for the filter in the owner_home page 
+    // add num accordingly at the end of every non-base string (or $)
+    searchAvailableServicesBase: "Select * from Services S " +
+        "join Caretakers C on (C.user_id=S.caretaker_id) natural join Users U where status=1", 
+    serachAvailableServicesStarting: " and S.starting>=$", 
+    searchAvailableServicesEnding: " and S.ending<=$",  
+    searchAvailableServicesCaretaker: " and U.name=$", 
+    searchAvailableServiesPetType1: " and $",
+    searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
 
     // Use when Owners want to retract a bid (CAN do even if already a task)
     // Again, you can only remove and add bids, no edits. 
