@@ -9,7 +9,10 @@ module.exports = {
     //WARNING: Use signUpUserInsert in a Transaction with one of the next two 
     signupUserInsert: "INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     signupOwnerInsert: "INSERT INTO owners (user_id) VALUES ($1);",
-    signupCareTakerInsert: "INSERT INTO caretakers (user_id, likes) VALUES ($1, $2);",
+
+    signupCareTakerInsert: "INSERT INTO caretakers (user_id) VALUES ($1);",
+    careTakerLikesInsert: "INSERT INTO likes (caretaker_id, type) VALUES ($1, $2);",
+    careTakerLikesRemove: "DELETE FROM likes where caretaker_id=$1 and type=$2;",
 
     // WARNING: Use signupPetInsert with the next query in a transaction
     signupPetInsert: "INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4);",
@@ -23,12 +26,11 @@ module.exports = {
     //WARNING: Make sure Password is hashed with bcrypt when updating
     userPasswordUpdate: "UPDATE Users SET password=$1 WHERE user_id=$2;",
 
-    caretakerLikesUpdate: "UPDATE Caretakers SET likes=$1 WHERE user_id=$2;",
     petProfileUpdate: "UPDATE Pets SET name=$1, biography=$2 WHERE pet_id=$3;",
 
-    getMyUpcomingTasksQuery: "SELECT * FROM Tasks T NATURAL JOIN Services S NATURAL JOIN Caretakers C" +
+    getMyUpcomingTasksQuery: "SELECT * FROM Tasks T NATURAL JOIN Services S NATURAL JOIN Caretakers C " +
         "WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;",
-    getMyTaskHistoryQuery: "SELECT * FROM Tasks T NATURAL JOIN Services S NATURAL JOIN Caretakers C" +
+    getMyTaskHistoryQuery: "SELECT * FROM Tasks T NATURAL JOIN Services S NATURAL JOIN Caretakers C " +
         "WHERE C.user_id=$1 ORDER BY S.starting desc OFFSET $2 LIMIT $3;",
 
     getMyPetsQuery: "SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;",
@@ -38,12 +40,12 @@ module.exports = {
     // Triggers offeringService 
     offerServiceInsert: "INSERT INTO services (caretaker_id, starting, ending, minWage) VALUES ($1, $2, $3, $4);",
 
-    serviceHistoryQuery: "SELECT S.service_id, T.task_id, S.status, S.starting, S.ending, T.status, S.minWage, B.money, B.owner_id, B.pet_id" +
-        "FROM Services S LEFT OUTER JOIN (Bids B join Tasks T on B.bid_id=T.bid_id) on S.service_id=$1 and (B.service_id=S.service_id)" +
+    serviceHistoryQuery: "SELECT S.service_id, T.task_id, S.status, S.starting, S.ending, T.status, S.minWage, B.money, B.owner_id, B.pet_id " +
+        "FROM Services S LEFT OUTER JOIN (Bids B join Tasks T on B.bid_id=T.bid_id) on S.service_id=$1 and (B.service_id=S.service_id) " +
         "ORDER BY (starting) OFFSET $2 LIMIT $3;",
 
     /* BIDS RELATED QUERIES */
-    seeBidsQuery: "SELECT * FROM Bids B NATURAL JOIN Services S" +
+    seeBidsQuery: "SELECT * FROM Bids B NATURAL JOIN Services S " +
         "WHERE S.service_id=$1 ORDER BY B.money desc;",
 
     //Triggers placingBid
@@ -64,7 +66,18 @@ module.exports = {
     // Trigger sendReview()
     // TODO @ psyf Should I have a delete review? 
     sendReviewInsert: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
+
+    // use the base string + other strings
+    // use for the filter in the owner_home page 
+    // add num accordingly at the end of every non-base string (or $)
+    searchAvailableServicesBase: "Select * from Caretakers C " +
+        "natural join Users U join Services S on (C.user_id=S.caretaker_id) where S.status=1", 
+    serachAvailableServicesStarting: " and S.starting>=$", 
+    searchAvailableServicesEnding: " and S.ending<=$",  
+    searchAvailableServicesCaretaker: " and U.name=$", 
     
+
+
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
@@ -86,6 +99,6 @@ module.exports = {
     //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
     acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;",
 
-    // Triggers Handle
-    assignRequestToMe: "UPDATE Requests SET;"
+    // Do inside a transaction/trigger?
+    assignRequestToMe1: "UPDATE Requests SET status =;"
 }

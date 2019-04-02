@@ -52,15 +52,24 @@ create table OWNERS (
 	foreign key (user_id) references USERS
 );
 
+create table ANIMALS (
+	type text primary key 
+);
+
+-- <isOfType> collapsed into this
 create table PETS (
 	pet_id 		bigserial primary key,
 	name 		text not null, 
 	type 		text not null, 
 	biography 	text,
 	born 		date not null, 
-	death		date
+	death		date, 
+	foreign key (type) references ANIMALS
 );
 
+-- Design consideration. Till and Owns here (instead of Pets as weak entity) because 
+-- we want the application to be able to handle pet transfers later on without losing information on the 
+-- pet. Logistics of it has to be solved later, and is beyond the scope of the module. 
 create table Owns (
 	pet_id 		bigserial,
 	owner_id 	bigserial,
@@ -74,8 +83,15 @@ create table Owns (
 create table CARETAKERS (
 	user_id 	bigserial primary key,
 	rating 		float4 not null default 0,
-	likes 		text[] not null,
 	foreign key (user_id) references USERS
+);
+
+create table Likes (
+	caretaker_id 	bigserial, 
+	type 			text, 
+	primary key 	(caretaker_id, type), 
+	foreign key (caretaker_id) references caretakers (user_id),
+	foreign key (type) references ANIMALS
 );
 
 -- <Offers> collapsed into this
@@ -130,8 +146,14 @@ create table REVIEWS (
 );
 
 -- Init data
+insert into animals (type) values ('Cat'); 
+insert into animals (type) values ('Dog'); 
+insert into animals (type) values ('Snake'); 
+
 INSERT INTO users (name, email, phone, address, password) VALUES ('saifum', 'saifum@u.nus.edu', '123456', '{"address": "pgph"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
-insert into caretakers (user_id, likes) values (1, '{Dog, Cat}'); 
+insert into caretakers (user_id) values (1);
+insert into likes (caretaker_id, type) values (1, 'Cat'); 
+insert into likes (caretaker_id, type) values (1, 'Dog'); 
 INSERT INTO users (name, email, phone, address, password) VALUES ('jj', 'jj@u.nus.edu', '123457', '{"address": "ke7"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into owners (user_id) values (2); 
 insert into managers (email, username, password, phone) values ('manager@u.nus.edu', 'manager', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '123458'); 
@@ -173,14 +195,11 @@ begin
 	select likes into preferences from caretakers natural join services where service_id=new.service_id limit 1; 
 	select type into petType from pets where pet_id=new.pet_id;  	
 	compatibility:= false; 
-	foreach likesType in array preferences
-	loop
-		if likesType=petType then compatibility:=true; EXIT; 
-		end if; 
-	end loop; 
+	-- ToDO petTypeCompatibility @Psyf 
+
 	if new.starting < earliest then raise notice 'Starts later.'; return null; 
 	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
-	elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 
+	-- elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 
 	elseif (select status from services where service_id=new.service_id)=2 then raise notice 'Bidding closed.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
