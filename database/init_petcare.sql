@@ -40,7 +40,7 @@ create table MANAGERS (
 create table Handles (
 	manager_id 	bigserial,
 	request_id 	bigserial,
-	assigned	timestamp,
+	assigned	timestamp default NOW(),
 	justification	text,	--by manager
 	primary key (manager_id, request_id),
 	foreign key (manager_id) references MANAGERS,
@@ -133,7 +133,7 @@ create table TASKS (
 
 -- <Gives>, <Receives>, <Has> collapsed into this
 create table REVIEWS (
-	reviewNum		integer,	--increment with trigger?
+	reviewNum		integer,
 	note 			text,
 	stars 			integer not null check (stars>=0 and stars<=5),
 	task_id			bigserial unique not null,

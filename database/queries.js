@@ -100,6 +100,13 @@ module.exports = {
     //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
     acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;",
 
-    // Do inside a transaction/trigger?
-    assignRequestToMe1: "UPDATE Requests SET status =;"
+    // Do inside a transaction 
+    // TODO @ JJ
+    assignRequestToMe1: "UPDATE Requests SET status=1 where request_id=$1;",
+    assignRequestToMe2: "INSERT INTO Handles (manager_id, request_id) VALUES ($1, $2);",
+
+    // Do inside a transaction
+    // TODO @ JJ
+    requestSolvedUpdate1: "UPDATE Requests SET status=2 where request_id=$1;",
+    reqestSolvedUpdate2: "UPDATE Handles SET justification=$1 where request_id=$2;",
 }
