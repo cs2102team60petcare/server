@@ -5,6 +5,7 @@ var loginRoute = require('./login')
 var logoutRoute = require('./logout')
 var homeRoute = require('./home')
 var signUpRoute = require('./signup')
+var utilities = require('../controllers/utilities')
 const pool = require('../database/connection')
 
 
@@ -13,14 +14,9 @@ router.use('/home', homeRoute)
 router.use('/signup', signUpRoute)
 router.use('/logout', logoutRoute)
 
-const loggedInOnly = (req, res, next) => {
-  if (req.isAuthenticated()) next();
-  else res.redirect("/login");
-};
-
 router.get('/', mainController.getMainPage)
 
-router.get('/profile' , loggedInOnly, function(req, res, next) {
+router.get('/profile' , utilities.loggedInOnly, function(req, res, next) {
     res.render('profile')
 })
 
