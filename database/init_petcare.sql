@@ -200,7 +200,7 @@ begin
 	select type into petType from pets where pet_id=new.pet_id;  	
 	compatibility:= false; 
 	-- ToDO petTypeCompatibility @Psyf 
-
+	-- ToDO meetsMinWage per hous @ Psyf
 	if new.starting < earliest then raise notice 'Starts later.'; return null; 
 	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
 	-- elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 

@@ -59,32 +59,59 @@ module.exports = {
     // NOTE: triggers removingService  
     // TODO @ JJ 
     removeServiceUpdate1: "UPDATE Services SET status=0 WHERE service_id=$1;",
-    removeServiceUpdate2: "UPDATE Bids SET status=0 WHERE service_id=$1;", 
+    removeServiceUpdate2: "UPDATE Bids SET status=0 WHERE service_id=$1;",
 
     /* REQUEST or SUPPORTTICKET RELATED QUERIES */
     sendRequestInsert: "INSERT INTO Requests (message, user_id) VALUES ($1, $2);",
     getUnassignedRequests: "SELECT * FROM Requests WHERE status=0;",
-    getRequestsAssignedToMe: "SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 ORDER by status OFFSET $2 LIMIT $3;", 
-    
+    getRequestsAssignedToMe: "SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 ORDER by status OFFSET $2 LIMIT $3;",
+
     rejectBidUpdate: "UPDATE Bids SET status=0 WHERE bid_id=$1;",
-    
+
     // Trigger sendReview()
     // TODO @ JJ This is a transaction
     sendReviewInsert1: "INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);",
-    sendReviewInsert2: "UPDATE Tasks set status=2 where task_id=$1;",    //$1 = $3 from above  
-    sendReviewInsert3: "UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=$1)/(select count(*) from reviews where caretaker_id=$1));",  //$4 = $1 from above
-    
+    sendReviewInsert2: "UPDATE Tasks set status=2 where task_id=$1;", //$1 = $3 from above  
+    sendReviewInsert3: "UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=$1)/(select count(*) from reviews where caretaker_id=$1));", //$4 = $1 from above
+
     //TODO @Psyf Trigger to ensure time 
     taskCompletedupdate: "UPDATE Tasks SET status=2 where task_id=$1;",
 
-   // Use when Owners want to retract a bid (CAN do even if already a task)
+    // Use when Owners want to retract a bid (CAN do even if already a task)
     // Again, you can only remove and add bids, no edits. 
     // Trigger deletingTask ensures finished tasks/bids can't be deleted (both soft and hard)
     // TODO @ JJ 
     retractBidUpdate1: "UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;",
-    retractBidUpdate2: "UPDATE Bids SET status=1 WHERE owner_id<>$1 and service_id=$2;", 
+    retractBidUpdate2: "UPDATE Bids SET status=1 WHERE owner_id<>$1 and service_id=$2;",
     retractBidUpdate3: "UPDATE Services SET status=1 WHERE service_id=$1;",
     retractBidUpdate4: "DELETE FROM Task where task_id=$1;",
+
+    // Complex Query 1
+    // Gives you the average of (average made per hour) grouped by month, for each caretaker 
+    // on the manager dashboard 
+    perHourAverageByMonthQuery: "select S.caretaker_id, date_trunc('month', B.starting), " +
+        "coalesce(avg(money/((EXTRACT(EPOCH FROM B.ending) - EXTRACT(EPOCH FROM B.starting))/3600.0)), 0) " +
+        "from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) " +
+        "group by S.caretaker_id, date_trunc('month', B.starting) " +
+        "order by date_trunc('month', B.starting) desc;",
+
+    // Complex Query 2 
+    // Shows the caretaker the cumulative earning (by day)
+    // on the caretaker_dashboard
+    perDayCumulativeSumQuery: "select date_trunc('day', B.starting), sum(sum(money)) over (order by date_trunc('day', B.starting)) " + 
+        "from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) " +
+        "where S.caretaker_id=$1 " + 
+        "group by date_trunc('day', B.starting) " +
+        "order by date_trunc('day', B.starting) desc " +
+        "offset $2 " +
+        "limit $3;", 
+
+    // Complex Query 3 
+    // Shows the demand ratio by hour for days {1..7} (whichever we call) 
+    ratioOfTaskByHourByDay: "select extract(hour from starting)::integer as hour, " + 
+        "count(*)::float4/(select count(*) from Bids where status=2 and extract(DOW from starting)=$1) " + 
+        "from bids where status=2 and extract(DOW from starting)=$1 group by hour;", 
+
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
@@ -92,10 +119,10 @@ module.exports = {
     // use for the filter in the owner_home page 
     // add num accordingly at the end of every non-base string (or $)
     searchAvailableServicesBase: "Select * from Services S " +
-        "join Caretakers C on (C.user_id=S.caretaker_id) natural join Users U where status=1", 
-    serachAvailableServicesStarting: " and S.starting>=$", 
-    searchAvailableServicesEnding: " and S.ending<=$",  
-    searchAvailableServicesCaretaker: " and U.name=$", 
+        "join Caretakers C on (C.user_id=S.caretaker_id) natural join Users U where status=1",
+    serachAvailableServicesStarting: " and S.starting>=$",
+    searchAvailableServicesEnding: " and S.ending<=$",
+    searchAvailableServicesCaretaker: " and U.name=$",
     searchAvailableServiesPetType1: " and $",
     searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
 
