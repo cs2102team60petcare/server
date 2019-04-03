@@ -61,4 +61,8 @@ router.get('/services',function (req, res, next) {
   })
 })
 
+router.get('/caretakerform',function (req, res, next) {
+  res.render('caretakerform')
+})
+
 module.exports = router
