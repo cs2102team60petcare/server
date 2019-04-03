@@ -9,6 +9,7 @@ passport.use('local', new localStrategy({
     passwordField: 'password',
     passReqToCallback: true
 }, function(req, email, password, done) {
+    console.log('Authenticating with passport')
     pool.query(queries.loginQuery, [email], (err, data) => {
         if (err) {
             return done(err)
@@ -19,10 +20,11 @@ passport.use('local', new localStrategy({
             var storedHash = user.password.toString().trim()
             bcrypt.compare(password, storedHash, function(err, res) {
                 if (res == true) {
+                    console.log('redirect to home page')
                     //REDIRECT to home page with appropriate header change @teojunjie
                     done(null, user)
                 } else {
-                    //REDIRECT to LOGIN PAGE WITH MESSAGE @teojunjie
+                    console.log('incorrect username or password')
                     done(null, false, { message: 'Incorrect username or password' })
                 }
             });
@@ -31,22 +33,18 @@ passport.use('local', new localStrategy({
 }))
 
 passport.serializeUser(function(user, done) {
-    console.log(user)
+    console.log('Serializing')
     done(null, user.user_id)
 })
 
 passport.deserializeUser(function(id, done) {
-    var findIdQuery = "SELECT * FROM users where user_id = '2'"
-    pool.query(findIdQuery, (err, data) => {
+    console.log('Deserializing')
+    pool.query(queries.deserializeQuery, [id], (err, data) => {
         if (err) {
             return done(err)
-        }
-        var user = data.rows[0]
-        console.log(user)
-        if (user) {
-            done(null, user)
         } else {
-            done(null, false, { message: 'Incorrect username and password' })
+            var user = data.rows[0]
+            return done(null, user)
         }
     })
 })
