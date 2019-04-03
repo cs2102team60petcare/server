@@ -4,11 +4,14 @@ $(document).ready(function () {
 	// Append table with add row form on add new button click
     $('.add-new').click(function () {
     $(this).attr('disabled', 'disabled')
-		var index = $('table tbody tr:last-child').index()
+    var index = $('table tbody tr:last-child').index()
+    var rowCount = $('table tr').length
         var row = '<tr>' +
-            '<td><input type="text" class="form-control" name="name" id="name"></td>' +
-            '<td><input type="text" class="form-control" name="department" id="department"></td>' +
-            '<td><input type="text" class="form-control" name="phone" id="phone"></td>' +
+            '<td>' + rowCount + '</td>' +
+            '<td>' + rowCount + '</td>' +
+            '<td><input type="text" class="form-control" name="status" id="status"></td>' +
+            '<td>' + new Date($.now()) + '</td>' +
+            '<td><input type="text" class="form-control" name="message" id="message"></td>' +
 			'<td>' + actions + '</td>' +
         '</tr>'
     	$('table').append(row)		
