@@ -5,8 +5,7 @@ drop schema if exists public CASCADE;
 create schema public; 
 
 /*
- * A USER can be an OWNER or a CARETAKER
- * (i.e Covering Constraint and Overlapping Constraint satisfied)
+ * A USER has to be an OWNER or a CARETAKER, but not both
  */
 create table USERS (
 	user_id 	bigserial primary key,
@@ -133,7 +132,7 @@ create table TASKS (
 
 -- <Gives>, <Receives>, <Has> collapsed into this
 create table REVIEWS (
-	reviewNum		integer,	--increment with trigger?
+	reviewNum		integer,
 	note 			text,
 	stars 			integer not null check (stars>=0 and stars<=5),
 	task_id			bigserial unique not null,
@@ -174,10 +173,8 @@ insert into TASKS (bid_id) values (2);
 create or replace function updateService() returns trigger as $$ 
 declare isTask integer; 
 begin
-	-- can't remove if Task exists (i.e a successful bid exists)
 	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
 	if isTask > 0 and new.status=0 then raise notice 'Cannot remove as task exists.'; return null;  
-	-- can't accept another bid for same program if already Task exists
 	elseif isTask > 0 and new.status=2 then raise notice 'Task already exists for this service'; return null;  
 	else return new; end if; 
 end; $$ language plpgsql; 
@@ -207,6 +204,7 @@ begin
 	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
 	-- elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 
 	elseif (select status from services where service_id=new.service_id)=2 then raise notice 'Bidding closed.'; return null; 
+	-- or ^ == 0
 	else return new; end if; 
 end; $$ language plpgsql; 
 
