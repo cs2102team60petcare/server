@@ -120,6 +120,15 @@ module.exports = {
         "count(*)::float4/(select count(*) from Bids where status=2 and extract(DOW from starting)=$1) " + 
         "from bids where status=2 and extract(DOW from starting)=$1 group by hour;", 
 
+    // Do inside a transaction 
+    // TODO @ JJ
+    assignRequestToMe1: "UPDATE Requests SET status=1 where request_id=$1;",
+    assignRequestToMe2: "INSERT INTO Handles (manager_id, request_id) VALUES ($1, $2);",
+
+    // Do inside a transaction
+    // TODO @ JJ
+    requestSolvedUpdate1: "UPDATE Requests SET status=2 where request_id=$1;",
+    reqestSolvedUpdate2: "UPDATE Handles SET justification=$1 where request_id=$2;",
 
     //----------------------- TESTED UNTIL HERE --------------------------------//
 
@@ -133,14 +142,4 @@ module.exports = {
     searchAvailableServicesCaretaker: " and U.name=$",
     searchAvailableServiesPetType1: " and $",
     searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
-
-    // Do inside a transaction 
-    // TODO @ JJ
-    assignRequestToMe1: "UPDATE Requests SET status=1 where request_id=$1;",
-    assignRequestToMe2: "INSERT INTO Handles (manager_id, request_id) VALUES ($1, $2);",
-
-    // Do inside a transaction
-    // TODO @ JJ
-    requestSolvedUpdate1: "UPDATE Requests SET status=2 where request_id=$1;",
-    reqestSolvedUpdate2: "UPDATE Handles SET justification=$1 where request_id=$2;",
 }
