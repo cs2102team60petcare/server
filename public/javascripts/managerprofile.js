@@ -1,4 +1,24 @@
 $(document).ready(function () {
+  var options = {
+    title: {
+      text: "Column Chart in jQuery CanvasJS"              
+    },
+    data: [              
+    {
+      // Change type to "doughnut", "line", "splineArea", etc.
+      type: "column",
+      dataPoints: [
+        { label: "apple",  y: 10  },
+        { label: "orange", y: 15  },
+        { label: "banana", y: 25  },
+        { label: "mango",  y: 30  },
+        { label: "grape",  y: 28  }
+      ]
+    }
+    ]
+  };
+  
+  $("#chartContainer").CanvasJSChart(options);  
   $('[data-toggle="tooltip"]').tooltip()
 	var actions = $('table td:last-child').html()
 	// Append table with add row form on add new button click
