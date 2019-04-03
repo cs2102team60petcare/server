@@ -171,19 +171,21 @@ insert into TASKS (bid_id) values (2);
 
 ------TRIGGERS------------
 -- Trigger 1
-create or replace function removeService() returns trigger as $$ 
+create or replace function updateService() returns trigger as $$ 
 declare isTask integer; 
 begin
 	-- can't remove if Task exists (i.e a successful bid exists)
 	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
-	if isTask > 0 then raise notice 'Cannot remove as task exists.'; return null;  
+	if isTask > 0 and new.status=0 then raise notice 'Cannot remove as task exists.'; return null;  
+	-- can't accept another bid for same program if already Task exists
+	elseif isTask > 0 and new.status=2 then raise notice 'Task already exists for this service'; return null;  
 	else return new; end if; 
 end; $$ language plpgsql; 
 
-create trigger removingService
+create trigger updatingService
 before update on services
 for each row
-execute procedure removeService(); 
+execute procedure updateService(); 
 
 -- Trigger 2
 create or replace function placeBid()

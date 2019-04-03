@@ -56,7 +56,7 @@ module.exports = {
 
     // Use when Caretaker is removing a service (can't do it if already a task)
     // NOTE: No edits. You can remove and add again if needed.
-    // NOTE: triggers removingService  
+    // NOTE: triggers updateService  
     // TODO @ JJ 
     removeServiceUpdate1: "UPDATE Services SET status=0 WHERE service_id=$1;",
     removeServiceUpdate2: "UPDATE Bids SET status=0 WHERE service_id=$1;",
@@ -85,6 +85,14 @@ module.exports = {
     retractBidUpdate2: "UPDATE Bids SET status=1 WHERE owner_id<>$1 and service_id=$2;",
     retractBidUpdate3: "UPDATE Services SET status=1 WHERE service_id=$1;",
     retractBidUpdate4: "DELETE FROM Task where task_id=$1;",
+
+    // Use when caretaker accepts a bid 
+    // make sure no other accepted bids present 
+    // Triggers updateService
+    acceptBidUpdate1: "UPDATE Services SET status=2 WHERE service_id=$1;",
+    acceptBidUpdate2: "UPDATE Bids SET status=2 WHERE bid_id=$1",
+    acceptBidUpdate3: "UPDATE Bids SET status=0 WHERE bid_id<>$1 and service_id=$2;", 
+    acceptBidUpdate4: "INSERT INTO Tasks (bid_id) VALUES ($1);", 
 
     // Complex Query 1
     // Gives you the average of (average made per hour) grouped by month, for each caretaker 
@@ -125,14 +133,6 @@ module.exports = {
     searchAvailableServicesCaretaker: " and U.name=$",
     searchAvailableServiesPetType1: " and $",
     searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
-
-    // Use when caretaker accepts a bid 
-    // TODO @Psyf Trigger
-    // make sure no other accepted bids present 
-    //  "UPDATE Bids SET status=0 WHERE bid_id<>$1 and service_id=$2;" +
-    //  "INSERT INTO Tasks (service_id, caretaker_id) VALUES ($1, $2);" +
-    //  "UPDATE Services SET status=2 WHERE service_id=$2;" +
-    acceptBidUpdate: "UPDATE Bids SET status=2 WHERE bid_id=$1;",
 
     // Do inside a transaction 
     // TODO @ JJ
