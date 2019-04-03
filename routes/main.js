@@ -46,16 +46,17 @@ router.get('/bids', function(req, res, next) {
 })
 
 router.get('/services',function (req, res, next) {
+      // res.render('services', {service: [
+      // { sid: 1, petType: 'Dog' ,startDate: 310319 ,endDate: 090419, minWage: 20},
+      // { sid: 2, petType: 'Cat' ,startDate: 310319 ,endDate: 100419, minWage: 15},
+      // { sid: 3, petType: 'Snake' ,startDate: 310319 ,endDate: 110419, minWage: 1500}
+      // ]})
   pool.query("SELECT * FROM services" , (err, data) => {
     if (err) next (err)
     var servicesData = data.rows
     console.log(servicesData)
-    res.render('servicesPage', {service : servicesData})
-    // res.render('servicesPage', {service: [
-    //   { sid: 1, petType: 'Dog' ,startDate: 310319 ,endDate: 090419, minWage: 20},
-    //   { sid: 2, petType: 'Cat' ,startDate: 310319 ,endDate: 100419, minWage: 15},
-    //   { sid: 3, petType: 'Snake' ,startDate: 310319 ,endDate: 110419, minWage: 1500}
-    //   ]})
+    res.render('services', {service : servicesData})
+
     
   })
 })
