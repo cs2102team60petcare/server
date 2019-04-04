@@ -40,6 +40,11 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Add routes
 var routes = require('./routes/main')
 app.use('/', routes)
+
+app.post('/ownerprofile/addPet' , function (req, res, next) {
+  console.log(req.body)
+  res.json({'Updated' : true})
+})
 app.get('/ownerprofile', function (req, res, next) {
   res.render('ownerprofile', {
     bids: [
@@ -222,6 +227,7 @@ app.get('/managerprofile', function (req, res , next) {
     ]
   })
 })
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

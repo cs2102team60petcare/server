@@ -42,7 +42,7 @@ $(document).ready(function () {
   })
 
   	// Add row on add button click
-  $(document).on('click', '.add', function () {
+  $(document).on('click', '.add.bid', function () {
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
     input.each(function () {
@@ -93,10 +93,12 @@ $(document).ready(function () {
     var rowCount = $('.table.table-pets tr').length
     var row = '<tr>' +
             '<td>' + rowCount + '</td>' +
-            '<td><input type="text" class="form-control" name="pet_name"></td>' +
-            '<td><input type="text" class="form-control" name="pet_information"></td>' +
-            '<td><input type="text" class="form-control" name="pet_type"></td>' +
-            '<td><input type="text" class="form-control" name="pet_born"></td>' +
+            '<td><input type="text" class = "form-control" name="pet_name" value = ""></td>' +
+            '<td><input type="text" class = "form-control" name="pet_information" value = ""></td>' +
+            '<td><input type="text" class = "form-control" name="pet_type" value = ""></td>' +
+            '<td><input type="text" class = "form-control" name="pet_born" value = ""></td>' +
+            '<td><input type="text" class = "form-control" name="pet_death" value = ""></td>' +
+
       '<td>' + petActions + '</td>' +
         '</tr>'
     $('.table.table-pets').append(row)
@@ -107,7 +109,9 @@ $(document).ready(function () {
   $(document).on('click', '.add.pet', function () {
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
+    var addPetData = {}
     input.each(function () {
+
       if (!$(this).val()) {
         $(this).addClass('error')
         empty = true
@@ -117,14 +121,18 @@ $(document).ready(function () {
     })
     $(this).parents('tr').find('.error').first().focus()
     if (!empty) {
-      var addPetData = {}
-
       input.each(function () {
-        $(this).parent('td').html($(this).val())
-        addPetData['"' + $(this).text() + '"'] = $(this).val()
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        addPetData['"' + text + '"'] = val
+      })
+      var postRequest = $.post('ownerprofile/addPet', addPetData)
+      postRequest.done(function (data) {
+        console.log("Send post request")
+        console.log(data)
       })
 
-      console.log(addPetData)
       $(this).parents('tr').find('.add, .edit').toggle()
       $('.add-new-pet').removeAttr('disabled')
     }
