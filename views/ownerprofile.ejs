@@ -9,6 +9,7 @@
     <title>Owner Profile</title>
 
     <link href="stylesheets/ownerprofilestyling.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -31,28 +32,41 @@
                                     <button type="button" class="btn btn-warning btn-filter" data-target="pending">Pending</button>
                                     <button type="button" class="btn btn-danger btn-filter" data-target="cancelled">Cancelled</button>
                                     <button type="button" class="btn btn-default btn-filter" data-target="all">Show All</button>
-
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <div class="add-btn">
+                                    <button type="button" class="btn btn-info add-new-bid"><i class="fa fa-plus"></i> Add New Bid</button>
                                 </div>
                             </div>
                             <div class="table-container">
-                                <table class="table table-filter">
+                                <table class="table table-bids">
+                                    <thead>
+                                        <tr>
+                                            <th>Bid id</th>
+                                            <th>Pet id</th>
+                                            <th>Service id</th>
+                                            <th>Bid Price</th>
+                                            <th>Status</th>
+                                            <th>Starting</th>
+                                            <th>Ending</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                     <% for(var i=0; i < bids.length; i++) { %>
                                         <tr data-status="<%=bids[i].status%>">
+                                            <td><%=bids[i].bid_id    %></td>
+                                            <td><%=bids[i].pet_id    %></td>
+                                            <td><%=bids[i].service_id    %></td>
+                                            <td><%=bids[i].money    %></td>
+                                            <td><%=bids[i].status    %></td>
+                                            <td><%=bids[i].starting    %></td>
+                                            <td><%=bids[i].ending    %></td>
                                             <td>
-                                                <div class="media">
-                                                    <a href="#" class="pull-left">
-                                                        <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <span class="media-meta pull-right"><%="Starting date : " + bids[i].starting + "   " + "    Ending Date : " + bids[i].ending%></span>
-                                                        <h4 class="title">
-                                                            <%="Bid id : " + bids[i].bid_id%>
-                                                            <span class="pull-right <%=bids[i].status%>"><%=bids[i].status%></span>
-                                                        </h4>
-                                                        <p class="summary"><%="Bid Price : " + bids[i].money%></p>
-                                                    </div>
-                                                </div>
+                                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                                <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                             </td>
                                         </tr>
                                     <% } %>
@@ -76,54 +90,42 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
-                                    <table class="table table-filter">
-                                        <tr>
-                                            <td>
-                                                Pet ID
-                                            </td>   
-                                            <td>
-                                                Pet Name
-                                            </td>
-                                            <td>
-                                                Pet Biography
-                                            </td>
-                                            <td>
-                                                Pet Type
-                                            </td>   
-                                            <td>
-                                                Pet Born
-                                            </td>
-                                            <td>
-                                                Pet Death
-                                            </td>
-                                        </tr>
-                                        <% for (var i = 0 ; i< pets.length; i++) { %>
+                                    <div class="pull-left">
+                                        <div class="add-btn">
+                                            <button type="button" class="btn btn-info add-new-pet"><i class="fa fa-plus"></i> Add New Pet</button>
+                                        </div>
+                                    </div>
 
-                                            <tr>
-                                                <td>
-                                                    <%= pets[i].pet_id%>
-                                                </td>
-                                                <td>
-                                                    <%= pets[i].name%>
-                                                </td>
-                                                <td>
-                                                    <%= pets[i].biography%>
-                                                </td>
-
-                                                <td>
-                                                    <%= pets[i].type%>
-                                                </td>
-
-                                                <td>
-                                                    <%= pets[i].born%>
-                                                </td>
-
-                                                <td>
-                                                    <%= pets[i].death%>
-                                                </td>
-
-                                            </tr>
-                                        <% } %>                                    </table>
+                                    <table class="table table-pets">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pet id</th>
+                                                    <th>Name</th>
+                                                    <th>Information</th>
+                                                    <th>Type</th>
+                                                    <th>Born</th>
+                                                    <th>Death</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% for(var i=0; i < pets.length; i++) { %>
+                                                <tr data-status="<%=pets[i].status%>">
+                                                    <td><%=pets[i].pet_id    %></td>
+                                                    <td><%=pets[i].name    %></td>
+                                                    <td><%=pets[i].biography    %></td>
+                                                    <td><%=pets[i].type    %></td>
+                                                    <td><%=pets[i].born    %></td>
+                                                    <td><%=pets[i].death    %></td>
+                                                    <td>
+                                                        <a class="add pet" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                        <a class="edit pet" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                                        <a class="delete pet" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -142,57 +144,30 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
-                                    <table class="table table-filter">
-                                            <tr>
-                                                    <td>
-                                                        Task ID
-                                                    </td>   
-    
-                                                    <td>
-                                                        Care Taker ID
-                                                    </td>   
-                                                    <td>
-                                                        Care Taker Name
-                                                    </td>
-                                                    <td>
-                                                        Starting 
-                                                    </td>
-                                                    <td>
-                                                        Ending
-                                                    </td>   
-                                                    <td>
-                                                        Money
-                                                    </td>
+                                    <table class="table table-tasks">
+                                            <thead>
+                                                <tr>
+                                                    <th>Task ID</th>
+                                                    <th>Care Taker ID</th>
+                                                    <th>Care Taker Name</th>
+                                                    <th>Starting</th>
+                                                    <th>Ending</th>
+                                                    <th>Money</th>
                                                 </tr>
-                                                <% for (var i = 0 ; i< tasks.length; i++) { %>
-        
-                                                    <tr>
-                                                        <td>
-                                                            <%= tasks[i].task_id%>
-                                                        </td>
-                                                        <td>
-                                                            <%= tasks[i].user_id%>
-                                                        </td>
-                                                        <td>
-                                                            <%= tasks[i].name%>
-                                                        </td>
-        
-                                                        <td>
-                                                            <%= tasks[i].starting%>
-                                                        </td>
-        
-                                                        <td>
-                                                            <%= tasks[i].ending%>
-                                                        </td>
-        
-                                                        <td>
-                                                            <%= tasks[i].money%>
-                                                        </td>
-        
-                                                    </tr>
-                                                <% } %>                                    </table>
-        
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                            <% for(var i=0; i < tasks.length; i++) { %>
+                                                <tr data-status="<%=tasks[i].status%>">
+                                                    <td><%=tasks[i].task_id    %></td>
+                                                    <td><%=tasks[i].user_id    %></td>
+                                                    <td><%=tasks[i].name    %></td>
+                                                    <td><%=tasks[i].starting    %></td>
+                                                    <td><%=tasks[i].ending    %></td>
+                                                    <td><%=tasks[i].money    %></td>
+                                                </tr>
+                                            <% } %>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
