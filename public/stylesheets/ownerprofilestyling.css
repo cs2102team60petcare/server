@@ -53,3 +53,7 @@
     table.table td .add {
         display: none;
     }
+
+    table.table td .update {
+        display: none;
+    }

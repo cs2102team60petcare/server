@@ -41,10 +41,35 @@ app.use(bodyParser.urlencoded({ extended: true }))
 var routes = require('./routes/main')
 app.use('/', routes)
 
-app.post('/ownerprofile/addPet' , function (req, res, next) {
+app.post('/ownerprofile/addBid', function (req, res, next) {
   console.log(req.body)
-  res.json({'Updated' : true})
+  res.json({ 'Updated': true })
 })
+
+app.put('/ownerprofile/updateBid', function (req, res, next) {
+  console.log(req.body)
+  res.json({ 'Updated': true })
+})
+
+app.delete('/ownerprofile/deleteBid', function (req, res, next) {
+  res.json({ 'Updated': true })
+})
+
+app.post('/ownerprofile/addPet', function (req, res, next) {
+  console.log(req.body)
+  res.json({ 'Updated': true })
+})
+
+app.put('/ownerprofile/updatePet', function (req, res, next) {
+  console.log(req.body)
+  res.json({ 'Updated': true })
+})
+
+app.delete('/ownerprofile/deletePet', function (req, res, next) {
+  console.log(req.body)
+  res.json({ 'Updated': true })
+})
+
 app.get('/ownerprofile', function (req, res, next) {
   res.render('ownerprofile', {
     bids: [
@@ -192,7 +217,7 @@ app.get('/caretakerprofile', function (req, res, next) {
   })
 })
 
-app.get('/managerprofile', function (req, res , next) {
+app.get('/managerprofile', function (req, res, next) {
   res.render('managerprofile', {
     requests: [
       {
@@ -227,7 +252,6 @@ app.get('/managerprofile', function (req, res , next) {
     ]
   })
 })
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

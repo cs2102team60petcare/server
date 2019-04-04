@@ -38,13 +38,14 @@ $(document).ready(function () {
 			'<td>' + actions + '</td>' +
         '</tr>'
     	$('.table.table-bids').append(row)
-    $('.table.table-bids tbody tr').eq(index + 1).find('.add, .edit').toggle()
+    $('.table.table-bids tbody tr').eq(index + 1).find('.update, .edit').toggle()
   })
 
-  	// Add row on add button click
+  	// Send input row data on add button click
   $(document).on('click', '.add.bid', function () {
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
+    var addBidData = {}
     input.each(function () {
       if (!$(this).val()) {
         $(this).addClass('error')
@@ -56,9 +57,17 @@ $(document).ready(function () {
     $(this).parents('tr').find('.error').first().focus()
     if (!empty) {
       input.each(function () {
-        $(this).parent('td').html($(this).val())
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        addBidData['"' + text + '"'] = val
       })
-      $(this).parents('tr').find('.add, .edit').toggle()
+      var postRequest = $.post('ownerprofile/addBid', addBidData)
+      postRequest.done(function (res) {
+        console.log(res)
+      })
+
+      $(this).parents('tr').find('.update, .edit').toggle()
       $('.add-new-bid').removeAttr('disabled')
     }
   })
@@ -74,9 +83,53 @@ $(document).ready(function () {
     $(this).parents('tr').find('.add, .edit').toggle()
     $('.add-new-bid').attr('disabled', 'disabled')
   })
+
+  // Update edited row on update button click
+  $(document).on('click', '.update.bid', function () {
+    var input = $(this).parents('tr').find('input[type="text"]')
+    var addUpdatedBidData = {}
+    input.each(function () {
+      if (!$(this).val()) {
+        $(this).addClass('error')
+        empty = true
+      } else {
+        $(this).removeClass('error')
+      }
+    })
+    $(this).parents('tr').find('.error').first().focus()
+    if (!empty) {
+      input.each(function () {
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        addUpdatedBidData['"' + text + '"'] = val
+      })
+
+      var updateRequest = $.put('ownerprofile/updateBid', addUpdatedBidData)
+      updateRequest.done(function (res) {
+        console.log(res)
+      })
+
+      $(this).parents('tr').find('.update, .edit').toggle()
+      $('.add-new-bid').removeAttr('disabled')
+    }
+  })
+
   // Delete row on delete button click
   $(document).on('click', '.delete', function () {
-    $(this).parents('tr').remove()
+    var row = $(this).parents('tr')
+    var rowData = row.find('td:not(:last-child)')
+    var deletedBidData = {}
+    rowData.each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      deletedBidData[$th.text()] = $(this).val()
+    })
+    row.remove()
+    $('.add-new-bid').removeAttr('disabled')
+    var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
+    deleteRequest.done(function (res) {
+      console.log(res)
+    })
     $('.add-new-bid').removeAttr('disabled')
   })
 
@@ -98,20 +151,18 @@ $(document).ready(function () {
             '<td><input type="text" class = "form-control" name="pet_type" value = ""></td>' +
             '<td><input type="text" class = "form-control" name="pet_born" value = ""></td>' +
             '<td><input type="text" class = "form-control" name="pet_death" value = ""></td>' +
-
       '<td>' + petActions + '</td>' +
         '</tr>'
     $('.table.table-pets').append(row)
-    $('.table.table-pets tbody tr').eq(index + 1).find('.add, .edit').toggle()
+    $('.table.table-pets tbody tr').eq(index + 1).find('.update, .edit').toggle()
   })
 
-  // Add row on add button click
+  // Add input row on add button click
   $(document).on('click', '.add.pet', function () {
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
     var addPetData = {}
     input.each(function () {
-
       if (!$(this).val()) {
         $(this).addClass('error')
         empty = true
@@ -128,20 +179,17 @@ $(document).ready(function () {
         addPetData['"' + text + '"'] = val
       })
       var postRequest = $.post('ownerprofile/addPet', addPetData)
-      postRequest.done(function (data) {
-        console.log("Send post request")
-        console.log(data)
+      postRequest.done(function (res) {
+        console.log(res)
       })
 
-      $(this).parents('tr').find('.add, .edit').toggle()
+      $(this).parents('tr').find('.update, .edit').toggle()
       $('.add-new-pet').removeAttr('disabled')
     }
   })
   // Edit row on edit button click
   $(document).on('click', '.edit.pet', function () {
-
     $(this).parents('tr').find('td:not(:last-child)').each(function () {
-
       var $th = $(this).closest('table').find('th').eq($(this).index())
       if ($th.text() != 'Pet id') {
         $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">')
@@ -151,11 +199,52 @@ $(document).ready(function () {
     $('.add-new-pet').attr('disabled', 'disabled')
   })
 
-  // Delete row on delete button click
-  $(document).on('click', '.delete.pet', function () {
-    $(this).parents('tr').remove()
-    $('.add-new-pet').removeAttr('disabled')
+  // Update edited row on update button click
+  $(document).on('click', '.update.pet', function () {
+    var input = $(this).parents('tr').find('input[type="text"]')
+    var addUpdatedPetData = {}
+    input.each(function () {
+      if (!$(this).val()) {
+        $(this).addClass('error')
+        empty = true
+      } else {
+        $(this).removeClass('error')
+      }
+    })
+    $(this).parents('tr').find('.error').first().focus()
+    if (!empty) {
+      input.each(function () {
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        addUpdatedPetData['"' + text + '"'] = val
+      })
+
+      var updateRequest = $.put('ownerprofile/updatePet', addUpdatedPetData)
+      updateRequest.done(function (res) {
+        console.log(res)
+      })
+
+      $(this).parents('tr').find('.update, .edit').toggle()
+      $('.add-new-bid').removeAttr('disabled')
+    }
   })
 
-  // =========================== Pets functions =================================== //
-});
+  // Delete row on delete button click
+  $(document).on('click', '.delete.pet', function () {
+    var row = $(this).parents('tr')
+    var rowData = row.find('td:not(:last-child)')
+    var deletedPetData = {}
+    rowData.each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      deletedPetData[$th.text()] = $(this).val()
+    })
+    row.remove()
+    $('.add-new-pet').removeAttr('disabled')
+    var deleteRequest = $.delete('ownerprofile/deletePet', deletedPetData)
+    deleteRequest.done(function (res) {
+      console.log(res)
+    })
+  })
+// =========================== Pets functions =================================== //
+})
