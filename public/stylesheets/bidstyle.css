@@ -38,8 +38,13 @@
 
 .container p{
     color: white;
+    font-size: 14px;
 }
 
-.container h2{
+.container h3{
+    color: white;
+}
+
+.container h1{
     color: white;
 }
