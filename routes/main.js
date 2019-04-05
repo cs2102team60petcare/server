@@ -31,10 +31,8 @@ router.get('/caretakerform', function (req, res, next) {
   res.render('caretakerform')
 })
 
-router.get('/serviceForm', function(req, res, next){
-  res.render('serviceform');
+router.get('/serviceForm', function (req, res, next) {
+  res.render('serviceform')
 })
-
-
 
 module.exports = router

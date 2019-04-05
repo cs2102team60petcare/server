@@ -1,7 +1,4 @@
 exports.getCareTakerProfile = function (req, res, next) {
-  if (req.user) {
-    console.log(req.user)
-  }
   res.render('caretaker', {
     tasks: [
       {
