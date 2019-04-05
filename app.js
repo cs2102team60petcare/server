@@ -41,28 +41,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 var routes = require('./routes/main')
 app.use('/', routes)
 
-app.get('/bids', function(req, res, next){
-  res.render('bids',{ bids: [
-    { "oid": 1,
-      "starttime": "30/03/2019 1130",
-      "endtime":  "31/03/2019 2340" ,
-      "bidplaced": 20,
-      "status": 1
-    },
-
-    { "oid": 2,
-    "starttime": "30/03/2019 1330",
-    "endtime": "31/03/2019 2340" ,
-    "bidplaced": 25,
-    "status": 1
-    } ] 
-  });
-})
-
-app.get('/serviceForm', function(req, res, next){
-  res.render('serviceform');
-})
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
