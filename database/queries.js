@@ -38,6 +38,7 @@ module.exports = {
 
   getMyPetsQuery: 'SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;',
 
+  getServicesQuery: 'SELECT * FROM Services;',
   // Use when Caretaker is offering new service
   // Note: One task per service, even if the caretaker has free time.
   // Triggers offeringService
