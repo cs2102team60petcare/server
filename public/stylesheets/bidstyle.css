@@ -1,6 +1,8 @@
+
 #myTable{
     width:100%;
     border-collapse:collapse;
+    background-color: lightblue;
 }
 #HeadRow{
     background:rgb(78, 210, 228);
@@ -33,4 +35,16 @@
 .even{
     background:#99FFD6;
 }
-    
+
+.container p{
+    color: white;
+    font-size: 14px;
+}
+
+.container h3{
+    color: white;
+}
+
+.container h1{
+    color: white;
+}
