@@ -137,8 +137,12 @@ $(document).ready(function () {
 
   // =========================== Pets functions =================================== //
 
-  // Append table with add new bid row form on add new bid button click
-  var petActions = $('.table.table-pets td:last-child').html()
+  // Append table with add new pet row form on add new pet button click
+  var petActions = '<a class="add pet" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
+  '<a class="edit pet" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
+  '<a class="update pet" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>' +
+  '<a class="delete pet" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>'
+
   $('.add-new-pet').click(function () {
     console.log('clicking add new pet')
     $(this).attr('disabled', 'disabled')
@@ -158,7 +162,7 @@ $(document).ready(function () {
   })
 
   // Add input row on add button click
-  $(document).on('click', '.add.pet', function () {
+  $(document).on('click', '.update.pet', function () {
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
     var addPetData = {}
@@ -176,7 +180,7 @@ $(document).ready(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
         $(this).parent('td').html(val)
-        addPetData['"' + text + '"'] = val
+        addPetData[text] = val
       })
       var postRequest = $.post('ownerprofile/addPet', addPetData)
       postRequest.done(function (res) {
@@ -217,7 +221,7 @@ $(document).ready(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
         $(this).parent('td').html(val)
-        addUpdatedPetData['"' + text + '"'] = val
+        addUpdatedPetData[text] = val
       })
 
       var updateRequest = $.put('ownerprofile/updatePet', addUpdatedPetData)
