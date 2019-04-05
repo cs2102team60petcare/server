@@ -20,7 +20,7 @@ module.exports = {
     // TODO @ JJ 
     signupPetInsert: "INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4);",
     ownsPetInsert: "INSERT INTO owns (pet_id, owner_id, since) VALUES ($1, $2, $3);",
-
+    
     /* PROFILE RELATED QUERIES */
     fullUserProfileQuery: "SELECT user_id, name, email, phone, address, created FROM users where user_id=$1;",
     petProfileQuery: "SELECT * from PETS where pet_id=$1;",
