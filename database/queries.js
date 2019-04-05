@@ -48,10 +48,11 @@ module.exports = {
         'ORDER BY (starting) OFFSET $2 LIMIT $3;',
 
   /* BIDS RELATED QUERIES */
+  getBidsQuery: 'SELECT * FROM Bids;',
   seeBidsQuery: 'SELECT * FROM Bids B NATURAL JOIN Services S ' +
         'WHERE S.service_id=$1 ORDER BY B.money desc;',
 
-  getAllBids: 'SELECT * FROM BIDS',
+  getAllBids: 'SELECT * FROM BIDS;',
 
   // Triggers placingBid
   placeBidInsert: 'INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);',
