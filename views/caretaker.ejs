@@ -18,131 +18,187 @@
   </head>
   <body>
 
-    <div class="text-center">
-            <div class="btn-group">
-                <button type="button" class="btn btn-success btn-filter" data-target="upcoming">Upcoming</button>
-                <button type="button" class="btn btn-warning btn-filter" data-target="history">History</button>
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Upcoming Tasks</h1>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="pull-right">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success btn-filter" data-target="Upcoming">Upcoming</button>
+                                        <button type="button" class="btn btn-warning btn-filter" data-target="History">History</button>
+                                        <button type="button" class="btn btn-error btn-filter" data-target="ShowAll">Show All</button>
+                                    </div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Tid</th>
+                                                <th >PetName</th>
+                                                <th >OwnerName</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<upcomingTasks.length; i++) { %>
+                                                <tr>
+                                                    <td><%=upcomingTasks[i].task_id   %></td>
+                                                    <td><%=upcomingTasks[i].petname   %></td>
+                                                    <td><%=upcomingTasks[i].ownername %></td>
+                                                    <td><%=upcomingTasks[i].starting  %></td>
+                                                    <td><%=upcomingTasks[i].ending    %></td>
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
             </div>
-    </div>
-    <div class = "container">
-        <div class ="row">
-            <table class="table table-filter">
-                <caption caption-side= top>Upcoming Tasks</caption>
-                    <thead>
-                    <tr>
-                        <th scope="col">Task ID</th>
-                        <th scope="col">Pet Name</th>
-                        <th scope="col">Owner Name</th>
-                        <th scope="col">Starting</th>
-                        <th scope="col">Ending</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i = 0; i<tasks.length; i++) { %>
-                            <tr>
-                                <td><%=tasks[i].task_id   %></td>
-                                <td><%=tasks[i].petname   %></td>
-                                <td><%=tasks[i].ownername %></td>
-                                <td><%=tasks[i].starting  %></td>
-                                <td><%=tasks[i].ending    %></td>
-                            </tr>
-                        <% } %>    
-                    </tbody>
-                </table>
-            </div>
-    </div>
-    <div class = "container">
-        <div class ="row">
-            <table class="table table-hover">
-                <caption caption-side= top>Pending Bids</caption>
-                    <thead>
-                    <tr>
-                        <th scope="col">Bids ID</th>
-                        <th scope="col">Pet ID</th>
-                        <th scope="col">Owner ID</th>
-                        <th scope="col">Service ID</th>
-                        <th scope="col">Money</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Starting</th>
-                        <th scope="col">Ending</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i = 0; i<bids.length; i++) { %>
-                            <tr>
-                                <td><%=bids[i].bids_id      %></td>
-                                <td><%=bids[i].pet_id       %></td>
-                                <td><%=bids[i].owner_id     %></td>
-                                <td><%=bids[i].service_id   %></td>
-                                <td><%=bids[i].money        %></td>
-                                <td><%=bids[i].status       %></td>
-                                <td><%=bids[i].starting     %></td>
-                                <td><%=bids[i].ending       %></td>
-                            </tr>
-                        <% } %>    
-                    </tbody>
-                </table>
-            </div>
-    </div>
-
-    <div class = "container">
-        <div class ="row">
-            <table class="table table-hover">
-                <caption caption-side= top>Available Services</caption>
-                    <thead>
-                    <tr>
-                        <th scope="col">Service ID</th>
-                        <th scope="col">CareTaker ID</th>
-                        <th scope="col">Min Wage</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Starting</th>
-                        <th scope="col">Ending</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <% for(var i = 0; i<services.length; i++) { %>
-                            <tr>
-                                <td><%=services[i].service_id       %></td>
-                                <td><%=services[i].caretaker_id     %></td>
-                                <td><%=services[i].minwage          %></td>
-                                <td><%=services[i].status           %></td>
-                                <td><%=services[i].starting         %></td>
-                                <td><%=services[i].ending           %></td>
-                            </tr>
-                        <% } %>    
-                    </tbody>
-                </table>
-            </div>
-    </div>
-
-    <div class = "container">
-            <div class ="row">
-                <table class="table table-hover">
-                    <caption caption-side= top>Tasks History</caption>
-                        <thead>
-                        <tr>
-                            <th scope="col">Task ID</th>
-                            <th scope="col">Pet Name</th>
-                            <th scope="col">Owner Name</th>
-                            <th scope="col">Starting</th>
-                            <th scope="col">Ending</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <% for(var i = 0; i<tasksHistory.length; i++) { %>
-                                <tr>
-                                    <td><%= tasksHistory[i].task_id  %></td>
-                                    <td><%= tasksHistory[i].petname  %></td>
-                                    <td><%= tasksHistory[i].ownername%></td>
-                                    <td><%= tasksHistory[i].starting %></td>
-                                    <td><%= tasksHistory[i].ending   %></td>
-                                </tr>
-                            <% } %>    
-                        </tbody>
-                    </table>
-                </div>
         </div>
 
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Pending Bids</h1>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Bid</th>
+                                                <th >Pid</th>
+                                                <th >Oid</th>
+                                                <th >Sid</th>
+                                                <th >Money</th>
+                                                <th >Status</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<bids.length; i++) { %>
+                                                <tr>
+                                                    <td><%=bids[i].bids_id      %></td>
+                                                    <td><%=bids[i].pet_id       %></td>
+                                                    <td><%=bids[i].owner_id     %></td>
+                                                    <td><%=bids[i].service_id   %></td>
+                                                    <td><%=bids[i].money        %></td>
+                                                    <td><%=bids[i].status       %></td>
+                                                    <td><%=bids[i].starting     %></td>
+                                                    <td><%=bids[i].ending       %></td>
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Available Services</h1>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="pull-left">
+                                        <div class="add-btn">
+                                            <button type="button" class="btn btn-info add-new-pet"><i class="fa fa-plus"></i> Add Service</button>
+                                        </div>
+                                    </div>
+    
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Sid</th>
+                                                <th >Cid</th>
+                                                <th >Minwage</th>
+                                                <th >Status</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<services.length; i++) { %>
+                                                <tr>
+                                                    <td><%=services[i].service_id       %></td>
+                                                    <td><%=services[i].caretaker_id     %></td>
+                                                    <td><%=services[i].minwage          %></td>
+                                                    <td><%=services[i].status           %></td>
+                                                    <td><%=services[i].starting         %></td>
+                                                    <td><%=services[i].ending           %></td>
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Tasks History</h1>
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Tid</th>
+                                                <th >PetName</th>
+                                                <th >OwnerName</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<tasksHistory.length; i++) { %>
+                                                    <tr>
+                                                        <td><%= tasksHistory[i].task_id  %></td>
+                                                        <td><%= tasksHistory[i].petname  %></td>
+                                                        <td><%= tasksHistory[i].ownername%></td>
+                                                        <td><%= tasksHistory[i].starting %></td>
+                                                        <td><%= tasksHistory[i].ending   %></td>
+                                                    </tr>
+                                                <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+    
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

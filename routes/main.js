@@ -16,9 +16,9 @@ router.use('/login', loginRoute)
 router.use('/home', homeRoute)
 router.use('/signup', signUpRoute)
 router.use('/logout', logoutRoute)
-router.use('/ownerprofile', ownerprofileRoute)
-router.use('/managerprofile', managerprofileRoute)
-router.use('/caretakerprofile', caretakerprofileRoute)
+router.use('/ownerprofile', utilities.loggedInOnly, ownerprofileRoute)
+router.use('/managerprofile', utilities.loggedInOnly, managerprofileRoute)
+router.use('/caretakerprofile', utilities.loggedInOnly, caretakerprofileRoute)
 router.use('/bids', bidsRoute)
 router.use('/services', servicesRoute)
 router.get('/', mainController.getMainPage)
@@ -31,10 +31,8 @@ router.get('/caretakerform', function (req, res, next) {
   res.render('caretakerform')
 })
 
-router.get('/serviceForm', function(req, res, next){
-  res.render('serviceform');
+router.get('/serviceForm', function (req, res, next) {
+  res.render('serviceform')
 })
-
-
 
 module.exports = router

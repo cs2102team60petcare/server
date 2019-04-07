@@ -1,56 +1,62 @@
 $(document).ready(function () {
   $('[data-toggle="tooltip"]').tooltip()
-	var actions = $('table td:last-child').html()
-	// Append table with add row form on add new bid button click
-    $('.add-new').click(function () {
-      console.log('Clicking add new button')
+
+  $('.assign').click(function () {
     $(this).attr('disabled', 'disabled')
-    var index = $('table tbody tr:last-child').index()
-    var rowCount = $('table tr').length
-        var row = '<tr>' +
-            '<td>' + rowCount + '</td>' +
-            '<td>' + rowCount + '</td>' +
-            '<td><input type="text" class="form-control" name="status" id="status"></td>' +
-            '<td>' + new Date($.now()) + '</td>' +
-            '<td><input type="text" class="form-control" name="message" id="message"></td>' +
-			'<td>' + actions + '</td>' +
-        '</tr>'
-    	$('table').append(row)		
-		$('table tbody tr').eq(index + 1).find('.add, .edit').toggle()
-        $('[data-toggle="tooltip"]').tooltip()
+    var assignedRequestData = {}
+    $(this).parents('tr').find('td:not(:last-child)').each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      assignedRequestData[$th.text()] = $(this).text()
+
+      var updateAssignedRequest = $.put('managerprofile/selfAssignRequest', assignedRequestData)
+      updateAssignedRequest.done(function (res) {
+        console.log(res)
+      })
     })
-	// Add row on add button click
-	$(document).on('click', '.add', function () {
+  })
+  // Add row on add button click
+  $(document).on('click', '.add', function () {
     var empty = false
-		var input = $(this).parents('tr').find('input[type="text"]')
-        input.each(function () {
+    var updateRequestData = {}
+    var input = $(this).parents('tr').find('input[type="text"]')
+    input.each(function () {
       if (!$(this).val()) {
         $(this).addClass('error')
-				empty = true
-			} else {
+        empty = true
+      } else {
         $(this).removeClass('error')
-            }
+      }
     })
-		$(this).parents('tr').find('.error').first().focus()
-		if (!empty) {
+    $(this).parents('tr').find('.error').first().focus()
+    if (!empty) {
       input.each(function () {
-        $(this).parent('td').html($(this).val())
-			})			
-			$(this).parents('tr').find('.add, .edit').toggle()
-			$('.add-new').removeAttr('disabled')
-		}
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        updateRequestData[text] = val
+      })
+      var updateRequest = $.put('managerprofile/updateRequest', updateRequestData)
+      updateRequest.done(function (res) {
+        console.log(res)
+      })
+      $(this).parents('tr').find('.add, .edit').toggle()
+      $('.add-new').removeAttr('disabled')
+    }
   })
-	// Edit row on edit button click
-	$(document).on('click', '.edit', function () {
+  // Edit row on edit button click
+  $(document).on('click', '.edit', function () {
     $(this).parents('tr').find('td:not(:last-child)').each(function () {
-      $(this).html('<input type="text" class="form-control" value="' + $(this).text() + '">')
-		})		
-		$(this).parents('tr').find('.add, .edit').toggle()
-		$('.add-new').attr('disabled', 'disabled')
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      if ($th.text() == 'Status' || $th.text() == 'Message') {
+        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + "value= '" + $(this).text() + '">')
+      }
     })
-	// Delete row on delete button click
-	$(document).on('click', '.delete', function () {
+    $(this).parents('tr').find('.add, .edit').toggle()
+    $('.add-new').attr('disabled', 'disabled')
+  })
+  // Delete row on delete button click
+  $(document).on('click', '.delete', function () {
     $(this).parents('tr').remove()
-		$('.add-new').removeAttr('disabled')
-    })
+    $('.add-new').removeAttr('disabled')
+  })
 })

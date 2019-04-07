@@ -37,10 +37,8 @@
             <div class="navbar-collapse collapse" id ="navbarCollapse">
                 <ul class ="nav navbar-nav">
                     <li><a href="../home">Home</a></li>
-                    <li><a href="../signup">Signup</a></li>
+                    <li><a href="../bids">Bids</a></li>
                     <li><a href="../login">Login</a></li>
-                    <li><a href="../search">Search</a></li>   
-                    <li><a href="../contact">Contact</a></li>  
                 </ul>
             </div>
         </div>
@@ -76,11 +74,11 @@
                                 <% for(var i=0; i < service.length; i++) { %>
                                 <tr>
                                   <!-- <th scope="row">1</th> -->
-                                  <td><%= service[i].sid %></td>
+                                  <td><%= service[i].service_id %></td>
                                   <td><%= service[i].petType %></td>
-                                  <td><%= service[i].startDate %></td>
-                                  <td><%= service[i].endDate %></td>
-                                  <td><%= service[i].minWage %></td>
+                                  <td><%= service[i].starting %></td>
+                                  <td><%= service[i].ending %></td>
+                                  <td><%= service[i].minwage %></td>
                                   <td> <button type="button" class="btn btn-info" ">Bids</button></td>
                                 </tr>
                                  <% } %>
