@@ -35,17 +35,17 @@
         transition: background-color .3s ease;
     }
     .table {
-        background-color: #fff;
+        background-color: lightblue;
         border-bottom: 1px solid #eee;
     }
     .table tbody tr:hover {
         cursor: pointer;
         background-color: #eee;
     }
-    .table tbody tr td {
-        padding: 10px;
-        vertical-align: middle;
-        border-top-color: #eee;
+    .table tbody td {
+        padding:5px;
+        border:1px solid black;
+        text-align:left;
     }
     .table tbody tr.selected td {
         background-color: #eee;
@@ -66,4 +66,10 @@
 
     .table-wrapper{
       color: white;  
+    }
+
+    #HeadRow{
+        background:rgb(78, 210, 228);
+        color:white;
+        font-weight:bold;
     }

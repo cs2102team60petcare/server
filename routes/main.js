@@ -32,7 +32,7 @@ router.get('/caretakerform', function (req, res, next) {
 })
 
 router.get('/serviceForm', function(req, res, next){
-  res.render('serviceform');
+  res.render('services');
 })
 
 

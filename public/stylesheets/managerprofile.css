@@ -81,3 +81,7 @@ table.table .form-control.error {
 table.table td .add {
     display: none;
 }
+
+h1{
+    color: aliceblue;
+}

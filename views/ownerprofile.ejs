@@ -14,10 +14,34 @@
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script src="javascripts/ownerprofile.js"></script>
+    <link href="stylesheets/styling.css" rel="stylesheet">
 
   </head>
   <body>
-        
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "/">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="../home">Home</a></li>
+                    <li><a href="../profile">Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
     <div class="container">
         <div class="row">
     
@@ -36,7 +60,8 @@
                             </div>
                             <div class="pull-left">
                                 <div class="add-btn">
-                                    <button type="button" class="btn btn-info add-new-bid"><i class="fa fa-plus"></i> Add New Bid</button>
+                                    <!--<button type="button" class="btn btn-info add-new-bid"><i class="fa fa-plus"></i> Add New Bid</button>-->
+                                    <a href="../services"><button type="button" class="btn btn-info" >Bid For New Service</button></a>
                                 </div>
                             </div>
                             <div class="table-container">
