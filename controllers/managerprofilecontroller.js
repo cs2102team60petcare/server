@@ -4,7 +4,7 @@ const queries = require('../database/queries')
 exports.updateRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var requestID = req.body.requestID
+    var requestID = req.body.Request_id
     var justification = req.body.Message
 
     try {

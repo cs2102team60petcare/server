@@ -33,50 +33,46 @@ passport.use('local', new LocalStrategy({
   })
 }))
 
+passport.serializeUser(function (user, done) {
+  console.log('Serializing')
+  done(null, user)
+})
+
 passport.deserializeUser(function (user, done) {
   (async () => {
     var id = user.user_id
     var email = user.email
     const client = await pool.connect()
     try {
-      console.log('Deserializing')
       var userData = {}
       await client.query('BEGIN')
-      console.log('Sending deserialziing user query')
       const user = await client.query(queries.deserializeUserQuery, [id])
-      console.log('Sending deserialziing manager query')
 
       const manager = await client.query(queries.deserializeManagerQuery, [email])
       Promise.all([user, manager]).then((data) => {
         var isUserData = data[0]
         var isManagerData = data[1]
-        
-        console.log('Doing promises')
-        console.log(isUserData)
-        console.log(isManagerData)
+
         if (isUserData.rows.length > 0) {
           var userID = isUserData.rows[0].user_id
           var userName = isUserData.rows[0].name
           var userEmail = isUserData.rows[0].email
-          user['user_id'] = userID
-          user['name'] = userName
-          user['user'] = true
-          user['email'] = userEmail
+          userData['user_id'] = userID
+          userData['name'] = userName
+          userData['user'] = true
+          userData['email'] = userEmail
 
           pool.query(queries.isOwnerOrCaretakerQuery, [userEmail], (err, data) => {
-            console.log('Checking if user is owner or caretaker')
             if (err) {
-              console.log('Error after query')
               console.log(err)
               return done(err)
             } else {
               var result = data.rows[0]
               if (result == 1) {
-                user['role'] = 'OWNER'
+                userData['role'] = 'OWNER'
               } else {
-                user['role'] = 'CARETAKER'
+                userData['role'] = 'CARETAKER'
               }
-              console.log('Is owner or caretaker query completed')
               done(null, userData)
             }
           })
@@ -104,8 +100,4 @@ passport.deserializeUser(function (user, done) {
   })().catch(e => console.error(e.stack))
 })
 
-passport.serializeUser(function (user, done) {
-  console.log('Serializing')
-  done(null, user)
-})
 module.exports = passport
