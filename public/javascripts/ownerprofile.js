@@ -42,7 +42,7 @@ $(document).ready(function () {
   })
 
   	// Send input row data on add button click
-  $(document).on('click', '.add.bid', function () {
+  $(document).on('click', '.update.bid', function () {
     var empty = false
     var date = new Date()
     var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
