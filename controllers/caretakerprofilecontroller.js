@@ -10,7 +10,7 @@ exports.acceptBid = function (req, res, next) {
       await client.query('BEGIN')
       await client.query(queries.acceptBidUpdate1, [serviceID])
       await client.query(queries.acceptBidUpdate2, [bidID])
-      await client.query(queries.acceptBidUpdate3, [serviceID])
+      await client.query(queries.acceptBidUpdate3, [bidID, serviceID])
       await client.query(queries.acceptBidUpdate4, [bidID])
       await client.query('COMMIT')
       res.json({ 'Updated': true })
@@ -51,18 +51,18 @@ exports.offerService = function (req, res, next) {
     console.log(req.user)
     const client = await pool.connect()
     var caretakerID = req.user.user_id
-    var starting = req.body.Starting
-    var ending = req.body.Ending
-    var minWage = req.body.Minwage
+    var starting = req.body.starting
+    var ending = req.body.ending
+    var minWage = req.body.minwage
 
     try {
       await client.query('BEGIN')
       await client.query(queries.offerServiceInsert, [caretakerID, starting, ending, minWage])
       await client.query('COMMIT')
-      res.json({ 'Update': true })
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
-      res.json({ 'Update': false })
+      res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
@@ -75,6 +75,7 @@ exports.deleteService = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var serviceID = req.body.Sid
+    console.log(serviceID)
     try {
       await client.query('BEGIN')
       await client.query(queries.removeServiceUpdate1, [serviceID])

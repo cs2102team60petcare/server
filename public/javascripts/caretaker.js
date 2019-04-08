@@ -47,7 +47,7 @@ $(document).ready(function () {
         type: 'POST',
         data: addServicesData,
         success: function (res) {
-          var result = res.updated
+          var result = res.Updated
           if (!result) {
             alert ('Service not added')
           } else {
@@ -75,7 +75,7 @@ $(document).ready(function () {
     var acceptBidData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      acceptBidData[$th.text()] = $(this).val()
+      acceptBidData[$th.text()] = $(this).text()
     })
 
     $.ajax({
@@ -83,7 +83,7 @@ $(document).ready(function () {
       type: 'PUT',
       data: acceptBidData,
       success: function (res) {
-        var result = res.updated
+        var result = res.Updated
         if (!result) {
           alert ('Bid is not accepted')
         } else {
@@ -101,14 +101,14 @@ $(document).ready(function () {
     var rejectBidData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      rejectBidData[$th.text()] = $(this).val()
+      rejectBidData[$th.text()] = $(this).text()
     })
     $.ajax({
       url: 'caretakerprofile/rejectBid',
       type: 'PUT',
       data: rejectBidData,
       success: function (res) {
-        var result = res.updated
+        var result = res.Updated
         if (!result) {
           alert ('Bid not rejected')
         } else {
@@ -125,25 +125,21 @@ $(document).ready(function () {
     var deletedServiceData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      deletedServiceData[$th.text()] = $(this).val()
+      console.log($(this).val())
+      deletedServiceData[$th.text()] = $(this).text()
     })
     row.remove()
-
-    var deleteRequest = $.delete('caretakerprofile/deleteService', deletedServiceData)
-    deleteRequest.done(function (res) {
-      console.log(res)
-    })
-
+    console.log(deletedServiceData)
     $.ajax({
       url: 'caretakerprofile/deleteService',
       type: 'DELETE',
       data: deletedServiceData,
       success: function (res) {
-        var result = res.updated
+        var result = res.Updated
         if (!result) {
           alert ('Service not deleted')
         } else {
-          alert ('Service deleted')
+          alert ('Deleted service')
         }
       }
     })
