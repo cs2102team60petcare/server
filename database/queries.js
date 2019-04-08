@@ -12,6 +12,7 @@ module.exports = {
   // WARNING: Use signUpUserInsert in a Transaction with one of the next two
   // TODO @ JJ
   signupUserInsert: 'INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+  
   signupOwnerInsert: 'INSERT INTO owners (user_id) VALUES ($1);',
 
   signupCareTakerInsert: 'INSERT INTO caretakers (user_id) VALUES ($1);',

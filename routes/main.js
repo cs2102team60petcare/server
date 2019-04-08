@@ -28,11 +28,9 @@ router.get('/profile', utilities.loggedInOnly, function (req, res, next) {
 })
 
 router.get('/redirectToCorrectProfile', function (req, res, next) {
-  console.log(req.user)
   var isUser = req.user.user
   if (isUser) {
     var role = req.user.role
-    console.log(role)
     if (role == 'CARETAKER') {
       console.log('Is caretaker')
       res.redirect('/caretakerprofile')

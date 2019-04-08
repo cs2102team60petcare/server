@@ -21,19 +21,20 @@ exports.signUpCareTaker = function (req, res, next) {
       if (err2) { next(err2) }
       (async () => {
         const client = await pool.connect()
-
+        console.log(petType)
         try {
           await client.query('BEGIN')
           const { rows } = await client.query(queries.signupUserInsert, [name, email, number, address, hash])
-          const insertCareTakerValues = [rows[0].user_id, petType]
-          await client.query(queries.signupCareTakerInsert, insertCareTakerValues)
+          var userID = rows[0].user_id
+          await client.query(queries.signupCareTakerInsert, [userID])
+          await client.query(queries.careTakerLikesInsert, [userID, petType])
           await client.query('COMMIT')
         } catch (e) {
           await client.query('ROLLBACK')
           throw e
         } finally {
           client.release()
-          res.redirect('../bids')
+          res.redirect('../login')
         }
       })().catch(e => console.error(e.stack))
     })
