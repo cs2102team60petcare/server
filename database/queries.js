@@ -3,7 +3,7 @@ module.exports = {
     loginQuery: "SELECT user_id, name , email, password FROM users WHERE email=$1;", //used for login
     deserializeUserQuery: "SELECT user_id, name, email  FROM users WHERE user_id=$1;", //used for sessions
     deserializeManagerQuery: "select * from managers where email=$1;",
-    isOwnerOrCaretakerQuery:"SELECT 1 from OWNERS where email=$1 UNION SELECT 2 from CARETAKERS where email=$1;",
+    isOwnerOrCaretakerQuery:"SELECT 1 from OWNERS natural join USERS where email=$1 UNION SELECT 2 from CARETAKERS natural join USERS where email=$1;",
 
     userExistsQuery: "SELECT user_id FROM users WHERE email=$1;", //todo: @ jj used as check before signup 
 
