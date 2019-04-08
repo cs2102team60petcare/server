@@ -27,17 +27,23 @@ router.get('/profile', utilities.loggedInOnly, function (req, res, next) {
   res.render('profile')
 })
 
-router.get('/redirectToCorrectProfile' , function (req, res, next) {
+router.get('/redirectToCorrectProfile', function (req, res, next) {
   console.log(req.user)
   var isUser = req.user.user
   if (isUser) {
     var role = req.user.role
+    console.log(role)
     if (role == 'CARETAKER') {
+      console.log('Is caretaker')
       res.redirect('/caretakerprofile')
-    } else {
+    } else if (role == 'OWNER') {
+      console.log('Is owner')
       res.redirect('/ownerprofile')
+    } else {
+      res.redirect('/login')
     }
   } else {
+    console.log('Is manager')
     res.redirect('/managerprofile')
   }
 })

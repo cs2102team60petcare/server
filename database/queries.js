@@ -52,8 +52,8 @@ module.exports = {
 
   /* BIDS RELATED QUERIES */
   seeBidsQuery: 'SELECT * FROM Bids B NATURAL JOIN Services S ' +
-        'WHERE S.service_id=$1 ORDER BY B.money desc;',
-
+        'WHERE S.service_id=$1 ORDER BY B.money desc;', 
+  getAllBids: 'SELECT * FROM Bids',      
   // Triggers placingBid
   placeBidInsert: 'INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);',
 

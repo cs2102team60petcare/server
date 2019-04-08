@@ -63,7 +63,8 @@ passport.deserializeUser(function (user, done) {
               console.log(err)
               return done(err)
             } else {
-              var result = data.rows[0]
+              var result = data.rows[0]['?column?']
+              console.log(result)
               if (result == 1) {
                 userData['role'] = 'OWNER'
               } else {

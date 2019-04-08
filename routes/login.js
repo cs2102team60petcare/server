@@ -3,8 +3,8 @@ var router = express.Router()
 var utilities = require('../controllers/utilities')
 var loginController = require('../controllers/loginController')
 
-router.get('/', utilities.notLoggedInOnly, loginController.getLoginPage)
+router.get('/', loginController.getLoginPage)
 
-router.post('/', utilities.notLoggedInOnly, loginController.login)
+router.post('/', loginController.login)
 
 module.exports = router

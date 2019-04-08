@@ -65,14 +65,15 @@ exports.signUpOwner = function (req, res, next) {
           console.log(rows)
           const insertOwnerValues = [rows[0].user_id]
           await client.query(queries.signupOwnerInsert, insertOwnerValues)
-
+          res.redirect('../ownerprofile')
           await client.query('COMMIT')
         } catch (e) {
           await client.query('ROLLBACK')
+          res.redirect('../signup')
           throw e
         } finally {
           client.release()
-          res.redirect('../services')
+
         }
       })().catch(e => setImmediate(() => { throw e }))
     })
