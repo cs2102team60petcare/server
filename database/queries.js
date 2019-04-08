@@ -133,7 +133,7 @@ module.exports = {
   // Do inside a transaction
   // TODO @ JJ
   requestSolvedUpdate1: 'UPDATE Requests SET status=2 where request_id=$1;',
-  reqestSolvedUpdate2: 'UPDATE Handles SET justification=$1 where request_id=$2;',
+  requestSolvedUpdate2: 'UPDATE Handles SET justification=$1 where request_id=$2;',
 
   // ----------------------- TESTED UNTIL HERE --------------------------------//
 

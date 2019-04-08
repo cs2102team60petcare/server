@@ -4,6 +4,7 @@ var managerprofileController = require('../controllers/managerprofilecontroller'
 
 router.put('/updateRequest', managerprofileController.updateRequest)
 router.put('/selfAssignRequest', managerprofileController.selfAssignRequest)
+router.put('/searchRequest', managerprofileController.searchRequest)
 router.get('/', managerprofileController.getManagerProfile)
 
 module.exports = router
