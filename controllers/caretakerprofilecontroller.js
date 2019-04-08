@@ -69,6 +69,7 @@ exports.deleteService = function (req, res, next) {
 exports.getCareTakerProfile = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
+    console.log(req.user)
     var userID = req.user.user_id
     try {
       await client.query('BEGIN')

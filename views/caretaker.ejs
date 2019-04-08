@@ -85,6 +85,7 @@
                                                 <th >Status</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
+                                                <th >Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -98,6 +99,10 @@
                                                     <td><%=bids[i].status       %></td>
                                                     <td><%=bids[i].starting     %></td>
                                                     <td><%=bids[i].ending       %></td>
+                                                    <td>
+                                                        <button type="button" class="btn accept-bid">Accept</button>
+                                                        <button type="button" class="btn reject-bid">Reject</button>                
+                                                    </td>
                                                 </tr>
                                             <% } %>    
                                         </tbody>
@@ -121,7 +126,7 @@
                             <div class="panel-body">
                                 <div class="pull-left">
                                         <div class="add-btn">
-                                            <button type="button" class="btn btn-info add-new-pet"><i class="fa fa-plus"></i> Add Service</button>
+                                            <button type="button" class="btn btn-info add-new-service"><i class="fa fa-plus"></i> Add Service</button>
                                         </div>
                                     </div>
     
@@ -135,6 +140,7 @@
                                                 <th >Status</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
+                                                <th >Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -146,6 +152,11 @@
                                                     <td><%=services[i].status           %></td>
                                                     <td><%=services[i].starting         %></td>
                                                     <td><%=services[i].ending           %></td>
+                                                    <td>
+                                                        <button type="button" class="btn accept-bid">Accept</button>
+                                                        <button type="button" class="btn reject-bid">Reject</button>                
+                                                    </td>
+
                                                 </tr>
                                             <% } %>    
                                         </tbody>
@@ -176,7 +187,7 @@
                                                 <th >OwnerName</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
-                                                                        </tr>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             <% for(var i = 0; i<tasksHistory.length; i++) { %>
