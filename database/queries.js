@@ -145,6 +145,4 @@ module.exports = {
     searchAvailableServicesCaretaker: " and U.name=$",
     searchAvailableServiesPetType1: " and $",
     searchAvailableServicePetType2: "= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)",
-
-    typeUserQuery: "SELECT 1 from Owners where user_id=$1 UNION SELECT 2 from Caretaker where user_id=$1 UNION SELECT 3 from Managers where manager_id=$1;"
 }
