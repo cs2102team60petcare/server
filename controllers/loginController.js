@@ -13,13 +13,8 @@ exports.login = function (req, res, next) {
     }
     req.login(user, function (err) {
       if (err) return next(err)
-      console.log('loggin in')
-      console.log(user)
       return res.redirect(url.format({
-        pathname: '/home',
-        query: {
-          'username': user.name
-        }
+        pathname: '/redirectToCorrectProfile'
       }))
     })
   })(req, res, next)

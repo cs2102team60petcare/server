@@ -46,8 +46,9 @@ module.exports = {
   offerServiceInsert: 'INSERT INTO services (caretaker_id, starting, ending, minWage) VALUES ($1, $2, $3, $4);',
 
   serviceHistoryQuery: 'SELECT S.service_id, T.task_id, S.status, S.starting, S.ending, T.status, S.minWage, B.money, B.owner_id, B.pet_id ' +
-        'FROM Services S LEFT OUTER JOIN (Bids B join Tasks T on B.bid_id=T.bid_id) on S.service_id=$1 and (B.service_id=S.service_id) ' +
+        'FROM Services S LEFT OUTER JOIN (Bids B join Tasks T on B.bid_id=T.bid_id) on S.caretaker_id=$1 and (B.service_id=S.service_id) ' +
         'ORDER BY (starting) OFFSET $2 LIMIT $3;',
+  getMyAvailableServicesQuery: 'SELECT * FROM SERVICES WHERE caretaker_id=$1 and status=1;',
 
   /* BIDS RELATED QUERIES */
   seeBidsQuery: 'SELECT * FROM Bids B NATURAL JOIN Services S ' +
@@ -130,7 +131,7 @@ module.exports = {
   // Do inside a transaction
   // TODO @ JJ
   requestSolvedUpdate1: 'UPDATE Requests SET status=2 where request_id=$1;',
-  reqestSolvedUpdate2: 'UPDATE Handles SET justification=$1 where request_id=$2;',
+  requestSolvedUpdate2: 'UPDATE Handles SET justification=$1 where request_id=$2;',
 
   // ----------------------- TESTED UNTIL HERE --------------------------------//
 
@@ -143,7 +144,5 @@ module.exports = {
   searchAvailableServicesEnding: ' and S.ending<=$',
   searchAvailableServicesCaretaker: ' and U.name=$',
   searchAvailableServiesPetType1: ' and $',
-  searchAvailableServicePetType2: '= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)',
-
-  typeUserQuery: 'SELECT 1 from Owners where user_id=$1 UNION SELECT 2 from Caretaker where user_id=$1 UNION SELECT 3 from Managers where manager_id=$1;'
+  searchAvailableServicePetType2: '= ANY(SELECT type FROM Likes L2 where L2.caretaker_id=S.caretaker_id)'
 }

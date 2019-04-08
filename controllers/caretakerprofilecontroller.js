@@ -13,19 +13,42 @@ exports.acceptBid = function (req, res, next) {
       await client.query(queries.acceptBidUpdate3, [serviceID])
       await client.query(queries.acceptBidUpdate4, [bidID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
-      res.status(401).json({ 'Updated': false })
+      res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.status(401).json({ 'Updated': true })
+
     }
   })().catch(e => console.error(e.stack))
 }
 
+exports.rejectBid = function (req, res, next) {
+  (async () => {
+    const client = await pool.connect()
+    var bidID = req.body.Bid
+    try {
+      await client.query('BEGIN')
+      await client.query(queries.rejectBidUpdate, [bidID])
+      await client.query('COMMIT')
+      res.json({ 'Updated': true })
+    } catch (e) {
+      await client.query('ROLLBACK')
+      res.json({ 'Updated': false })
+      throw e
+    } finally {
+      client.release()
+
+    }
+  })().catch(e => console.error(e.stack))
+
+}
 exports.offerService = function (req, res, next) {
   (async () => {
+    console.log(req.body)
+    console.log(req.user)
     const client = await pool.connect()
     var caretakerID = req.user.user_id
     var starting = req.body.Starting
@@ -36,13 +59,14 @@ exports.offerService = function (req, res, next) {
       await client.query('BEGIN')
       await client.query(queries.offerServiceInsert, [caretakerID, starting, ending, minWage])
       await client.query('COMMIT')
+      res.json({ 'Update': true })
     } catch (e) {
       await client.query('ROLLBACK')
-      res.status(401).json({ 'Updated': false })
+      res.json({ 'Update': false })
       throw e
     } finally {
       client.release()
-      res.status(401).json({ 'Updated': true })
+
     }
   })().catch(e => console.error(e.stack))
 }
@@ -56,13 +80,14 @@ exports.deleteService = function (req, res, next) {
       await client.query(queries.removeServiceUpdate1, [serviceID])
       await client.query(queries.removeServiceUpdate2, [serviceID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
-      res.status(401).json({ 'Updated': false })
+      res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.status(401).json({ 'Updated': true })
+
     }
   })().catch(e => console.error(e.stack))
 }
@@ -75,7 +100,7 @@ exports.getCareTakerProfile = function (req, res, next) {
       await client.query('BEGIN')
       const upcomingTasks = await client.query(queries.getMyUpcomingTasksQuery, [userID])
       const tasksHistory = await client.query(queries.getMyTaskHistoryQuery, [userID, 0, 5])
-      const services = await client.query(queries.getMyServicesQuery, [userID])
+      const services = await client.query(queries.getMyAvailableServicesQuery, [userID])
       Promise.all([upcomingTasks, tasksHistory, services]).then((data) => {
         var upcomingTasksData = data[0]
         var tasksHistoryData = data[1]

@@ -21,11 +21,8 @@ passport.use('local', new LocalStrategy({
       bcrypt.compare(password, storedHash, function (err, res) {
         if (err) done(err)
         if (res == true) {
-          console.log('redirect to home page')
-          // REDIRECT to home page with appropriate header change @teojunjie
           done(null, user)
         } else {
-          console.log('incorrect username or password')
           done(null, false, { message: 'Incorrect username or password' })
         }
       })
@@ -34,7 +31,6 @@ passport.use('local', new LocalStrategy({
 }))
 
 passport.serializeUser(function (user, done) {
-  console.log('Serializing')
   done(null, user)
 })
 

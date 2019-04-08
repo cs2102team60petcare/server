@@ -9,11 +9,13 @@
     <title>CareTaker Profile</title>
     <!-- Bootstrap -->
     <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
     <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
-    <link href="stylesheets/ownerprofilestyling.css" rel="stylesheet">
-    <script src="javascripts/ownerprofile.js"></script>
+    <link href="stylesheets/caretakerprofilestyling.css" rel="stylesheet">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/caretaker.js"></script>
 
   </head>
   <body>
@@ -131,7 +133,7 @@
                                     </div>
     
                                 <div class="table-container">
-                                    <table class="table table-bids">
+                                    <table class="table table-services">
                                         <thead>
                                             <tr>
                                                 <th >Sid</th>
@@ -153,9 +155,11 @@
                                                     <td><%=services[i].starting         %></td>
                                                     <td><%=services[i].ending           %></td>
                                                     <td>
-                                                        <button type="button" class="btn accept-bid">Accept</button>
-                                                        <button type="button" class="btn reject-bid">Reject</button>                
-                                                    </td>
+                                                            <a class="add service" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                            <a class="edit service" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                                            <a class="update service" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>
+                                                            <a class="delete service" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                                        </td>
 
                                                 </tr>
                                             <% } %>    
@@ -210,8 +214,8 @@
             </div>
         </div>
     
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 </html>
