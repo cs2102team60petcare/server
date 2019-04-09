@@ -50,14 +50,12 @@ exports.getManagerProfile = function (req, res, next) {
     const client = await pool.connect()
     var userID = req.user.user_id
     try {
-      await client.query('BEGIN')
       const requests = await client.query(queries.getRequestsAssignedToMe, [userID, 0, 5])
       const unassignedRequests = await client.query(queries.getUnassignedRequests)
 
       Promise.all([requests, unassignedRequests]).then((data) => {
         var requestsData = data[0]
         var unassignedRequestsData = data[1]
-
         res.render('managerprofile', {
           requests: requestsData.rows,
           unassignedRequests: unassignedRequestsData.rows
@@ -66,11 +64,9 @@ exports.getManagerProfile = function (req, res, next) {
         console.log(err)
         res.status(500)
       })
-      await client.query('COMMIT')
     } catch (e) {
       // @TODO
       // If got error , it means that user is not a manager, should be redirected to somwhere else
-      await client.query('ROLLBACK')
       res.redirect('./login')
       throw e
     } finally {

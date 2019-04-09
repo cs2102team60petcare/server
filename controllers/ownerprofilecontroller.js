@@ -83,11 +83,8 @@ exports.updatePet = function (req, res, next) {
     var newPetName = req.body.Name
     var newPetBiography = req.body.Information
     try {
-      await client.query('BEGIN')
       await client.query(queries.petProfileUpdate, [newPetName, newPetBiography, petID])
-      await client.query('COMMIT')
     } catch (e) {
-      await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
@@ -106,12 +103,10 @@ exports.getOwnerProfile = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var userID = req.user.user_id
-    console.log(userID)
     try {
-      await client.query('BEGIN')
       const pets = await client.query(queries.getMyPetsQuery, [userID])
       const bids = await client.query(queries.getAllBids)
-      const tasks = await client.query(queries.getMyTaskHistoryQuery, [userID, 0, 5])
+      const tasks = await client.query(queries.getMyTaskHistoryAsOwnerQuery, [userID])
 
       Promise.all([pets, bids, tasks]).then((data) => {
         var petsData = data[0]

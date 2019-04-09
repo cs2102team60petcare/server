@@ -30,12 +30,9 @@ exports.rejectBid = function (req, res, next) {
     const client = await pool.connect()
     var bidID = req.body.Bid
     try {
-      await client.query('BEGIN')
       await client.query(queries.rejectBidUpdate, [bidID])
-      await client.query('COMMIT')
       res.json({ 'Updated': true })
     } catch (e) {
-      await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
