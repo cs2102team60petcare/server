@@ -4,6 +4,7 @@ const queries = require('../database/queries')
 exports.addBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
+    console.log(req.body)
     var starting = req.body.starting
     var ending = req.body.ending
     var money = req.body.money
@@ -14,16 +15,15 @@ exports.addBid = function (req, res, next) {
       await client.query('BEGIN')
       await client.query(queries.placeBidInsert, [starting, ending, money, ownerID, petID, serviceID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.json({ 'Updated': true })
     }
   })().catch(e => console.log(e.stack))
-  res.json({ 'Updated': true })
 }
 
 exports.deleteBid = function (req, res, next) {
@@ -40,19 +40,21 @@ exports.deleteBid = function (req, res, next) {
       await client.query(queries.retractBidUpdate3, [serviceID])
       await client.query(queries.retractBidUpdate4, [bidID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.json({ 'Updated': true })
     }
   })().catch(e => console.error(e.stack))
+  
 }
 
 exports.addPet = function (req, res, next) {
   (async () => {
+    
     const client = await pool.connect()
     var name = req.body.pet_name
     var biography = req.body.pet_information
@@ -71,6 +73,7 @@ exports.addPet = function (req, res, next) {
       throw e
     } finally {
       client.release()
+
       res.json({ 'Updated': true })
     }
   })().catch(e => console.error(e.stack))

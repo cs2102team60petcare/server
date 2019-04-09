@@ -42,9 +42,10 @@ $(document).ready(function () {
   })
 
   	// Send input row data on add button click
-  $(document).on('click', '.add.bid', function () {
+  $(document).on('click', '.update.bid', function () {
     var empty = false
     var date = new Date()
+    var numDays = 10
     var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
     var input = $(this).parents('tr').find('input[type="text"]')
     var addBidData = {}
@@ -62,15 +63,27 @@ $(document).ready(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
         $(this).parent('td').html(val)
-        addBidData['"' + text + '"'] = val
+        addBidData[ text ] = val
       })
       addBidData['starting'] = date.toLocaleDateString()
       addBidData['ending'] = bidExpiryDateandTime.toLocaleDateString()
       addBidData['status'] = 1 // 0 = rejected , 1 = Pending, 2= Success
-      var postRequest = $.post('ownerprofile/addBid', addBidData)
-      postRequest.done(function (res) {
-        console.log(res)
-      })
+      console.log('clicking add button')
+      $.ajax({
+        type: "POST",
+        url: 'ownerprofile/addBid',
+        data: addBidData,
+        success: function(res){
+          var result = res.Updated
+          console.log(result)
+          if (!result){
+            alert('Bid not added')
+          }
+          else {
+            alert('Bid added')
+          }
+        }
+      });
 
       $(this).parents('tr').find('.update, .edit').toggle()
       $('.add-new-bid').removeAttr('disabled')
@@ -78,20 +91,37 @@ $(document).ready(function () {
   })
 
   // Delete row on delete button click
-  $(document).on('click', '.delete', function () {
+  $(document).on('click', '.delete.bid', function () {
     var row = $(this).parents('tr')
     var rowData = row.find('td:not(:last-child)')
     var deletedBidData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      deletedBidData[$th.text()] = $(this).val()
+      deletedBidData[$th.text()] = $(this).text()
     })
     row.remove()
     $('.add-new-bid').removeAttr('disabled')
-    var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
+
+    $.ajax({
+      type: "DELETE",
+      url: 'ownerprofile/deleteBid',
+      data: deletedBidData,
+      success: function(res){
+        var result = res.Updated
+        console.log(result)
+        if (!result){
+          alert('Bid not deleted')
+        }
+        else {
+          alert('Bid deleted')
+        }
+      }
+    })
+
+    /*var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
     deleteRequest.done(function (res) {
       console.log(res)
-    })
+    })*/
     $('.add-new-bid').removeAttr('disabled')
   })
 
@@ -144,10 +174,25 @@ $(document).ready(function () {
         $(this).parent('td').html(val)
         addPetData[text] = val
       })
-      var postRequest = $.post('ownerprofile/addPet', addPetData)
+      $.ajax({
+        type: "POST",
+        url: 'ownerprofile/addPet',
+        data: addPetData,
+        success: function(res){
+          var result = res.Updated
+          console.log(result)
+          if (!result){
+            alert('Pet not added')
+          }
+          else {
+            alert('Pet added')
+          }
+        }
+      });
+      /*var postRequest = $.post('ownerprofile/addPet', addPetData)
       postRequest.done(function (res) {
         console.log(res)
-      })
+      })*/
 
       $(this).parents('tr').find('.update, .edit').toggle()
       $('.add-new-pet').removeAttr('disabled')
@@ -207,10 +252,27 @@ $(document).ready(function () {
     })
     row.remove()
     $('.add-new-pet').removeAttr('disabled')
-    var deleteRequest = $.delete('ownerprofile/deletePet', deletedPetData)
+
+    $.ajax({
+      type: "DELETE",
+      url: 'ownerprofile/deletePet',
+      data: deletedPetData,
+      success: function(res){
+        var result = res.Updated
+        console.log(result)
+        if (!result){
+          alert('Pet not deleted')
+        }
+        else {
+          alert('Pet deleted')
+        }
+      }
+    })
+
+    /*var deleteRequest = $.delete('ownerprofile/deletePet', deletedPetData)
     deleteRequest.done(function (res) {
       console.log(res)
-    })
+    })*/
   })
 // =========================== Pets functions =================================== //
 })
