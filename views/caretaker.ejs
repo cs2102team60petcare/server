@@ -32,8 +32,8 @@
                                     <table class="table table-bids">
                                         <thead>
                                             <tr>
-                                                <th >Tid</th>
-                                                <th >PetName</th>
+                                                <th >Task_id</th>
+                                                <th >Type</th>
                                                 <th >OwnerName</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
@@ -44,7 +44,7 @@
                                             <% for(var i = 0; i<upcomingTasks.length; i++) { %>
                                                 <tr>
                                                     <td><%=upcomingTasks[i].task_id   %></td>
-                                                    <td><%=upcomingTasks[i].petname   %></td>
+                                                    <td><%=upcomingTasks[i].type   %></td>
                                                     <td><%=upcomingTasks[i].ownername %></td>
                                                     <td><%=upcomingTasks[i].starting  %></td>
                                                     <td><%=upcomingTasks[i].ending    %></td>
@@ -79,7 +79,6 @@
                                                 <th >Oid</th>
                                                 <th >Sid</th>
                                                 <th >Money</th>
-                                                <th >Status</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
                                                 <th >Actions</th>
@@ -88,12 +87,11 @@
                                         <tbody>
                                             <% for(var i = 0; i<bids.length; i++) { %>
                                                 <tr>
-                                                    <td><%=bids[i].bids_id      %></td>
+                                                    <td><%=bids[i].bid_id       %></td>
                                                     <td><%=bids[i].pet_id       %></td>
                                                     <td><%=bids[i].owner_id     %></td>
                                                     <td><%=bids[i].service_id   %></td>
                                                     <td><%=bids[i].money        %></td>
-                                                    <td><%=bids[i].status       %></td>
                                                     <td><%=bids[i].starting     %></td>
                                                     <td><%=bids[i].ending       %></td>
                                                     <td>
@@ -181,8 +179,8 @@
                                     <table class="table table-bids">
                                         <thead>
                                             <tr>
-                                                <th >Tid</th>
-                                                <th >PetName</th>
+                                                <th >Task_id</th>
+                                                <th >Type</th>
                                                 <th >OwnerName</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
@@ -193,7 +191,7 @@
                                             <% for(var i = 0; i<tasksHistory.length; i++) { %>
                                                     <tr>
                                                         <td><%= tasksHistory[i].task_id  %></td>
-                                                        <td><%= tasksHistory[i].petname  %></td>
+                                                        <td><%= tasksHistory[i].type  %></td>
                                                         <td><%= tasksHistory[i].ownername%></td>
                                                         <td><%= tasksHistory[i].starting %></td>
                                                         <td><%= tasksHistory[i].ending   %></td>

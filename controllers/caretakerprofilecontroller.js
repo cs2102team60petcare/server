@@ -98,10 +98,10 @@ exports.getCareTakerProfile = function (req, res, next) {
     console.log(req.user)
     var userID = req.user.user_id
     try {
-      await client.query('BEGIN')
       const upcomingTasks = await client.query(queries.getMyUpcomingTasksQuery, [userID])
-      const tasksHistory = await client.query(queries.getMyTaskHistoryQuery, [userID, 0, 5])
+      const tasksHistory = await client.query(queries.getMyTaskHistoryQuery, [userID])
       const services = await client.query(queries.getMyAvailableServicesQuery, [userID])
+      const pendingBids = await client.query(queries.getPendingBidsForMeQuery, [userID])
       Promise.all([upcomingTasks, tasksHistory, services]).then((data) => {
         var upcomingTasksData = data[0]
         var tasksHistoryData = data[1]
@@ -111,26 +111,13 @@ exports.getCareTakerProfile = function (req, res, next) {
           upcomingTasks: upcomingTasksData.rows,
           tasksHistory: tasksHistoryData.rows,
           services: servicesData.rows,
-          bids: [
-            {
-              bids_id: 1,
-              pet_id: 2,
-              owner_id: 3,
-              service_id: 2,
-              money: 20,
-              status: 'Successful',
-              starting: '12/3/18',
-              ending: '9/2/20'
-            }
-          ]
+          bids: pendingBids.rows
         })
       }).catch(err => {
         console.log(err)
         res.status(500)
       })
-      await client.query('COMMIT')
     } catch (e) {
-      await client.query('ROLLBACK')
       res.redirect('./login')
       throw e
     } finally {
