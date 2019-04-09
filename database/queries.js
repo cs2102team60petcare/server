@@ -34,9 +34,7 @@ module.exports = {
 
   petProfileUpdate: 'UPDATE Pets SET name=$1, biography=$2 WHERE pet_id=$3;',
 
-  getMyUpcomingTasksQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T NATURAL JOIN Services S NATURAL JOIN Caretakers C ' +
-        'JOIN Bids B on (T.bid_id=B.bid_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) ' +
-        'WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;',
+  getMyUpcomingTasksQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T JOIN Bids B on (T.bid_id=B.bid_id) JOIN Services S on (B.service_id=S.service_id) NATURAL JOIN Caretakers C NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;',
   getMyTaskHistoryQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=2 ORDER BY S.starting desc;',
 
   getMyPetsQuery: 'SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;',
