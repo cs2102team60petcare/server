@@ -67,7 +67,7 @@ $(document).ready(function () {
     var money = graphData[i].money
 
     var graphPoint = {
-      x: month,
+      label: month,
       y: money
     }
 
@@ -82,15 +82,14 @@ $(document).ready(function () {
   for (var dataKey in xData) {
     if (xData.hasOwnProperty(dataKey)) {
       var dataValue = xData[dataKey]
-      console.log(dataValue)
+
       var dataColumn = {
         type: 'column',
-        dataPoints: [dataValue]
+        dataPoints: dataValue
       }
       multipleData.push(dataColumn)
     }
   }
-  console.log(multipleData)
 
   var options = {
     title: {
