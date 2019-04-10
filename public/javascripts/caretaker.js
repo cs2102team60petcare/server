@@ -2,8 +2,6 @@ $(document).ready(function () {
   // =================== Services =========================== //
   $('[data-toggle="tooltip"]').tooltip()
   var servicesActions = '<a class="add service" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
-  '<a class="edit service" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
-  '<a class="update service" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>' +
   '<a class="delete service" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>'
 
   $('.add-new-service').click(function () {
@@ -18,7 +16,7 @@ $(document).ready(function () {
       '<td>' + servicesActions + '</td>' +
         '</tr>'
     $('.table.table-services').append(row)
-    $('.table.table-services tbody tr').eq(index + 1).find('.edit .add').toggle()
+    $('.table.table-services tbody tr').eq(index + 1).find('.add.service').toggle()
   })
 
   // Add a service and send service data to server
@@ -77,6 +75,8 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
       acceptBidData[$th.text()] = $(this).text()
     })
+    var rejectBidBtn = $(this).parents('td').find('.reject-bid')
+    rejectBidBtn.attr('disabled', 'disabled')
 
     $.ajax({
       url: 'caretakerprofile/acceptBid',
@@ -86,8 +86,10 @@ $(document).ready(function () {
         var result = res.Updated
         if (!result) {
           alert ('Bid is not accepted')
+          rejectBidBtn.removeAttr('disabled')
         } else {
           alert ('Accepted bid')
+
         }
       }
     })

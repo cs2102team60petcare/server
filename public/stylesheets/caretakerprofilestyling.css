@@ -50,7 +50,9 @@
     }
 
     
-
+    .add.service {
+        display: none
+    }
 
     .update-service {
         display: none;
