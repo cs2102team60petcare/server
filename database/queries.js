@@ -107,11 +107,7 @@ module.exports = {
   // Complex Query 1
   // Gives you the average of (average made per hour) grouped by month, for each caretaker
   // on the manager dashboard
-  perHourAverageByMonthQuery: "select S.caretaker_id, date_trunc('month', B.starting), " +
-        'coalesce(avg(money/((EXTRACT(EPOCH FROM B.ending) - EXTRACT(EPOCH FROM B.starting))/3600.0)), 0) ' +
-        'from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) ' +
-        "group by S.caretaker_id, date_trunc('month', B.starting) " +
-        "order by date_trunc('month', B.starting) desc;",
+  perHourAverageByMonthQuery: "select S.caretaker_id, extract(month from B.starting)::integer as month, coalesce(avg(money/((EXTRACT(EPOCH FROM B.ending) - EXTRACT(EPOCH FROM B.starting))/3600.0)), 0) as money from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) group by S.caretaker_id, extract(month from B.starting) order by extract(month from B.starting);",
 
   // Complex Query 2
   // Shows the caretaker the cumulative earning (by day)
