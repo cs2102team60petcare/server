@@ -134,6 +134,7 @@ exports.getCareTakerProfile = function (req, res, next) {
         var pendingBidsData = data[3]
         var reviewsData = data[4]
         var graphData = data[5]
+        console.log(graphData)
 
         res.render('caretaker', {
           upcomingTasks: upcomingTasksData.rows,

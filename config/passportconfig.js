@@ -14,22 +14,20 @@ passport.use('local', new LocalStrategy({
     if (err) {
       return done(err)
     } else if (data.rows.length == 0) {
-        pool.query(queries.loginManagerQuery, [email], (err, manData) => {
-          if (err) {return done(err)}
-          else if (manData.rows.length == 0) { done(null, false, {message: 'Incorrect username or password'})}
-          else {
-            var user = manData.rows[0]
-            var storedHash = user.password.toString().trim()
-            bcrypt.compare(password, storedHash, function (err, res) {
+      pool.query(queries.loginManagerQuery, [email], (err, manData) => {
+        if (err) { return done(err) } else if (manData.rows.length == 0) { done(null, false, { message: 'Incorrect username or password' }) } else {
+          var user = manData.rows[0]
+          var storedHash = user.password.toString().trim()
+          bcrypt.compare(password, storedHash, function (err, res) {
             if (err) done(err)
             if (res == true) {
               done(null, user)
             } else {
               done(null, false, { message: 'Incorrect username or password' })
             }
-            })
-          }
-        })
+          })
+        }
+      })
     } else {
       var user = data.rows[0]
       var storedHash = user.password.toString().trim()

@@ -38,11 +38,10 @@ $(document).ready(function () {
     $(this).attr('disabled', 'disabled')
     var index = $('.table.table-services tbody tr:last-child').index()
     var row = '<tr>' +
-            '<td></td>' + '<td></td>' +
-            '<td><input type="text" class = "form-control" name="minwage" value = ""></td>' +
             '<td></td>' +
-            '<td><input type="text" class = "form-control" name="starting" value = ""></td>' +
-            '<td><input type="text" class = "form-control" name="ending" value = ""></td>' +
+            '<td><input type="text" class = "form-control" name="minwage" value = ""></td>' +
+            '<td><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
+            '<td><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
       '<td>' + servicesActions + '</td>' +
         '</tr>'
     $('.table.table-services').append(row)
@@ -180,10 +179,11 @@ $(document).ready(function () {
 
   var xData = []
   for (var i = 0; i < graphData.length; i++) {
-    var year = graphData[i].date.year
-    var month = graphData[i].date.month
-    var day = graphData[i].date.day
-    var sum = graphData[i].sum
+    var year = graphData[i].year
+    var month = graphData[i].month
+    var day = graphData[i].day
+    var sum = parseInt(graphData[i].sum)
+
     var graphPoint = {
       x: new Date(year, month, day),
       y: sum
@@ -198,12 +198,12 @@ $(document).ready(function () {
       text: 'Cumulative Income'
     },
     axisX: {
-      valueFormatString: 'DD MMM'
+      valueFormatString: 'DD MM'
     },
     axisY: {
       title: 'Cash',
-      prefix: '$',
-      minimum: 30
+      minimum: 0,
+      prefix: '$'
     },
     toolTip: {
       shared: true
@@ -220,10 +220,10 @@ $(document).ready(function () {
       showInLegend: true,
       name: 'Cumulative Income',
       markerType: 'square',
-      xValueFormatString: 'DD MMM, YYYY',
+      xValueFormatString: 'DD MM, YYYY',
       color: '#F08080',
       yValueFormatString: '#,##0K',
-      dataPoints: graphData
+      dataPoints: xData
     }]
   }
   $('#chartContainer').CanvasJSChart(options)
