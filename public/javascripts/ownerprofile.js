@@ -35,11 +35,55 @@ $(document).ready(function() {
             '<td>Pending</td>' +
             '<td>' + date.toLocaleDateString() + '</td>' +
             '<td>' + bidExpiryDateandTime.toLocaleDateString() + '</td>' +
-            '<td>' + actions + '</td>' +
-            '</tr>'
-        $('.table.table-bids').append(row)
-        $('.table.table-bids tbody tr').eq(index + 1).find('.update, .edit').toggle()
+			'<td>' + actions + '</td>' +
+        '</tr>'
+    	$('.table.table-bids').append(row)
+    $('.table.table-bids tbody tr').eq(index + 1).find('.update, .edit').toggle()
+  })
+
+  	// Send input row data on add button click
+  $(document).on('click', '.update.bid', function () {
+    var empty = false
+    var date = new Date()
+    var numDays = 10
+    var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
+    var input = $(this).parents('tr').find('input[type="text"]')
+    var addBidData = {}
+    input.each(function () {
+      if (!$(this).val()) {
+        $(this).addClass('error')
+        empty = true
+      } else {
+        $(this).removeClass('error')
+      }
     })
+    $(this).parents('tr').find('.error').first().focus()
+    if (!empty) {
+      input.each(function () {
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
+        addBidData['"' + text + '"'] = val
+      })
+      addBidData['starting'] = date.toLocaleDateString()
+      addBidData['ending'] = bidExpiryDateandTime.toLocaleDateString()
+      addBidData['status'] = 1 // 0 = rejected , 1 = Pending, 2= Success
+      console.log('clicking add button')
+      $.ajax({
+        type: "POST",
+        url: 'ownerprofile/addBid',
+        data: addBidData,
+        success: function(res){
+          var result = res.Updated
+          console.log(result)
+          if (!result){
+            alert('Bid not added')
+          }
+          else {
+            alert('Bid added')
+          }
+        }
+      });
 
     // Send input row data on add button click
     $(document).on('click', '.add.bid', function() {
@@ -72,28 +116,40 @@ $(document).ready(function() {
                 console.log(res)
             })
 
-            $(this).parents('tr').find('.update, .edit').toggle()
-            $('.add-new-bid').removeAttr('disabled')
+  // Delete row on delete button click
+  $(document).on('click', '.delete.bid', function () {
+    var row = $(this).parents('tr')
+    var rowData = row.find('td:not(:last-child)')
+    var deletedBidData = {}
+    rowData.each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      deletedBidData[$th.text()] = $(this).val()
+    })
+    row.remove()
+    $('.add-new-bid').removeAttr('disabled')
+
+    $.ajax({
+      type: "DELETE",
+      url: 'ownerprofile/deleteBid',
+      data: deletedBidData,
+      success: function(res){
+        var result = res.Updated
+        console.log(result)
+        if (!result){
+          alert('Bid not deleted')
         }
+        else {
+          alert('Bid deleted')
+        }
+      }
     })
 
-    // Delete row on delete button click
-    $(document).on('click', '.delete', function() {
-        var row = $(this).parents('tr')
-        var rowData = row.find('td:not(:last-child)')
-        var deletedBidData = {}
-        rowData.each(function() {
-            var $th = $(this).closest('table').find('th').eq($(this).index())
-            deletedBidData[$th.text()] = $(this).val()
-        })
-        row.remove()
-        $('.add-new-bid').removeAttr('disabled')
-        var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
-        deleteRequest.done(function(res) {
-            console.log(res)
-        })
-        $('.add-new-bid').removeAttr('disabled')
-    })
+    /*var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
+    deleteRequest.done(function (res) {
+      console.log(res)
+    })*/
+    $('.add-new-bid').removeAttr('disabled')
+  })
 
     // =========================== Bids functions =================================== //
 
