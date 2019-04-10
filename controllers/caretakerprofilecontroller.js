@@ -5,11 +5,21 @@ exports.updateTaskFinished = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var taskID = req.body.Task_id
+    var updated = true
+
     try {
       await client.query('BEGIN')
       await client.query(queries.finishTaskUpdate, [taskID])
-      await client.query('COMMIT')
-      res.json({ 'Updated': true })
+      await client.on('notice', function (msg) {
+        console.log(msg)
+        updated = false
+      })
+      if (updated == true) {
+        await client.query('COMMIT')
+      } else {
+        await client.query('ROLLBACK')
+      }
+      res.json({ 'Updated': updated })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
@@ -28,9 +38,12 @@ exports.acceptBid = function (req, res, next) {
       await client.query('BEGIN')
       await client.query(queries.acceptBidUpdate1, [serviceID])
       await client.query(queries.acceptBidUpdate2, [bidID])
+      console.log('Error detected 1')
       await client.query(queries.acceptBidUpdate3, [bidID, serviceID])
       await client.query(queries.acceptBidUpdate4, [bidID])
       await client.query('COMMIT')
+      console.log('Commited event with error detected 2')
+
       res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')

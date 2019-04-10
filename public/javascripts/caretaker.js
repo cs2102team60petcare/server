@@ -1,7 +1,8 @@
 $(document).ready(function () {
   // =================== Tasks =========================== //
-  $('finished-task').click(function () {
+  $('.finished-task').click(function () {
     $(this).attr('disabled', 'disabled')
+    console.log('Clicking finished task')
     var finishedTaskData = {}
     var row = $(this).parents('tr')
     var rowData = row.find('td:not(:last-child)')
@@ -24,7 +25,6 @@ $(document).ready(function () {
         }
       }
     })
-  })
   })
 
   // =================== Tasks =========================== //

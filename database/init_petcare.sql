@@ -217,9 +217,9 @@ declare isTask integer;
 begin
 	-- can't remove if Task exists (i.e a successful bid exists)
 	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
-	if isTask > 0 and new.status=0 then raise notice 'Cannot remove as task exists.'; return null;  
+	if isTask > 0 and new.status=0 then raise exception 'Cannot remove as task exists.'; return null;  
 	-- can't accept another bid for same program if already Task exists
-	elseif isTask > 0 and new.status=2 then raise notice 'Task already exists for this service'; return null;  
+	elseif isTask > 0 and new.status=2 then raise exception 'Task already exists for this service'; return null;  
 	else return new; end if; 
 end; $$ language plpgsql; 
 
@@ -243,10 +243,10 @@ begin
 	compatibility:= false; 
 	-- ToDO petTypeCompatibility @Psyf 
 
-	if new.starting < earliest then raise notice 'Starts later.'; return null; 
-	elseif new.ending > latest then raise notice 'Ends earlier.'; return null; 
-	-- elseif compatibility=false then raise notice 'Not in pet preference.'; return null; 
-	elseif (select status from services where service_id=new.service_id)=2 then raise notice 'Bidding closed.'; return null; 
+	if new.starting < earliest then raise exception 'Starts later.'; return null; 
+	elseif new.ending > latest then raise exception 'Ends earlier.'; return null; 
+	-- elseif compatibility=false then raise exception 'Not in pet preference.'; return null; 
+	elseif (select status from services where service_id=new.service_id)=2 then raise exception 'Bidding closed.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
 
@@ -261,9 +261,9 @@ declare oldStart timestamp; oldEnd timestamp;
 begin
 	for oldStart, oldEnd in select starting, ending from services where caretaker_id=new.caretaker_id and status<>0
 	loop
-		if new.starting >= oldStart and new.starting <= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null; 
-		elseif new.ending >= oldStart and new.ending <= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null;
-		elseif new.starting <= oldStart and new.ending >= oldEnd then raise notice 'Taken/Available service exists with time overlap.'; return null;
+		if new.starting >= oldStart and new.starting <= oldEnd then raise exception 'Taken/Available service exists with time overlap.'; return null; 
+		elseif new.ending >= oldStart and new.ending <= oldEnd then raise exception 'Taken/Available service exists with time overlap.'; return null;
+		elseif new.starting <= oldStart and new.ending >= oldEnd then raise exception 'Taken/Available service exists with time overlap.'; return null;
 		else return new; 
 		end if; 
 	end loop; 
@@ -282,7 +282,7 @@ begin
 	select coalesce(max(reviewnum), 0) into lastNum from reviews where caretaker_id=new.caretaker_id; 
 	select ending into endTime from tasks natural join bids where task_id=new.task_id; 
 	
-	if endTime > NOW() then raise notice 'Wait till the task is over to send review.'; return null; 
+	if endTime > NOW() then raise exception 'Wait till the task is over to send review.'; return null; 
 	else new.reviewnum = lastNum+1; return new; 
 	end if;
 		
@@ -296,8 +296,8 @@ execute procedure sendReview();
 
 create or replace function deleteTask()
 returns trigger as $$ begin 
-	if (select ending from Bids where bid_id=old.bid_id) < NOW() then raise notice 'Cant delete if task is finished'; return null; 
-	elseif old.status=2 then raise notice 'Cant delete as task is finished.'; return null; 
+	if (select ending from Bids where bid_id=old.bid_id) < NOW() then raise exception 'Cant delete if task is finished'; return null; 
+	elseif old.status=2 then raise exception 'Cant delete as task is finished.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
 
