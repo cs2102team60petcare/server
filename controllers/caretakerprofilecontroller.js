@@ -98,12 +98,13 @@ exports.offerService = function (req, res, next) {
 exports.deleteService = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var serviceID = req.body.Sid
+    var serviceID = req.body.Service_id
     console.log(serviceID)
     try {
       await client.query('BEGIN')
       await client.query(queries.removeServiceUpdate1, [serviceID])
       await client.query(queries.removeServiceUpdate2, [serviceID])
+
       await client.query('COMMIT')
       res.json({ 'Updated': true })
     } catch (e) {

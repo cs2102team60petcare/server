@@ -52,13 +52,16 @@ exports.getManagerProfile = function (req, res, next) {
     try {
       const requests = await client.query(queries.getRequestsAssignedToMe, [userID, 0, 5])
       const unassignedRequests = await client.query(queries.getUnassignedRequests)
-
-      Promise.all([requests, unassignedRequests]).then((data) => {
+      const graphDataRequest = await client.query(queries.perHourAverageByMonthQuery)
+      Promise.all([requests, unassignedRequests, graphDataRequest]).then((data) => {
         var requestsData = data[0]
         var unassignedRequestsData = data[1]
+        var graphData = data[2]
+        console.log(graphData)
         res.render('managerprofile', {
           requests: requestsData.rows,
-          unassignedRequests: unassignedRequestsData.rows
+          unassignedRequests: unassignedRequestsData.rows,
+          graphDataValues: graphData.rows
         })
       }).catch(err => {
         console.log(err)

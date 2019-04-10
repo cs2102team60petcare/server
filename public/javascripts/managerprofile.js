@@ -59,4 +59,44 @@ $(document).ready(function () {
     $(this).parents('tr').remove()
     $('.add-new').removeAttr('disabled')
   })
+
+  var xData = {}
+  for (var i = 0; i < graphData.length; i++) {
+    var careTakerID = graphData[i].caretaker_id
+    var month = graphData[i].month
+    var money = graphData[i].money
+
+    var graphPoint = {
+      x: month,
+      y: money
+    }
+
+    if (xData[careTakerID]) {
+      xData[careTakerID].push(graphPoint)
+    } else {
+      xData[careTakerID] = [graphPoint]
+    }
+  }
+
+  var multipleData = []
+  for (var dataKey in xData) {
+    if (xData.hasOwnProperty(dataKey)) {
+      var dataValue = xData[dataKey]
+      console.log(dataValue)
+      var dataColumn = {
+        type: 'column',
+        dataPoints: [dataValue]
+      }
+      multipleData.push(dataColumn)
+    }
+  }
+  console.log(multipleData)
+
+  var options = {
+    title: {
+      text: 'Average earnings per hour'
+    },
+    data: multipleData
+  }
+  $('#chartContainer').CanvasJSChart(options)
 })
