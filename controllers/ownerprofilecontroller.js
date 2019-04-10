@@ -108,25 +108,27 @@ exports.getOwnerProfile = function (req, res, next) {
     var userID = req.user.user_id
     try {
       const pets = await client.query(queries.getMyPetsQuery, [userID])
-      const bids = await client.query(queries.getAllBids)
+      const bids = await client.query(queries.seeMyBidsQuery, [userID])
       const tasks = await client.query(queries.getMyTaskHistoryAsOwnerQuery, [userID])
-
-      Promise.all([pets, bids, tasks]).then((data) => {
+      const demand = await client.query(queries.ratioOfTaskByHourByDay, [2])
+      Promise.all([pets, bids, tasks, demand]).then((data) => {
         var petsData = data[0]
         var bidsData = data[1]
         var tasksData = data[2]
+        var graphData = data[3]
+        //console.log(graphData)
 
         res.render('ownerprofile', {
           bids: bidsData.rows,
           pets: petsData.rows,
-          tasks: tasksData.rows
+          tasks: tasksData.rows,           
+          graphDataValues: graphData.rows
         })
       }).catch(err => {
         console.log(err)
         res.status(500)
       })
     } catch (e) {
-      await client.query('ROLLBACK')
       res.redirect('./login')
       throw e
     } finally {

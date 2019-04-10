@@ -58,8 +58,9 @@ module.exports = {
         'from caretakers C join services S on (C.user_id=S.caretaker_id) join Bids B on (B.service_id=S.service_id) ' +
         'join Pets P on (B.pet_id=P.pet_id) join Users U on (B.owner_id=U.user_id) ' +
         'where S.status=1 and B.status=1 and S.caretaker_id=$1;',
-  seeBidsQuery: 'SELECT * FROM Bids B NATURAL JOIN Services S ' +
+  seeBidsForServiceQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) ' +
         'WHERE S.service_id=$1 ORDER BY B.money desc;', 
+  seeMyBidsQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) where B.owner_id=$1;',   
   getAllBids: 'SELECT * FROM Bids',      
   // Triggers placingBid
   placeBidInsert: 'INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);',
@@ -118,7 +119,7 @@ module.exports = {
   // Complex Query 3
   // Shows the demand ratio by hour for days {1..7} (whichever we call)
   ratioOfTaskByHourByDay: 'select extract(hour from starting)::integer as hour, ' +
-        'count(*)::float4/(select count(*) from Bids where status=2 and extract(DOW from starting)=$1) ' +
+        'count(*)::float4/(select count(*) from Bids where status=2 and extract(DOW from starting)=$1) as ratio ' +
         'from bids where status=2 and extract(DOW from starting)=$1 group by hour;',
 
   // Do inside a transaction
