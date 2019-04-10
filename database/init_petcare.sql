@@ -189,7 +189,7 @@ insert into TASKS (bid_id, status) values (2, 2);
 
 INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2018-03-02 18:00:00', '2018-03-02 19:00:00', 50, 2);
 insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2018-03-02 18:30:00', '2018-03-02 19:00:00', 150, 3, 1, 3, 2); 
-insert into TASKS (bid_id, status) values (3, 2); 
+insert into TASKS (bid_id) values (3);	-- finished but never clicked on finished 
 
 -- 2 pending tasks for caretakerA (different months again)
 INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-05-02 18:00:00', '2019-05-02 19:00:00', 50, 2);
@@ -206,6 +206,10 @@ insert into bids (starting, ending, money, owner_id, pet_id, service_id, status)
 
 -- dummy data for caretakerB down here 
 
+-- user requests 
+insert into requests (user_id, message, status) values (2, 'I am a caretaker and your site $uX', 1);
+insert into handles (manager_id, request_id) values (1, 1);
+insert into requests (user_id, message) values (3, 'I am an owner and has anyone seen Nagini?');
 
 ------TRIGGERS------------
 create or replace function updateService() returns trigger as $$ 
@@ -287,12 +291,13 @@ end; $$ language plpgsql;
 
 create trigger sendingReview
 before insert on Reviews 
-for each row 
+for each row 	
 execute procedure sendReview(); 
 
 create or replace function deleteTask()
 returns trigger as $$ begin 
-	if old.status=2 then raise notice 'Cant delete as task is finished.'; return null; 
+	if (select ending from Bids where bid_id=old.bid_id) < NOW() then raise notice 'Cant delete if task is finished'; return null; 
+	elseif old.status=2 then raise notice 'Cant delete as task is finished.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
 
@@ -300,3 +305,15 @@ create trigger deletingTask
 before delete on Tasks
 for each row
 execute procedure deleteTask(); 
+
+create or replace function finishTask()
+returns trigger as $$ begin 
+	if new.status=2 and (select ending from Bids where bid_id=old.bid_id) > NOW() then raise notice 'Wait till the task is over!'; return null; 
+	else return new; end if; 
+end; $$ language plpgsql; 
+
+create trigger finishingTask
+before Update on Tasks
+for each row
+execute procedure finishTask(); 
+

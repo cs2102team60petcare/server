@@ -134,10 +134,8 @@
                                     <table class="table table-services">
                                         <thead>
                                             <tr>
-                                                <th >Sid</th>
-                                                <th >Cid</th>
-                                                <th >Minwage</th>
-                                                <th >Status</th>
+                                                <th >Service_id</th>
+                                                <th >Min Ask</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
                                                 <th >Actions</th>
@@ -147,9 +145,7 @@
                                             <% for(var i = 0; i<services.length; i++) { %>
                                                 <tr>
                                                     <td><%=services[i].service_id       %></td>
-                                                    <td><%=services[i].caretaker_id     %></td>
                                                     <td><%=services[i].minwage          %></td>
-                                                    <td><%=services[i].status           %></td>
                                                     <td><%=services[i].starting         %></td>
                                                     <td><%=services[i].ending           %></td>
                                                     <td>
@@ -182,12 +178,10 @@
                                 <table class="table table-bids">
                                     <thead>
                                         <tr>
-                                            <th >Review_Number</th>
+                                            <th >Review#</th>
                                             <th >Note</th>
                                             <th >Stars</th>
                                             <th >Task_id</th>
-                                            <th >Caretaker_id</th>
-                                            <th >Owner_id</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -197,8 +191,6 @@
                                                     <td><%= reviews[i].note  %></td>
                                                     <td><%= reviews[i].stars%></td>
                                                     <td><%= reviews[i].task_id %></td>
-                                                    <td><%= reviews[i].caretaker_id   %></td>
-                                                    <td><%= reviews[i].owner_id   %></td>
                                                 </tr>
                                             <% } %>    
                                     </tbody>

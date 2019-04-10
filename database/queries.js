@@ -38,6 +38,8 @@ module.exports = {
   getMyUpcomingTasksQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T JOIN Bids B on (T.bid_id=B.bid_id) JOIN Services S on (B.service_id=S.service_id) NATURAL JOIN Caretakers C NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;',
   getMyTaskHistoryQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=2 ORDER BY S.starting desc;',
   getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;', 
+  finishTaskUpdate: 'UPDATE Tasks SET status=2 where task_id=$1;',
+  getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1;', 
 
   getMyPetsQuery: 'SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;',
 
