@@ -3,60 +3,76 @@ $(document).ready(function () {
 
   $('.assign').click(function () {
     $(this).attr('disabled', 'disabled')
-    var assignedRequestData = {} 
-    $(this).parents('tr').find('td:not(:last-child)').each(function () { //iterates thru except for the last child
-      var $th = $(this).closest('table').find('th').eq($(this).index()) //find the closest data 
-      assignedRequestData[$th.text()] = $(this).text() //binds the data into the json file 
-
-      $.ajax({
-        type: "PUT",
-        url: 'managerprofile/selfAssignRequest',
-        data: assignedRequestData,
-        success: function(res){
-          var result = res.Updated
-          console.log(res)
-          if (!result){
-            alert('Req not Assigned')
-          }
-          else {
-            alert('Request Assigned')
-          }
+    var assignedRequestData = {}
+    $(this).parents('tr').find('td:not(:last-child)').each(function () { // iterates thru except for the last child
+      var $th = $(this).closest('table').find('th').eq($(this).index()) // find the closest data
+      assignedRequestData[$th.text()] = $(this).text() // binds the data into the json file
+    })
+    $.ajax({
+      type: 'PUT',
+      url: 'managerprofile/selfAssignRequest',
+      data: assignedRequestData,
+      success: function (res) {
+        var result = res.Updated
+        console.log(res)
+        if (!result) {
+          alert('Req not Assigned')
+        } else {
+          alert('Request Assigned')
         }
-      });
-
+      }
     })
   })
 
-  //search for request IDs
+  // search for request IDs
   $('.search').change(function () {
+    // get the inputs for each box
+    var searchRequestIDData = {}
+    searchRequestIDData['search_RID'] = parseInt(document.getElementById('searchID').value)
+    searchRequestIDData['offset'] = parseInt(document.getElementById('offset').value)
+    searchRequestIDData['show'] = parseInt(document.getElementById('limit').value)
 
-    //get the inputs for each box
-    var searchRequestIDData = {}  
-      searchRequestIDData["search_RID"] = document.getElementById('searchID').value
-      searchRequestIDData["offset"] = document.getElementById('offset').value
-      searchRequestIDData["show"] = document.getElementById('limit').value
-
-      //updates it
-      $.ajax({
-        type: "PUT",
-        url: 'managerprofile/searchReque,st',
-        data: searchRequestIDData,
-        success: function(res){
-          var result = res.Updated
-          console.log(res)
-          if (!result){
-            alert('Search not made')
+    // updates it
+    $.ajax({
+      type: 'PUT',
+      url: 'managerprofile/searchRequest',
+      data: searchRequestIDData,
+      success: function (res) {
+        var result = res.Updated
+        var data = res.UpdatedData
+        console.log(data)
+        if (!result) {
+          alert('Search not made')
+        } else {
+          var table = $('#table-requests')
+          var oldTableRows = $('#table-requests > tbody > tr')
+          oldTableRows.remove()
+          for (var i = 0; i < data.length; i++) {
+            var requestID = data[i]['request_id']
+            var message = data[i]['message']
+            var status = data[i]['status']
+            var created = data[i]['created']
+            var userID = data[i]['user_id']
+            var td = '<tr>' +
+                     '<td>' + requestID + '</td>' +
+                     '<td>' + userID + '</td>' +
+                     '<td>' + status + '</td>' +
+                     '<td>' + created + '</td>' +
+                     '<td>' + message + '</td>' +
+                     '<td>' +
+                        '<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +
+                        '<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>' +
+                     '</td>' +
+                     '</tr>'
+            table.append(td)
           }
-          else {
-            alert('Search made')
-          }
+          alert('Search made')
         }
-      });
-
+      }
     })
   })
 
-  // Add justification on add button click 
+  // Add justification on add button click
   $(document).on('click', '.add', function () {
     var empty = false
     var updateRequestData = {}
@@ -70,11 +86,11 @@ $(document).ready(function () {
       }
     })
     $(this).parents('tr').find('.error').first().focus()
-    if (!empty) { 
-      input.each(function () { 
-        var text = $(this).attr('name') 
-        var val = $(this).val() 
-        $(this).parent('td').html(val) 
+    if (!empty) {
+      input.each(function () {
+        var text = $(this).attr('name')
+        var val = $(this).val()
+        $(this).parent('td').html(val)
         updateRequestData[text] = val
       })
       var updateRequest = $.put('managerprofile/updateRequest', updateRequestData)
@@ -83,27 +99,26 @@ $(document).ready(function () {
       })
       $(this).parents('tr').find('.add, .edit').toggle()
       $('.add-new').removeAttr('disabled')
-    } 
+    }
   })
 
   // Justify on edit button click
   $(document).on('click', '.edit', function () {
-    $(this).parents('tr').find('td:not(:last-child)').each(function () { //iterates thru except for the last child
-      var $th = $(this).closest('table').find('th').eq($(this).index()) //find the closest data
-      if ($th.text() == 'Message') { //add value to the header 
+    $(this).parents('tr').find('td:not(:last-child)').each(function () { // iterates thru except for the last child
+      var $th = $(this).closest('table').find('th').eq($(this).index()) // find the closest data
+      if ($th.text() == 'Message') { // add value to the header
         $(this).html('<input type="text" class="form-control" name = "' + $th.text() + "value= '" + $(this).text() + '">')
-      }  
+      }
     })
     $(this).parents('tr').find('.add, .edit').toggle()
     $('.add-new').attr('disabled', 'disabled')
   })
 
-  //Delete row on delete button click
+  // Delete row on delete button click
   $(document).on('click', '.delete', function () {
     $(this).parents('tr').remove()
     $('.add-new').removeAttr('disabled')
   })
-
 
   var xData = {}
   for (var i = 0; i < graphData.length; i++) {
@@ -144,4 +159,3 @@ $(document).ready(function () {
   }
   $('#chartContainer').CanvasJSChart(options)
 })
-

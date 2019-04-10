@@ -5,8 +5,8 @@ exports.updateRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
 
-    var requestID = req.body.Request_ID //send request id
-    var justification = req.body.Message //send justification text
+    var requestID = req.body.Request_ID // send request id
+    var justification = req.body.Message // send justification text
 
     try {
       await client.query('BEGIN')
@@ -27,7 +27,7 @@ exports.updateRequest = function (req, res, next) {
 exports.selfAssignRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var requestID = req.body.Rid //based on the header values
+    var requestID = req.body.Rid // based on the header values
     var managerID = req.user.user_id
     console.log(req.body)
     try {
@@ -41,7 +41,6 @@ exports.selfAssignRequest = function (req, res, next) {
       res.json({ 'Updated': false })
       throw e
     } finally {
-      
       client.release()
     }
   })().catch(e => console.error(e.stack))
@@ -50,23 +49,44 @@ exports.selfAssignRequest = function (req, res, next) {
 exports.searchRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
+    console.log(req.body)
+    var managerID = req.user.user_id
     var requestID = req.body.search_RID
-    var offsetNo = req.body.offset 
-    var showLimit= req.body.show
-    
+    var offsetNo = req.body.offset
+    var showLimit = req.body.show
+    if (requestID == 'NaN') {
+      requestID = 0
+    }
 
+    if (offsetNo == 'NaN') {
+      offsetNo = 0
+    }
+
+    if (showLimit == 'NaN') {
+      showLimit = 100
+    }
+    console.log(typeof parseInt(requestID))
+    var data
     try {
       await client.query('BEGIN')
-      await client.query(queries.getRequestsAssignedToMe, [requestID], [offsetNo], [showLimit])
-      
+      if (requestID == 0) {
+        data = await client.query(queries.getRequestsAssignedToMe, [parseInt(managerID), parseInt(offsetNo), parseInt(showLimit)])
+      } else {
+        data = await client.query(queries.getRequestsAssignedToMeWithFilters, [parseInt(managerID), parseInt(requestID)])
+      }
+      console.log(data.rows)
       await client.query('COMMIT')
-      res.json({ 'Updated': true })
+      res.json(
+        {
+          'Updated': true,
+          'UpdatedData': data
+        }
+      )
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
-
       client.release()
     }
   })().catch(e => console.error(e.stack))
