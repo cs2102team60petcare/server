@@ -308,7 +308,7 @@ execute procedure deleteTask();
 
 create or replace function finishTask()
 returns trigger as $$ begin 
-	if new.status=2 and (select ending from Bids where bid_id=old.bid_id) > NOW() then raise notice 'Wait till the task is over!'; return null; 
+	if new.status=2 and (select ending from Bids where bid_id=old.bid_id) > NOW() then raise exception 'Wait till the task is over!'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
 
