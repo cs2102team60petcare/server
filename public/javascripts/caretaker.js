@@ -52,7 +52,7 @@ $(document).ready(function () {
   $(document).on('click', '.add.service', function () {
     var empty = false
     var addServicesData = {}
-    var input = $(this).parents('tr').find('input[type="text"]')
+    var input = $(this).parents('tr').find('input[type="text"] ,input[type="datetime-local"]')
     input.each(function () {
       if (!$(this).val()) {
         $(this).addClass('error')
@@ -66,7 +66,19 @@ $(document).ready(function () {
       input.each(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
-        addServicesData[text] = val
+        if ($(this).attr('type') == 'datetime-local') {
+          // var dt = new Date(val + "Z")
+          // console.log(dt.toDateString())
+          // console.log(dt.toISOString())
+          // console.log(dt.toLocaleDateString())
+          var splitDate = val.split('T')
+          var date = splitDate[0]
+          var time = splitDate[1] + ':00'
+          var parsedDate = date + ' ' + time
+          addServicesData[text] = parsedDate
+        } else {
+          addServicesData[text] = val
+        }
       })
 
       $.ajax({
