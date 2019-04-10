@@ -83,10 +83,10 @@
                                     <table class="table table-bids">
                                         <thead>
                                             <tr>
-                                                <th >Bid</th>
-                                                <th >Pid</th>
-                                                <th >Oid</th>
-                                                <th >Sid</th>
+                                                <th >Bid_id</th>
+                                                <th >Service_id</th>
+                                                <th >Type</th>
+                                                <th >Owner</th>
                                                 <th >Money</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
@@ -97,9 +97,9 @@
                                             <% for(var i = 0; i<bids.length; i++) { %>
                                                 <tr>
                                                     <td><%=bids[i].bid_id       %></td>
-                                                    <td><%=bids[i].pet_id       %></td>
-                                                    <td><%=bids[i].owner_id     %></td>
                                                     <td><%=bids[i].service_id   %></td>
+                                                    <td><%=bids[i].type         %></td>
+                                                    <td><%=bids[i].name         %></td>
                                                     <td><%=bids[i].money        %></td>
                                                     <td><%=bids[i].starting     %></td>
                                                     <td><%=bids[i].ending       %></td>

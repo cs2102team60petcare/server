@@ -54,7 +54,9 @@ module.exports = {
   getMyAvailableServicesQuery: 'SELECT * FROM SERVICES WHERE caretaker_id=$1 and status=1;',
 
   /* BIDS RELATED QUERIES */
-  getPendingBidsForMeQuery: 'select * from caretakers C join services S on (C.user_id=S.caretaker_id) join Bids B on (B.service_id=S.service_id) ' +
+  getPendingBidsForMeQuery: 'select B.bid_id, S.service_id, P.type, U.name, B.starting, B.ending, B.money ' +
+        'from caretakers C join services S on (C.user_id=S.caretaker_id) join Bids B on (B.service_id=S.service_id) ' +
+        'join Pets P on (B.pet_id=P.pet_id) join Users U on (B.owner_id=U.user_id) ' +
         'where S.status=1 and B.status=1 and S.caretaker_id=$1;',
   seeBidsQuery: 'SELECT * FROM Bids B NATURAL JOIN Services S ' +
         'WHERE S.service_id=$1 ORDER BY B.money desc;', 
