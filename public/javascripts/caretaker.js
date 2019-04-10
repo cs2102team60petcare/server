@@ -225,7 +225,7 @@ $(document).ready(function () {
       verticalAlign: 'bottom',
       horizontalAlign: 'left',
       dockInsidePlotArea: true,
-      itemclick: toogleDataSeries
+      itemclick: toggleDataSeries
     },
     data: [{
       type: 'line',
@@ -240,7 +240,7 @@ $(document).ready(function () {
   }
   $('#chartContainer').CanvasJSChart(options)
 
-  function toogleDataSeries (e) {
+  function toggleDataSeries (e) {
     if (typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
       e.dataSeries.visible = false
     } else {
