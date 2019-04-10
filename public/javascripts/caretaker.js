@@ -10,7 +10,7 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
       finishedTaskData[$th.text()] = $(this).text()
     })
-    
+
     $.ajax({
       url: 'caretakerprofile/updateTaskFinished',
       type: 'PUT',
@@ -18,10 +18,10 @@ $(document).ready(function () {
       success: function (res) {
         var result = res.Updated
         if (!result) {
-          alert ('Task is not updated')
+          alert('Task is not updated')
           rejectBidBtn.removeAttr('disabled')
         } else {
-          alert ('Task is updated')
+          alert('Task is updated')
         }
       }
     })
@@ -77,9 +77,9 @@ $(document).ready(function () {
         success: function (res) {
           var result = res.Updated
           if (!result) {
-            alert ('Service not added')
+            alert('Service not added')
           } else {
-            alert ('Service is added')
+            alert('Service is added')
             input.each(function () {
               var text = $(this).attr('name')
               var val = $(this).val()
@@ -115,11 +115,10 @@ $(document).ready(function () {
       success: function (res) {
         var result = res.Updated
         if (!result) {
-          alert ('Bid is not accepted')
+          alert('Bid is not accepted')
           rejectBidBtn.removeAttr('disabled')
         } else {
-          alert ('Accepted bid')
-
+          alert('Accepted bid')
         }
       }
     })
@@ -142,9 +141,9 @@ $(document).ready(function () {
       success: function (res) {
         var result = res.Updated
         if (!result) {
-          alert ('Bid not rejected')
+          alert('Bid not rejected')
         } else {
-          alert ('Rejected bid')
+          alert('Rejected bid')
         }
       }
     })
@@ -169,13 +168,72 @@ $(document).ready(function () {
       success: function (res) {
         var result = res.Updated
         if (!result) {
-          alert ('Service not deleted')
+          alert('Service not deleted')
         } else {
-          alert ('Deleted service')
+          alert('Deleted service')
         }
       }
     })
 
     $('.add-new-service').removeAttr('disabled')
   })
+
+  var xData = []
+  for (var i = 0; i < graphData.length; i++) {
+    var year = graphData[i].date.year
+    var month = graphData[i].date.month
+    var day = graphData[i].date.day
+    var sum = graphData[i].sum
+    var graphPoint = {
+      x: new Date(year, month, day),
+      y: sum
+    }
+    xData.push(graphPoint)
+  }
+
+  var options = {
+    animationEnabled: true,
+    theme: 'light2',
+    title: {
+      text: 'Cumulative Income'
+    },
+    axisX: {
+      valueFormatString: 'DD MMM'
+    },
+    axisY: {
+      title: 'Cash',
+      prefix: '$',
+      minimum: 30
+    },
+    toolTip: {
+      shared: true
+    },
+    legend: {
+      cursor: 'pointer',
+      verticalAlign: 'bottom',
+      horizontalAlign: 'left',
+      dockInsidePlotArea: true,
+      itemclick: toogleDataSeries
+    },
+    data: [{
+      type: 'line',
+      showInLegend: true,
+      name: 'Cumulative Income',
+      markerType: 'square',
+      xValueFormatString: 'DD MMM, YYYY',
+      color: '#F08080',
+      yValueFormatString: '#,##0K',
+      dataPoints: graphData
+    }]
+  }
+  $('#chartContainer').CanvasJSChart(options)
+
+  function toogleDataSeries (e) {
+    if (typeof (e.dataSeries.visible) === 'undefined' || e.dataSeries.visible) {
+      e.dataSeries.visible = false
+    } else {
+      e.dataSeries.visible = true
+    }
+    e.chart.render()
+  }
 })

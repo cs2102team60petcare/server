@@ -126,19 +126,22 @@ exports.getCareTakerProfile = function (req, res, next) {
       const services = await client.query(queries.getMyAvailableServicesQuery, [userID])
       const pendingBids = await client.query(queries.getPendingBidsForMeQuery, [userID])
       const reviews = await client.query(queries.getMyReviews, [userID])
-      Promise.all([upcomingTasks, tasksHistory, services, pendingBids, reviews]).then((data) => {
+      const cumulativeIncome = await client.query(queries.perDayCumulativeSumQuery, [userID, 0, 20])
+      Promise.all([upcomingTasks, tasksHistory, services, pendingBids, reviews, cumulativeIncome]).then((data) => {
         var upcomingTasksData = data[0]
         var tasksHistoryData = data[1]
         var servicesData = data[2]
         var pendingBidsData = data[3]
         var reviewsData = data[4]
+        var graphData = data[5]
 
         res.render('caretaker', {
           upcomingTasks: upcomingTasksData.rows,
           tasksHistory: tasksHistoryData.rows,
           services: servicesData.rows,
           bids: pendingBidsData.rows,
-          reviews: reviewsData.rows
+          reviews: reviewsData.rows,
+          graphDataValues: graphData.rows
         })
       }).catch(err => {
         console.log(err)
