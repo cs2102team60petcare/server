@@ -57,3 +57,7 @@
     .update-service {
         display: none;
     }
+
+    .finished-task {
+        background-color : greenyellow;
+    }

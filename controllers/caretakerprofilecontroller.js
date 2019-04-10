@@ -1,6 +1,26 @@
 const pool = require('../database/connection')
 const queries = require('../database/queries')
 
+exports.updateTaskFinished = function(req, res, next) {
+  (async () => {
+    const client = await pool.connect()
+    var taskID = req.body.Task_id
+    try {
+      await client.query('BEGIN')
+      await client.query(queries.finishTaskUpdate, [taskID])
+      await client.query('COMMIT')
+      res.json({ 'Updated': true })
+    } catch (e) {
+      await client.query('ROLLBACK')
+      res.json({ 'Updated': false })
+      throw e
+    } finally {
+      client.release()
+
+    }
+  })().catch(e => console.error(e.stack))
+
+}
 exports.acceptBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()

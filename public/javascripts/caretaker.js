@@ -1,4 +1,34 @@
 $(document).ready(function () {
+  // =================== Tasks =========================== //
+  $('finished-task').click(function () {
+    $(this).attr('disabled', 'disabled')
+    var finishedTaskData = {}
+    var row = $(this).parents('tr')
+    var rowData = row.find('td:not(:last-child)')
+    rowData.each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      finishedTaskData[$th.text()] = $(this).text()
+    })
+    
+    $.ajax({
+      url: 'caretakerprofile/updateTaskFinished',
+      type: 'PUT',
+      data: finishedTaskData,
+      success: function (res) {
+        var result = res.Updated
+        if (!result) {
+          alert ('Task is not updated')
+          rejectBidBtn.removeAttr('disabled')
+        } else {
+          alert ('Task is updated')
+        }
+      }
+    })
+  })
+  })
+
+  // =================== Tasks =========================== //
+
   // =================== Services =========================== //
   $('[data-toggle="tooltip"]').tooltip()
   var servicesActions = '<a class="add service" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>' +

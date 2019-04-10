@@ -38,6 +38,7 @@
                                                 <th >Starting</th>
                                                 <th >Ending</th>
                                                 <th >Money</th>
+                                                <th> Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -49,6 +50,10 @@
                                                     <td><%=upcomingTasks[i].starting  %></td>
                                                     <td><%=upcomingTasks[i].ending    %></td>
                                                     <td><%=upcomingTasks[i].money     %></td>
+                                                    <td>
+                                                        <button type="button" class="btn finished-task">Finish Task</button>
+                                                    </td>
+
                                                 </tr>
                                             <% } %>    
                                         </tbody>
