@@ -204,6 +204,7 @@ INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1
 insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-07-02 18:30:00', '2019-07-02 19:00:00', 150, 3, 1, 6, 1);	-- for Tom 
 insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-07-02 18:30:00', '2019-07-02 19:00:00', 150, 4, 2, 6, 1); 	-- for Doge
 
+
 -- dummy data for caretakerB down here 
 
 -- user requests 
@@ -316,4 +317,9 @@ create trigger finishingTask
 before Update on Tasks
 for each row
 execute procedure finishTask(); 
+
+-- more init data 
+INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (5, 'My pet was so happy! :)', 1, 1, 3);
+INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (4, 'Keep it up.', 2, 1, 3);
+UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=1)/(select count(*) from reviews where caretaker_id=1)) where user_id=1;
 

@@ -39,7 +39,7 @@ module.exports = {
   getMyTaskHistoryQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=2 ORDER BY S.starting desc;',
   getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;', 
   finishTaskUpdate: 'UPDATE Tasks SET status=2 where task_id=$1;',
-  getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1;', 
+  getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1 order by reviewnum desc;', 
 
   getMyPetsQuery: 'SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;',
 
@@ -80,7 +80,7 @@ module.exports = {
   // TODO @ JJ This is a transaction
   sendReviewInsert1: 'INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES ($1, $2, $3, $4, $5);',
   sendReviewInsert2: 'UPDATE Tasks set status=2 where task_id=$1;', // $1 = $3 from above
-  sendReviewInsert3: 'UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=$1)/(select count(*) from reviews where caretaker_id=$1));', // $4 = $1 from above
+  sendReviewInsert3: 'UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=$1)/(select count(*) from reviews where caretaker_id=$1)) where user_id=$1;', // $4 = $1 from above
 
   // TODO @Psyf Trigger to ensure time
   taskCompletedupdate: 'UPDATE Tasks SET status=2 where task_id=$1;',
