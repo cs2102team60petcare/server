@@ -58,14 +58,6 @@
             
                         <% } %>
 
-                        <td>1</td>
-                        <td>2</td>
-                        <td>0</td>
-                        <td>1234</td>
-                        <td>Needs to be done</td>
-                        <td>
-                            <button type="button" class="btn btn-info assign"><i class="fa fa-plus"></i>Assign</button>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -76,13 +68,19 @@
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
-                    <div class="col-sm-8"><h2>My <b>Requests</b></h2> </div>
-                    <div class="form-group">
-                            <label for="usr">Search Request_id:</label>
-                            <input type="number" class = "search">
+                    <div class="col-sm-12"><h2>My <b>Requests</b></h2> </div>
+
+                    <div class="form-group"> 
+                            <label for="usr"><br>Request_id:</label>
+                            <input type="number" class ="search" id = "searchID">
+                            <label for="usr">Offset:</label>
+                            <input type="number" class = "search" id = "offset">
+                            <label for="usr">Show:</label>
+                            <input type="number" class ="search" id = "limit">
                     </div>
                     
                 </div>
+                
             </div>
             <table class="table table-bordered">
                 <thead>
@@ -110,6 +108,7 @@
                         </tr>
         
                     <% } %>
+
                 </tbody>
             </table>
         </div>
@@ -119,6 +118,8 @@
         <h1>Query database</h1>
         <input type="text" class="form-control" name="query"></input>
     </div>
-     
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>                            

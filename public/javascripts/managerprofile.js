@@ -8,23 +8,51 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index()) //find the closest data 
       assignedRequestData[$th.text()] = $(this).text() //binds the data into the json file 
 
-      var updateAssignedRequest = $.put('managerprofile/selfAssignRequest', assignedRequestData)
-      updateAssignedRequest.done(function (res) {
-        console.log(res)
-      })
+      $.ajax({
+        type: "PUT",
+        url: 'managerprofile/selfAssignRequest',
+        data: assignedRequestData,
+        success: function(res){
+          var result = res.Updated
+          console.log(res)
+          if (!result){
+            alert('Req not Assigned')
+          }
+          else {
+            alert('Request Assigned')
+          }
+        }
+      });
+
     })
   })
 
   //search for request IDs
   $('.search').change(function () {
-    //$(this).attr('disabled', 'disabled')
-    var searchRequestIDData = {}  
-      searchRequestIDData = $(this).text() //binds the data into the json file 
 
-      var searchRequest = $.put('managerprofile/searchRequest', searchRequestIDData)
-      searchRequest.done(function (res) {
-        console.log(res)
-      })
+    //get the inputs for each box
+    var searchRequestIDData = {}  
+      searchRequestIDData["search_RID"] = document.getElementById('searchID').value
+      searchRequestIDData["offset"] = document.getElementById('offset').value
+      searchRequestIDData["show"] = document.getElementById('limit').value
+
+      //updates it
+      $.ajax({
+        type: "PUT",
+        url: 'managerprofile/searchReque,st',
+        data: searchRequestIDData,
+        success: function(res){
+          var result = res.Updated
+          console.log(res)
+          if (!result){
+            alert('Search not made')
+          }
+          else {
+            alert('Search made')
+          }
+        }
+      });
+
     })
   })
 
@@ -76,5 +104,3 @@ $(document).ready(function () {
     $('.add-new').removeAttr('disabled')
   })
 
-
-})

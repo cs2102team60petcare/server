@@ -49,6 +49,7 @@ exports.deleteBid = function (req, res, next) {
       res.json({ 'Updated': true })
     }
   })().catch(e => console.error(e.stack))
+  
 }
 
 exports.addPet = function (req, res, next) {

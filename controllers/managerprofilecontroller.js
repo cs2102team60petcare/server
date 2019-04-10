@@ -27,19 +27,20 @@ exports.selfAssignRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var requestID = req.body.Rid //based on the header values
-    var managerID = req.user.Uid 
-
+    var managerID = req.user.user_id
+    console.log(req.body)
     try {
       await client.query('BEGIN')
       await client.query(queries.assignRequestToMe1, [requestID])
       await client.query(queries.assignRequestToMe2, [managerID, requestID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
-      res.json({ 'Updated': true })
+      
       client.release()
     }
   })().catch(e => console.error(e.stack))
@@ -48,20 +49,23 @@ exports.selfAssignRequest = function (req, res, next) {
 exports.searchRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var requestID = req.body //send request id
-    //var justification = req.body.Message //send justification text
+    var requestID = req.body.search_RID
+    var offsetNo = req.body.offset 
+    var showLimit= req.body.show
+    
 
     try {
       await client.query('BEGIN')
-      await client.query(queries.getRequestsAssignedToMe, [requestID])
-      //await client.query(queries.reqestSolvedUpdate2, [justification, requestID])
+      await client.query(queries.getRequestsAssignedToMe, [requestID], [offsetNo], [showLimit])
+      
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
-      res.json({ 'Updated': true })
+
       client.release()
     }
   })().catch(e => console.error(e.stack))
