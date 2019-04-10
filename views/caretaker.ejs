@@ -171,6 +171,48 @@
         </div>
 
     <div class="container">
+        <div class="row">
+    
+            <section class="content">
+                <h1>Reviews</h1>
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-container">
+                                <table class="table table-bids">
+                                    <thead>
+                                        <tr>
+                                            <th >Review_Number</th>
+                                            <th >Note</th>
+                                            <th >Stars</th>
+                                            <th >Task_id</th>
+                                            <th >Caretaker_id</th>
+                                            <th >Owner_id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(var i = 0; i<reviews.length; i++) { %>
+                                                <tr>
+                                                    <td><%= reviews[i].reviewNum  %></td>
+                                                    <td><%= reviews[i].note  %></td>
+                                                    <td><%= reviews[i].stars%></td>
+                                                    <td><%= reviews[i].task_id %></td>
+                                                    <td><%= reviews[i].caretaker_id   %></td>
+                                                    <td><%= reviews[i].owner_id   %></td>
+                                                </tr>
+                                            <% } %>    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+
+    <div class="container">
             <div class="row">
         
                 <section class="content">

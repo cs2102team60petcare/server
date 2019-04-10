@@ -1,7 +1,7 @@
 const pool = require('../database/connection')
 const queries = require('../database/queries')
 
-exports.updateTaskFinished = function(req, res, next) {
+exports.updateTaskFinished = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var taskID = req.body.Task_id
@@ -16,10 +16,8 @@ exports.updateTaskFinished = function(req, res, next) {
       throw e
     } finally {
       client.release()
-
     }
   })().catch(e => console.error(e.stack))
-
 }
 exports.acceptBid = function (req, res, next) {
   (async () => {
@@ -40,7 +38,6 @@ exports.acceptBid = function (req, res, next) {
       throw e
     } finally {
       client.release()
-
     }
   })().catch(e => console.error(e.stack))
 }
@@ -57,10 +54,8 @@ exports.rejectBid = function (req, res, next) {
       throw e
     } finally {
       client.release()
-
     }
   })().catch(e => console.error(e.stack))
-
 }
 exports.offerService = function (req, res, next) {
   (async () => {
@@ -83,7 +78,6 @@ exports.offerService = function (req, res, next) {
       throw e
     } finally {
       client.release()
-
     }
   })().catch(e => console.error(e.stack))
 }
@@ -105,7 +99,6 @@ exports.deleteService = function (req, res, next) {
       throw e
     } finally {
       client.release()
-
     }
   })().catch(e => console.error(e.stack))
 }
@@ -119,16 +112,20 @@ exports.getCareTakerProfile = function (req, res, next) {
       const tasksHistory = await client.query(queries.getMyTaskHistoryQuery, [userID])
       const services = await client.query(queries.getMyAvailableServicesQuery, [userID])
       const pendingBids = await client.query(queries.getPendingBidsForMeQuery, [userID])
-      Promise.all([upcomingTasks, tasksHistory, services]).then((data) => {
+      const reviews = await client.query(queries.getMyReviews, [userID])
+      Promise.all([upcomingTasks, tasksHistory, services, pendingBids, reviews]).then((data) => {
         var upcomingTasksData = data[0]
         var tasksHistoryData = data[1]
         var servicesData = data[2]
+        var pendingBidsData = data[3]
+        var reviewsData = data[4]
 
         res.render('caretaker', {
           upcomingTasks: upcomingTasksData.rows,
           tasksHistory: tasksHistoryData.rows,
           services: servicesData.rows,
-          bids: pendingBids.rows
+          bids: pendingBidsData.rows,
+          reviews: reviewsData.rows
         })
       }).catch(err => {
         console.log(err)
