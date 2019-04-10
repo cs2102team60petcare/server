@@ -49,10 +49,12 @@ exports.deleteBid = function (req, res, next) {
       res.json({ 'Updated': true })
     }
   })().catch(e => console.error(e.stack))
+  
 }
 
 exports.addPet = function (req, res, next) {
   (async () => {
+    
     const client = await pool.connect()
     var name = req.body.pet_name
     var biography = req.body.pet_information
@@ -71,6 +73,7 @@ exports.addPet = function (req, res, next) {
       throw e
     } finally {
       client.release()
+
       res.json({ 'Updated': true })
     }
   })().catch(e => console.error(e.stack))
