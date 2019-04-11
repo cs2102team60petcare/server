@@ -210,7 +210,8 @@ $(document).ready(function () {
       text: 'Cumulative Income'
     },
     axisX: {
-      valueFormatString: 'DD MM'
+      valueFormatString: 'DD/MM', 
+      title: 'Date'
     },
     axisY: {
       title: 'Cash',
@@ -232,9 +233,8 @@ $(document).ready(function () {
       showInLegend: true,
       name: 'Cumulative Income',
       markerType: 'square',
-      xValueFormatString: 'DD MM, YYYY',
+      xValueFormatString: 'DD/MM/YYYY',
       color: '#F08080',
-      yValueFormatString: '#,##0K',
       dataPoints: xData
     }]
   }

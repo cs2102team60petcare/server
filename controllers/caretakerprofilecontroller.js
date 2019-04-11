@@ -32,13 +32,12 @@ exports.updateTaskFinished = function (req, res, next) {
 exports.acceptBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var bidID = req.body.Bid
-    var serviceID = req.body.Sid
+    var bidID = req.body.Bid_id
+    var serviceID = req.body.Service_id
     try {
       await client.query('BEGIN')
       await client.query(queries.acceptBidUpdate1, [serviceID])
       await client.query(queries.acceptBidUpdate2, [bidID])
-      console.log('Error detected 1')
       await client.query(queries.acceptBidUpdate3, [bidID, serviceID])
       await client.query(queries.acceptBidUpdate4, [bidID])
       await client.query('COMMIT')
@@ -58,7 +57,7 @@ exports.acceptBid = function (req, res, next) {
 exports.rejectBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var bidID = req.body.Bid
+    var bidID = req.body.Bid_id
     try {
       await client.query(queries.rejectBidUpdate, [bidID])
       res.json({ 'Updated': true })

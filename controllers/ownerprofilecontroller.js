@@ -110,13 +110,12 @@ exports.getOwnerProfile = function (req, res, next) {
       const pets = await client.query(queries.getMyPetsQuery, [userID])
       const bids = await client.query(queries.seeMyBidsQuery, [userID])
       const tasks = await client.query(queries.getMyTaskHistoryAsOwnerQuery, [userID])
-      const demand = await client.query(queries.ratioOfTaskByHourByDay, [2])
+      const demand = await client.query(queries.ratioOfTaskByHourByDay, [6])
       Promise.all([pets, bids, tasks, demand]).then((data) => {
         var petsData = data[0]
         var bidsData = data[1]
         var tasksData = data[2]
         var graphData = data[3]
-        //console.log(graphData)
 
         res.render('ownerprofile', {
           bids: bidsData.rows,

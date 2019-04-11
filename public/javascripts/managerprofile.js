@@ -152,6 +152,23 @@ $(document).ready(function () {
   }
 
   var options = {
+    animationEnabled: true,
+    theme: 'light2',
+    axisX: {
+      valueFormatString: 'MM'
+    },
+    axisY: {
+      title: 'Cash',
+      minimum: 0,
+      prefix: '$'
+    },
+    legend: {
+      cursor: 'pointer',
+      verticalAlign: 'bottom',
+      horizontalAlign: 'left',
+      dockInsidePlotArea: true,
+      itemclick: toggleDataSeries
+    },
     title: {
       text: 'Average earnings per hour'
     },
