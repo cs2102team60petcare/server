@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  $('.btn-success').trigger('click')
   $('.star').on('click', function () {
     $(this).toggleClass('star-checked')
   })
@@ -23,30 +24,27 @@ $(document).ready(function () {
   $('.add-new-bid').click(function () {
     $(this).attr('disabled', 'disabled')
     var index = $('.table.table-bids tbody tr:last-child').index()
-    var rowCount = $('.table.table-bids tr').length
-    var date = new Date()
-    var numDays = 10
-    var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
+    // var date = new Date()
+    // var numDays = 10
+    // var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
     var row = '<tr>' +
-            '<td>' + rowCount + '</td>' +
+            '<td>' + '</td>' +
             '<td><input type="text" class="form-control" name="pet_id" id="status"></td>' +
             '<td><input type="text" class="form-control" name="service_id" id="status"></td>' +
             '<td><input type="text" class="form-control" name="money" id="status"></td>' +
-            '<td>Pending</td>' +
-            '<td>' + date.toLocaleDateString() + '</td>' +
-            '<td>' + bidExpiryDateandTime.toLocaleDateString() + '</td>' +
+            '<td>' + '</td>' +
+            '<td><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
+            '<td><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
             '<td>' + actions + '</td>' +
             '</tr>'
     $('.table.table-bids').append(row)
-    $('.table.table-bids tbody tr').eq(index + 1).find('.update, .edit').toggle()
+    $('.table.table-bids tbody tr').eq(index + 1).find('.add').toggle()
   })
 
   // Send input row data on add button click
   $(document).on('click', '.add.bid', function () {
     var empty = false
-    var date = new Date()
-    var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
-    var input = $(this).parents('tr').find('input[type="text"]')
+    var input = $(this).parents('tr').find('input[type="text"], input[type="datetime-local"]')
     var addBidData = {}
     input.each(function () {
       if (!$(this).val()) {
@@ -61,15 +59,36 @@ $(document).ready(function () {
       input.each(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
-        $(this).parent('td').html(val)
-        addBidData['"' + text + '"'] = val
+        if ($(this).attr('type') == 'datetime-local') {
+          var splitDate = val.split('T')
+          var date = splitDate[0]
+          var time = splitDate[1] + ':00'
+          var parsedDate = date + ' ' + time
+          addBidData[text] = parsedDate
+        } else {
+          addBidData[text] = val
+        }
       })
-      addBidData['starting'] = date.toLocaleDateString()
-      addBidData['ending'] = bidExpiryDateandTime.toLocaleDateString()
+
       addBidData['status'] = 1 // 0 = rejected , 1 = Pending, 2= Success
-      var postRequest = $.post('ownerprofile/addBid', addBidData)
-      postRequest.done(function (res) {
-        console.log(res)
+
+      $.ajax({
+        url: 'ownerprofile/addBid',
+        type: 'POST',
+        data: addBidData,
+        success: function (res) {
+          var result = res.Updated
+          if (!result) {
+            alert('Bid is not added')
+          } else {
+            alert('Bid is added')
+            input.each(function () {
+              var text = $(this).attr('name')
+              var val = $(this).val()
+              $(this).parent('td').html(val)
+            })
+          }
+        }
       })
 
       $(this).parents('tr').find('.update, .edit').toggle()
@@ -84,14 +103,26 @@ $(document).ready(function () {
     var deletedBidData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      deletedBidData[$th.text()] = $(this).val()
+      deletedBidData[$th.text()] = $(this).text()
     })
-    row.remove()
+
     $('.add-new-bid').removeAttr('disabled')
-    var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
-    deleteRequest.done(function (res) {
-      console.log(res)
+
+    $.ajax({
+      url: 'ownerprofile/deleteBid',
+      type: 'DELETE',
+      data: deletedBidData,
+      success: function (res) {
+        var result = res.Updated
+        if (!result) {
+          alert('Bid not deleted')
+        } else {
+          alert('Bid is deleted')
+          row.remove()
+        }
+      }
     })
+
     $('.add-new-bid').removeAttr('disabled')
   })
 
@@ -180,7 +211,7 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
       console.log($th.text())
       if ($th.text() == 'Bio' || $th.text() == 'Name') {
-        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + "'" + "value= '" + $(this).text() + '">')
+        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + '"' + 'value = "' + $(this).text() + '">')
       }
     })
     $(this).parents('tr').find('.add, .edit').toggle()
@@ -188,7 +219,9 @@ $(document).ready(function () {
   })
 
   // Update edited row on update button click
-  $(document).on('click', '.update.pet', function () {
+  $(document).on('click', '.add.pet', function () {
+    console.log('Clicking update pet')
+    var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
     var addUpdatedPetData = {}
     input.each(function () {
@@ -208,9 +241,23 @@ $(document).ready(function () {
         addUpdatedPetData[text] = val
       })
 
-      var updateRequest = $.put('ownerprofile/updatePet', addUpdatedPetData)
-      updateRequest.done(function (res) {
-        console.log(res)
+      $.ajax({
+        url: 'ownerprofile/updatePet',
+        type: 'PUT',
+        data: addUpdatedPetData,
+        success: function (res) {
+          var result = res.Updated
+          if (!result) {
+            alert('Pet is not updated')
+          } else {
+            alert('Pet is updated')
+            input.each(function () {
+              var text = $(this).attr('name')
+              var val = $(this).val()
+              $(this).parent('td').html(val)
+            })
+          }
+        }
       })
 
       $(this).parents('tr').find('.update, .edit').toggle()
@@ -218,10 +265,33 @@ $(document).ready(function () {
     }
   })
   // =========================== Pets functions =================================== //
+  /**
+  var xData = {
+      1 : [
+        {
+            type: 'line',
+            showInLegend: true,
+            name: 'Demand by Hour',
+            markerType: 'square',
+            color: '#F08080',
+            dataPoints: [
+                {
+                    x: hour,
+                    y: ration
+                },
+                {
+                    x: hour,
+                    y: ration
+                },
 
-  var xData = []
+            ]
+          }
+      ]
+  }
+  */
+  var xData = {}
   for (var i = 0; i < graphData.length; i++) {
-    console.log(graphData[i])
+    var day = graphData[i].day
     var hour = graphData[i].hour
     var ratio = graphData[i].ratio
 
@@ -229,8 +299,32 @@ $(document).ready(function () {
       x: hour,
       y: ratio
     }
-    xData.push(graphPoint)
+
+    if (xData[day]) {
+      xData[day].push(graphPoint)
+    } else {
+      xData[day] = [graphPoint]
+    }
   }
+
+  var multipleData = []
+  var colors = ['#Ffd700', '#Ffa500', '#40e0d0', '#00ff7f', '#FFC0CB', '#00ff00', '#C6e2ff']
+  for (var dataKey in xData) {
+    if (xData.hasOwnProperty(dataKey)) {
+      var dataValue = xData[dataKey]
+
+      var dataColumn = {
+        type: 'line',
+        showInLegend: true,
+        name: 'Demand by Hour',
+        markerType: 'square',
+        color: colors[parseInt(dataKey) - 1],
+        dataPoints: dataValue
+      }
+      multipleData.push(dataColumn)
+    }
+  }
+  console.log(xData)
 
   var options = {
     animationEnabled: true,
@@ -256,14 +350,7 @@ $(document).ready(function () {
       dockInsidePlotArea: true,
       itemclick: toggleDataSeries
     },
-    data: [{
-      type: 'line',
-      showInLegend: true,
-      name: 'Demand by Hour',
-      markerType: 'square',
-      color: '#F08080',
-      dataPoints: xData
-    }]
+    data: multipleData
   }
   $('#chartContainer').CanvasJSChart(options)
 
