@@ -10,16 +10,17 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
       finishedTaskData[$th.text()] = $(this).text()
     })
-
+    var finishedButton = $(this).parents('td').find('.finished-task')
     $.ajax({
       url: 'caretakerprofile/updateTaskFinished',
       type: 'PUT',
       data: finishedTaskData,
       success: function (res) {
         var result = res.Updated
+        console.log(result)
         if (!result) {
           alert('Task is not updated')
-          // rejectBidBtn.removeAttr('disabled')
+          finishedButton.removeAttr('disabled')
         } else {
           alert('Task is updated')
         }
