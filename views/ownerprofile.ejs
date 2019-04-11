@@ -54,9 +54,9 @@
     
             <section class="content">
                 <h1>My Bids</h1>
-                <div class="col-lg-10 col-lg-offset-1">
+                <!-- <div class="col-lg-11 col-lg-offset-1">
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="panel-body"> -->
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success btn-filter" data-target="2">Successful</button>
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="table-container">
-                                <table class="table table-bids">
+                                <table class="table table-bids" id="bids">
                                     <thead>
                                         <tr>
                                             <th>bid_id</th>
@@ -87,15 +87,15 @@
                                     <tbody>
                                     <% for(var i=0; i < bids.length; i++) { %>
                                         <tr data-status="<%=bids[i].status%>">
-                                            <td><%=bids[i].bid_id    %></td>
-                                            <td><%=bids[i].pet_id    %></td>
-                                            <td><%=bids[i].service_id    %></td>
-                                            <td><%=bids[i].name    %></td>
-                                            <td><%=bids[i].money    %></td>
-                                            <td><%=bids[i].status    %></td>
-                                            <td><%=bids[i].starting    %></td>
-                                            <td><%=bids[i].ending    %></td>
-                                            <td>
+                                            <td style ="word-break:break-all;"><%=bids[i].bid_id    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].pet_id    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].service_id    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].name    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].money    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].status    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].starting    %></td>
+                                            <td style ="word-break:break-all;"><%=bids[i].ending    %></td>
+                                            <td style ="word-break:break-all;"> 
                                                 <a class="add bid" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                 <a class="delete bid" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                             </td>
@@ -104,9 +104,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        <!-- </div>
                     </div>
-                </div>
+                </div> -->
             </section>
             
         </div>

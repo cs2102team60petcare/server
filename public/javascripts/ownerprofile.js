@@ -28,14 +28,15 @@ $(document).ready(function () {
     // var numDays = 10
     // var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
     var row = '<tr>' +
-            '<td>' + '</td>' +
-            '<td><input type="text" class="form-control" name="pet_id" id="status"></td>' +
-            '<td><input type="text" class="form-control" name="service_id" id="status"></td>' +
-            '<td><input type="text" class="form-control" name="money" id="status"></td>' +
-            '<td>' + '</td>' +
-            '<td><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
-            '<td><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
-            '<td>' + actions + '</td>' +
+            '<td >' + '</td>' +
+            '<td ><input type="text" class="form-control" name="pet_id" id="status"></td>' +
+            '<td ><input type="text" class="form-control" name="service_id" id="status"></td>' +
+            '<td ><input type="text" class="form-control" name="money" id="status"></td>' +
+            '<td >' + '</td>' +
+            '<td >' + '</td>' +
+            '<td ><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
+            '<td ><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
+            '<td >' + actions + '</td>' +
             '</tr>'
     $('.table.table-bids').append(row)
     $('.table.table-bids tbody tr').eq(index + 1).find('.add').toggle()
