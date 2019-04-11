@@ -32,12 +32,16 @@ exports.deleteBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var ownerID = req.user.user_id
-    var bidID = req.body.Bid
-    var serviceID = req.body.Sid
+    var bidID = req.body.bid_id
+    var serviceID = req.body.service_id
+    console.log(req.body)
+    console.log(ownerID)
+    console.log(bidID)
+    console.log(serviceID)
 
     try {
       await client.query('BEGIN')
-      await client.query(queries.retractBidUpdate1, [ownerID, bidID])
+      await client.query(queries.retractBidUpdate1, [bidID])
       await client.query(queries.retractBidUpdate2, [ownerID, serviceID])
       await client.query(queries.retractBidUpdate3, [serviceID])
       await client.query(queries.retractBidUpdate4, [bidID])
@@ -120,6 +124,7 @@ exports.getOwnerProfile = function (req, res, next) {
         var bidsData = data[1]
         var tasksData = data[2]
         var graphData = data[3]
+        console.log(bidsData.rows)
 
         res.render('ownerprofile', {
           bids: bidsData.rows,
