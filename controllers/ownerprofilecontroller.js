@@ -61,12 +61,15 @@ exports.addPet = function (req, res, next) {
     var type = req.body.pet_type
     var born = req.body.pet_born
     var userID = req.user.user_id
+    console.log(req.body)
     try {
       await client.query('BEGIN')
       const { rows } = await client.query(queries.signupPetInsert, [name, type, biography, born])
+      console.log(rows)
       const ownsPetValues = [rows[0].pet_id, userID, new Date()]
       await client.query(queries.ownsPetInsert, ownsPetValues)
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
@@ -74,7 +77,7 @@ exports.addPet = function (req, res, next) {
     } finally {
       client.release()
 
-      res.json({ 'Updated': true })
+
     }
   })().catch(e => console.error(e.stack))
 }
