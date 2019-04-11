@@ -11,6 +11,8 @@ var caretakerprofileRoute = require('./caretakerprofile')
 var bidsRoute = require('./bids')
 var servicesRoute = require('./services')
 var utilities = require('../controllers/utilities')
+const pool = require('../database/connection')
+const queries = require('../database/queries')
 
 router.use('/login', loginRoute)
 router.use('/home', homeRoute)
@@ -24,7 +26,25 @@ router.use('/services', servicesRoute)
 router.get('/', mainController.getMainPage)
 
 router.get('/profile', utilities.loggedInOnly, function (req, res, next) {
-  res.render('profile')
+  (async () => {
+    const client = await pool.connect()
+    var userID = req.user.user_id
+    var userRole = req.user.role
+    try {
+      await client.query('BEGIN')
+      const { rows } = await client.query(queries.fullUserProfileQuery, [userID])
+      var userData = rows[0]
+      userData['role'] = userRole
+      await client.query('COMMIT')
+      res.render('profile', userData)
+    } catch (e) {
+      await client.query('ROLLBACK')
+      res.redirect('./login')
+      throw e
+    } finally {
+      client.release()
+    }
+  })().catch(e => console.log(e.stack))
 })
 
 router.get('/redirectToCorrectProfile', function (req, res, next) {
