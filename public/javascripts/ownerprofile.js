@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  $('.btn-success').trigger('click')
   $('.star').on('click', function () {
     $(this).toggleClass('star-checked')
   })
@@ -23,30 +24,27 @@ $(document).ready(function () {
   $('.add-new-bid').click(function () {
     $(this).attr('disabled', 'disabled')
     var index = $('.table.table-bids tbody tr:last-child').index()
-    var rowCount = $('.table.table-bids tr').length
-    var date = new Date()
-    var numDays = 10
-    var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
+    // var date = new Date()
+    // var numDays = 10
+    // var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
     var row = '<tr>' +
-            '<td>' + rowCount + '</td>' +
+            '<td>' + '</td>' +
             '<td><input type="text" class="form-control" name="pet_id" id="status"></td>' +
             '<td><input type="text" class="form-control" name="service_id" id="status"></td>' +
             '<td><input type="text" class="form-control" name="money" id="status"></td>' +
-            '<td>Pending</td>' +
-            '<td>' + date.toLocaleDateString() + '</td>' +
-            '<td>' + bidExpiryDateandTime.toLocaleDateString() + '</td>' +
+            '<td>' + '</td>' +
+            '<td><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
+            '<td><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
             '<td>' + actions + '</td>' +
             '</tr>'
     $('.table.table-bids').append(row)
-    $('.table.table-bids tbody tr').eq(index + 1).find('.update, .edit').toggle()
+    $('.table.table-bids tbody tr').eq(index + 1).find('.add').toggle()
   })
 
   // Send input row data on add button click
   $(document).on('click', '.add.bid', function () {
     var empty = false
-    var date = new Date()
-    var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
-    var input = $(this).parents('tr').find('input[type="text"]')
+    var input = $(this).parents('tr').find('input[type="text"], input[type="datetime-local"]')
     var addBidData = {}
     input.each(function () {
       if (!$(this).val()) {
@@ -61,15 +59,36 @@ $(document).ready(function () {
       input.each(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
-        $(this).parent('td').html(val)
-        addBidData['"' + text + '"'] = val
+        if ($(this).attr('type') == 'datetime-local') {
+          var splitDate = val.split('T')
+          var date = splitDate[0]
+          var time = splitDate[1] + ':00'
+          var parsedDate = date + ' ' + time
+          addBidData[text] = parsedDate
+        } else {
+          addBidData[text] = val
+        }
       })
-      addBidData['starting'] = date.toLocaleDateString()
-      addBidData['ending'] = bidExpiryDateandTime.toLocaleDateString()
+
       addBidData['status'] = 1 // 0 = rejected , 1 = Pending, 2= Success
-      var postRequest = $.post('ownerprofile/addBid', addBidData)
-      postRequest.done(function (res) {
-        console.log(res)
+
+      $.ajax({
+        url: 'ownerprofile/addBid',
+        type: 'POST',
+        data: addBidData,
+        success: function (res) {
+          var result = res.Updated
+          if (!result) {
+            alert('Bid is not added')
+          } else {
+            alert('Bid is added')
+            input.each(function () {
+              var text = $(this).attr('name')
+              var val = $(this).val()
+              $(this).parent('td').html(val)
+            })
+          }
+        }
       })
 
       $(this).parents('tr').find('.update, .edit').toggle()
@@ -84,14 +103,26 @@ $(document).ready(function () {
     var deletedBidData = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      deletedBidData[$th.text()] = $(this).val()
+      deletedBidData[$th.text()] = $(this).text()
     })
-    row.remove()
+
     $('.add-new-bid').removeAttr('disabled')
-    var deleteRequest = $.delete('ownerprofile/deleteBid', deletedBidData)
-    deleteRequest.done(function (res) {
-      console.log(res)
+
+    $.ajax({
+      url: 'ownerprofile/deleteBid',
+      type: 'DELETE',
+      data: deletedBidData,
+      success: function (res) {
+        var result = res.Updated
+        if (!result) {
+          alert('Bid not deleted')
+        } else {
+          alert('Bid is deleted')
+          row.remove()
+        }
+      }
     })
+
     $('.add-new-bid').removeAttr('disabled')
   })
 
