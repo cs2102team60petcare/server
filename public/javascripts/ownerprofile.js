@@ -427,6 +427,7 @@ $(document).ready(function () {
       reviewDataRequest['rating'] = ratingValue
       console.log(reviewDataRequest)
       responseMessage(msg)
+    
 
       $.ajax({
         url: 'ownerprofile/sendCareTakerReview',
