@@ -38,10 +38,11 @@
                                             <tr>
                                                 <th >Task_id</th>
                                                 <th >Type</th>
-                                                <th >OwnerName</th>
+                                                <th >Owner</th>
+                                                <th >Phone#</th>
                                                 <th >Starting</th>
                                                 <th >Ending</th>
-                                                <th >Money</th>
+                                                <th >Pay</th>
                                                 <th> Actions</th>
                                             </tr>
                                         </thead>
@@ -49,8 +50,9 @@
                                             <% for(var i = 0; i<upcomingTasks.length; i++) { %>
                                                 <tr>
                                                     <td><%=upcomingTasks[i].task_id   %></td>
-                                                    <td><%=upcomingTasks[i].type   %></td>
+                                                    <td><%=upcomingTasks[i].type      %></td>
                                                     <td><%=upcomingTasks[i].ownername %></td>
+                                                    <td><%=upcomingTasks[i].phone     %></td>
                                                     <td><%=upcomingTasks[i].starting  %></td>
                                                     <td><%=upcomingTasks[i].ending    %></td>
                                                     <td><%=upcomingTasks[i].money     %></td>
