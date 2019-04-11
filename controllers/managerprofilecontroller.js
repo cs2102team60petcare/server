@@ -4,21 +4,21 @@ const queries = require('../database/queries')
 exports.updateRequest = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-
-    var requestID = req.body.Request_ID // send request id
-    var justification = req.body.Message // send justification text
+    console.log(req.body)
+    var requestID = req.body.Request_id
+    var justification = req.body.Justification // send justification text
 
     try {
       await client.query('BEGIN')
       await client.query(queries.requestSolvedUpdate1, [requestID])
-      await client.query(queries.reqestSolvedUpdate2, [justification, requestID])
+      await client.query(queries.requestSolvedUpdate2, [justification, requestID])
       await client.query('COMMIT')
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
-      res.json({ 'Updated': true })
       client.release()
     }
   })().catch(e => console.error(e.stack))
@@ -97,18 +97,25 @@ exports.getManagerProfile = function (req, res, next) {
     const client = await pool.connect()
     var userID = req.user.user_id
     try {
-      const requests = await client.query(queries.getRequestsAssignedToMe, [userID, 0, 5])
+    
+      const requests = await client.query(queries.getUnresolvedRequestsAssignedToMe, [userID, 0, 5])
       const unassignedRequests = await client.query(queries.getUnassignedRequests)
       const graphDataRequest = await client.query(queries.perHourAverageByMonthQuery)
-      Promise.all([requests, unassignedRequests, graphDataRequest]).then((data) => {
+      const pastResolvedRequestHistory = await client.query(queries.getSolvedRequestsAssignedToMe, [userID, 0, 5])
+      Promise.all([requests, unassignedRequests, graphDataRequest, pastResolvedRequestHistory]).then((data) => {
         var requestsData = data[0]
         var unassignedRequestsData = data[1]
         var graphData = data[2]
-        console.log(graphData)
+        var pastResolvedRequestHistoryData = data[3]
+        console.log(requestsData.rows)
+        console.log(unassignedRequestsData.rows)
+        console.log(graphData.rows)
+        console.log(pastResolvedRequestHistoryData.rows)
         res.render('managerprofile', {
           requests: requestsData.rows,
           unassignedRequests: unassignedRequestsData.rows,
-          graphDataValues: graphData.rows
+          graphDataValues: graphData.rows,
+          pastRequests: pastResolvedRequestHistoryData.rows
         })
       }).catch(err => {
         console.log(err)
