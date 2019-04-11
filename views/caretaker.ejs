@@ -19,10 +19,37 @@
             var graphData = <%- JSON.stringify(graphDataValues) %>
     </script>
     <script src="javascripts/caretaker.js"></script>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/navbarmanager.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 
 
   </head>
   <body>
+            <nav role = "navigation" class = "navbar navbar-inverse">
+                <div class = "container-fluid">
+                    <div class ="navbar-header">
+                        <a class = "navbar-brand" href= "#">
+                            <img src="images/paw.png" class ="logo">
+                        </a>
+                        <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                            <span class ="sr-only">Toggle navigation</span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                        </button>
+                        
+                    </div>
+                    <div class="navbar-collapse collapse" id ="navbarCollapse">
+                        <ul class ="nav navbar-nav">
+                            <li><a href="./profile"">Edit Profile</a></li>
+                        </ul>
+                        <ul class ="nav navbar-nav pull-right" id="right">
+                            <li><a href="../logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
     <div class="container">
             <div class="row">
@@ -253,7 +280,7 @@
         </div>
 
         
-    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 30px auto;"></div>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

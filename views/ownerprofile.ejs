@@ -17,9 +17,14 @@
             var graphData = <%- JSON.stringify(graphDataValues) %>
     </script>
     <script src="javascripts/ownerprofile.js"></script>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/navbar.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
+
 
         <div class="container">
                 <div class="row">
@@ -69,6 +74,32 @@
     <div class = "collapse" id ="bidsTable">
     <div class="container">
             <div class="row">
+
+            <nav role = "navigation" class = "navbar navbar-inverse">
+                <div class = "container-fluid">
+                    <div class ="navbar-header">
+                        <a class = "navbar-brand" href= "#">
+                            <img src="images/paw.png" class ="logo">
+                        </a>
+                        <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                            <span class ="sr-only">Toggle navigation</span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                        </button>
+                        
+                    </div>
+                    <div class="navbar-collapse collapse" id ="navbarCollapse">
+                        <ul class ="nav navbar-nav">
+                            <li><a href="./profile">Edit Profile</a></li>
+                        </ul>
+                        <ul class ="nav navbar-nav pull-right" id="right">
+                            <li><a href="../logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
         
                 <section class="content" >
                     <h1>View All Bids</h1>
@@ -117,9 +148,9 @@
     
             <section class="content">
                 <h1>My Bids</h1>
-                <div class="col-lg-10 col-lg-offset-1">
+                <!-- <div class="col-lg-11 col-lg-offset-1">
                     <div class="panel panel-default">
-                        <div class="panel-body">
+                        <div class="panel-body"> -->
                             <div class="pull-right">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success btn-filter" data-target="2">Successful</button>
@@ -133,7 +164,7 @@
                                 </div>
                             </div>
                             <div class="table-container">
-                                <table class="table table-bids">
+                                <table class="table table-bids" id="bids">
                                     <thead>
                                         <tr>
                                             <th>bid_id</th>
@@ -149,16 +180,16 @@
                                     </thead>
                                     <tbody>
                                     <% for(var i=0; i < bids.length; i++) { %>
-                                        <tr data-status="<%=bids[i].status%>">
-                                            <td><%=bids[i].bid_id    %></td>
-                                            <td><%=bids[i].pet_id    %></td>
-                                            <td><%=bids[i].service_id    %></td>
-                                            <td><%=bids[i].name    %></td>
-                                            <td><%=bids[i].money    %></td>
-                                            <td><%=bids[i].status    %></td>
-                                            <td><%=bids[i].starting    %></td>
-                                            <td><%=bids[i].ending    %></td>
-                                            <td>
+                                        <tr id="bid" data-status="<%=bids[i].status%>">
+                                            <td ><%=bids[i].bid_id    %></td>
+                                            <td ><%=bids[i].pet_id    %></td>
+                                            <td ><%=bids[i].service_id    %></td>
+                                            <td ><%=bids[i].name    %></td>
+                                            <td ><%=bids[i].money    %></td>
+                                            <td ><%=bids[i].status    %></td>
+                                            <td ><%=bids[i].starting    %></td>
+                                            <td ><%=bids[i].ending    %></td>
+                                            <td > 
                                                 <a class="add bid" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                 <a class="delete bid" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                             </td>
@@ -167,9 +198,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        <!-- </div>
                     </div>
-                </div>
+                </div> -->
             </section>
             
         </div>
@@ -213,6 +244,8 @@
                                                         <a class="add pet" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                         <a class="edit pet" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                                                         <a class="update pet" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>
+                                                        <a class="delete pet" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+
                                                     </td>
                                                 </tr>
                                             <% } %>
@@ -242,10 +275,11 @@
                                                     <th>Task ID</th>
                                                     <th>Task Status</th>
                                                     <th>Caretaker Name</th>
-                                                    <th>Phone# Name</th>
+                                                    <th>Phone</th>
                                                     <th>Starting</th>
                                                     <th>Ending</th>
                                                     <th>Money</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -258,6 +292,9 @@
                                                     <td><%=tasks[i].starting    %></td>
                                                     <td><%=tasks[i].ending    %></td>
                                                     <td><%=tasks[i].money    %></td>
+                                                    <td>
+                                                        <button class="ReviewBtn">Review</button>
+                                                    </td>
                                                 </tr>
                                             <% } %>
                                             </tbody>
@@ -271,8 +308,48 @@
             </div>
     </div>
 
+    <div class="container">
+    <div class="dialog" id="myReviewDialog">
+        <h1>Review Caretaker</h1>
+        <h3 id="careTakerName"></h2>
 
-    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 0px auto;"></div>
+        <textarea id = "careTakerReviewForm" placeholder="Please leave a review here"></textarea>
+
+          <!-- Rating Stars Box -->
+        <div class='rating-stars text-center'>
+            <ul id='stars'>
+            <li class='star' title='Poor' data-value='1'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Fair' data-value='2'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Good' data-value='3'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Excellent' data-value='4'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='WOW!!!' data-value='5'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            </ul>
+        </div>
+
+
+        <div class='success-box'>
+                <div class='clearfix'></div>
+                <div style="text-align: center"><img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/></div>
+                <div class='text-message'></div>
+                <div class='clearfix'></div>
+        </div>
+
+        <input type="button" value="Close" id="btnCloseReview">
+
+    </div>
+    </div>
+
+    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 30px auto;"></div>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

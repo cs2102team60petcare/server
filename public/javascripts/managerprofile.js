@@ -146,6 +146,7 @@ $(document).ready(function () {
     var sendQueryText = $(this).parents('.container').find('input[type="text"]').val()
     var sendQueryData = {}
     var queryResultTextBox = $('#results-query')
+    queryResultTextBox.innerHtml = 'Hello world'
     console.log(queryResultTextBox)
     sendQueryData['Query'] = sendQueryText
     $.ajax({
@@ -160,7 +161,7 @@ $(document).ready(function () {
           alert('Query not send')
         } else {
           alert('Query send with result')
-          queryResultTextBox.html(JSON.stringify(updatedData))
+          queryResultTextBox.val(JSON.stringify(updatedData))
         }
       }
     })

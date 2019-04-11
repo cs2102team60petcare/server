@@ -8,6 +8,7 @@ var signUpRoute = require('./signup')
 var ownerprofileRoute = require('./ownerprofile')
 var managerprofileRoute = require('./managerprofile')
 var caretakerprofileRoute = require('./caretakerprofile')
+var profileRoute = require('./profileRoute')
 var bidsRoute = require('./bids')
 var servicesRoute = require('./services')
 var utilities = require('../controllers/utilities')
@@ -19,13 +20,10 @@ router.use('/logout', logoutRoute)
 router.use('/ownerprofile', utilities.loggedInOnly, ownerprofileRoute)
 router.use('/managerprofile', utilities.loggedInOnly, managerprofileRoute)
 router.use('/caretakerprofile', utilities.loggedInOnly, caretakerprofileRoute)
+router.use('/profile',utilities.loggedInOnly, profileRoute)
 router.use('/bids', bidsRoute)
 router.use('/services', servicesRoute)
 router.get('/', mainController.getMainPage)
-
-router.get('/profile', utilities.loggedInOnly, function (req, res, next) {
-  res.render('profile')
-})
 
 router.get('/redirectToCorrectProfile', function (req, res, next) {
   var isUser = req.user.user
