@@ -10,20 +10,22 @@ exports.addBid = function (req, res, next) {
     var ownerID = req.user.user_id
     var petID = req.body.pet_id
     var serviceID = req.body.service_id
+    console.log(req.body)
+    console.log(ownerID)
     try {
       await client.query('BEGIN')
       await client.query(queries.placeBidInsert, [starting, ending, money, ownerID, petID, serviceID])
-      await client.query('COMMIT')
+      await client.query('COMMIT')  
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.json({ 'Updated': true })
+
     }
   })().catch(e => console.log(e.stack))
-  res.json({ 'Updated': true })
 }
 
 exports.deleteBid = function (req, res, next) {
@@ -39,14 +41,15 @@ exports.deleteBid = function (req, res, next) {
       await client.query(queries.retractBidUpdate2, [ownerID, serviceID])
       await client.query(queries.retractBidUpdate3, [serviceID])
       await client.query(queries.retractBidUpdate4, [bidID])
-      await client.query('COMMIT')
+      await client.query('COMMIT')  
+      res.json({ 'Updated': true })
     } catch (e) {
       await client.query('ROLLBACK')
       res.json({ 'Updated': false })
       throw e
     } finally {
       client.release()
-      res.json({ 'Updated': true })
+
     }
   })().catch(e => console.error(e.stack))
   
@@ -76,8 +79,6 @@ exports.addPet = function (req, res, next) {
       throw e
     } finally {
       client.release()
-
-
     }
   })().catch(e => console.error(e.stack))
 }
