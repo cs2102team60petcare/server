@@ -195,23 +195,6 @@ $(document).ready(function() {
             $('.add-new-bid').removeAttr('disabled')
         }
     })
-
-    // Delete row on delete button click
-    $(document).on('click', '.delete.pet', function() {
-        var row = $(this).parents('tr')
-        var rowData = row.find('td:not(:last-child)')
-        var deletedPetData = {}
-        rowData.each(function() {
-            var $th = $(this).closest('table').find('th').eq($(this).index())
-            deletedPetData[$th.text()] = $(this).val()
-        })
-        row.remove()
-        $('.add-new-pet').removeAttr('disabled')
-        var deleteRequest = $.delete('ownerprofile/deletePet', deletedPetData)
-        deleteRequest.done(function(res) {
-            console.log(res)
-        })
-    })
     // =========================== Pets functions =================================== //
 
     var xData = []
@@ -237,9 +220,9 @@ $(document).ready(function() {
             title: 'Time'
         },
         axisY: {
-            title: 'Cash',
+            title: 'Ratio',
             minimum: 0,
-            prefix: '$'
+            maximum: 1
         },
         toolTip: {
             shared: true
@@ -257,7 +240,6 @@ $(document).ready(function() {
             name: 'Demand by Hour',
             markerType: 'square',
             color: '#F08080',
-            yValueFormatString: '#,##0K',
             dataPoints: xData
         }]
     }

@@ -115,7 +115,7 @@ module.exports = {
   // Complex Query 2
   // Shows the caretaker the cumulative earning (by day)
   // on the caretaker_dashboard
-  perDayCumulativeSumQuery: "select extract(year from B.starting)::integer as year, extract(month from b.starting)::integer as month, extract(day from b.starting)::integer as day, sum(sum(money)) over (order by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting)) from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) where S.caretaker_id=$1 group by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting) order by extract(year from B.starting), extract(month from b.starting),extract(day from b.starting) desc offset $2 limit $3;",
+  perDayCumulativeSumQuery: "select extract(year from B.starting)::integer as year, extract(month from b.starting)::integer as month, extract(day from b.starting)::integer as day, sum(sum(money)) over (order by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting)) from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) where S.caretaker_id=$1 group by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting) order by sum desc offset $2 limit $3;",
 
   // Complex Query 3
   // Shows the demand ratio by hour for days {1..7} (whichever we call)
