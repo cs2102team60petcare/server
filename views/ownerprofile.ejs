@@ -33,7 +33,7 @@
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-success btn-filter" data-target="2">Successful</button>
                                     <button type="button" class="btn btn-warning btn-filter" data-target="1">Pending</button>
-                                    <button type="button" class="btn btn-danger btn-filter" data-target="0">Cancelled</button>
+                                    <button type="button" class="btn btn-danger btn-filter" data-target="0">Rejected</button>
                                 </div>
                             </div>
                             <div class="pull-left">
@@ -48,8 +48,9 @@
                                             <th>bid_id</th>
                                             <th>pid_id</th>
                                             <th>service_id</th>
+                                            <th>Caretaker</th>
                                             <th>Offered</th>
-                                            <th>Status</th>
+                                            <th>Bid Status</th>
                                             <th>Starting</th>
                                             <th>Ending</th>
                                             <th>Actions</th>
@@ -61,6 +62,7 @@
                                             <td><%=bids[i].bid_id    %></td>
                                             <td><%=bids[i].pet_id    %></td>
                                             <td><%=bids[i].service_id    %></td>
+                                            <td><%=bids[i].name    %></td>
                                             <td><%=bids[i].money    %></td>
                                             <td><%=bids[i].status    %></td>
                                             <td><%=bids[i].starting    %></td>
@@ -147,8 +149,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>Task ID</th>
-                                                    <th>Status</th>
+                                                    <th>Task Status</th>
                                                     <th>Caretaker Name</th>
+                                                    <th>Phone# Name</th>
                                                     <th>Starting</th>
                                                     <th>Ending</th>
                                                     <th>Money</th>
@@ -160,6 +163,7 @@
                                                     <td><%=tasks[i].task_id    %></td>
                                                     <td><%=tasks[i].status      %></td>
                                                     <td><%=tasks[i].caretakername    %></td>
+                                                    <td><%=tasks[i].phone    %></td>
                                                     <td><%=tasks[i].starting    %></td>
                                                     <td><%=tasks[i].ending    %></td>
                                                     <td><%=tasks[i].money    %></td>
