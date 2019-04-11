@@ -250,9 +250,10 @@ $(document).ready(function () {
   })
   // =========================== Pets functions =================================== //
 
-  var xData = []
+  var xData = {}
   for (var i = 0; i < graphData.length; i++) {
     console.log(graphData[i])
+    var ownerID = graphData[i].ownerID
     var hour = graphData[i].hour
     var ratio = graphData[i].ratio
 
