@@ -155,10 +155,14 @@
     <div class="container">
 
         <h1>Query database</h1>
-        <input type="text" class="form-control" name="query"></input>
+        <input type="text" class="form-control-query" name="query"></input>
+        <button id="SendQueryBtn">Send Query</button>
+        <textarea id = "results-query"
+            rows = "3"
+            cols = "80">Your Query Results will be showned here</textarea>
     </div>
 
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <div id="chartContainer" style="height: 270px; width: 80%;"></div>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

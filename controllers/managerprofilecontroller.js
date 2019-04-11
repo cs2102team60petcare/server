@@ -92,12 +92,27 @@ exports.searchRequest = function (req, res, next) {
   })().catch(e => console.error(e.stack))
 }
 
+exports.sendQueryData = function (req, res, next) {
+  var query = req.body.Query
+  pool.query(query, function (err, result) {
+    if (err) {
+      res.json({ 'Updated': false })
+      next(err)
+    }
+    console.log(result)
+    res.json(
+      {
+        'Updated': true,
+        'UpdatedData': result
+      }
+    )
+  })
+}
 exports.getManagerProfile = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var userID = req.user.user_id
     try {
-    
       const requests = await client.query(queries.getUnresolvedRequestsAssignedToMe, [userID, 0, 5])
       const unassignedRequests = await client.query(queries.getUnassignedRequests)
       const graphDataRequest = await client.query(queries.perHourAverageByMonthQuery)
