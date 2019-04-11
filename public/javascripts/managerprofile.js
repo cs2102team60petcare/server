@@ -145,7 +145,7 @@ $(document).ready(function () {
     $(this).attr('disabled', 'disabled')
     var sendQueryText = $(this).parents('.container').find('input[type="text"]').val()
     var sendQueryData = {}
-    var queryResultTextBox = $('#resultsQuery')
+    var queryResultTextBox = $('#results-query')
     queryResultTextBox.innerHtml = 'Hello world'
     console.log(queryResultTextBox)
     sendQueryData['Query'] = sendQueryText
@@ -161,7 +161,7 @@ $(document).ready(function () {
           alert('Query not send')
         } else {
           alert('Query send with result')
-          queryResultTextBox.val('Hello world')
+          queryResultTextBox.val(JSON.stringify(updatedData))
         }
       }
     })
