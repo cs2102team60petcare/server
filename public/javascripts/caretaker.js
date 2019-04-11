@@ -19,7 +19,7 @@ $(document).ready(function () {
         var result = res.Updated
         if (!result) {
           alert('Task is not updated')
-          rejectBidBtn.removeAttr('disabled')
+          // rejectBidBtn.removeAttr('disabled')
         } else {
           alert('Task is updated')
         }
