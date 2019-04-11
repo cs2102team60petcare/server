@@ -62,7 +62,7 @@ create table PETS (
 	name 		text not null, 
 	type 		text not null, 
 	biography 	text,
-	born 		date not null, 
+	born 		date not null default NOW(), 
 	death		date, 
 	foreign key (type) references ANIMALS
 );
@@ -263,20 +263,17 @@ create or replace function placeBid()
 returns trigger as $$ 
 declare earliest timestamp; 
 		latest timestamp; 
+		minPerHour integer;  
 		preferences text[]; 
-		likesType text; 
 		petType text; 
 		compatibility boolean;  
 begin
-	select starting, ending into earliest, latest from services where service_id=new.service_id;
-	--select likes into preferences from Likes natural join services where service_id=new.service_id limit 1; 
-	select type into petType from pets where pet_id=new.pet_id;  	
-	compatibility:= false; 
-	-- ToDO petTypeCompatibility @Psyf 
-
+	select starting, ending, minwage into earliest, latest, minPerHour from services where service_id=new.service_id;
+	select type into petType from pets P where P.pet_id=new.pet_id; 
 	if new.starting < earliest then raise exception 'Starts later.'; return null; 
 	elseif new.ending > latest then raise exception 'Ends earlier.'; return null; 
-	-- elseif compatibility=false then raise exception 'Not in pet preference.'; return null; 
+	elseif (petType not in (select type from likes where caretaker_id=(select caretaker_id from Services where service_id=new.service_id))) then raise exception 'Not compatible with this pet!'; return null; 
+	elseif minPerHour * ((EXTRACT(EPOCH FROM new.ending) - EXTRACT(EPOCH FROM new.starting))/3600.0) > new.money then raise exception 'Need higher offer.'; return null; 
 	elseif (select status from services where service_id=new.service_id)=2 then raise exception 'Bidding closed.'; return null; 
 	else return new; end if; 
 end; $$ language plpgsql; 
