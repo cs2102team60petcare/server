@@ -63,7 +63,6 @@ create table PETS (
 	type 		text not null, 
 	biography 	text,
 	born 		date not null default NOW(), 
-	death		date, 
 	foreign key (type) references ANIMALS
 );
 
@@ -246,10 +245,8 @@ insert into requests (user_id, message) values (3, '*insert generic complaint by
 create or replace function updateService() returns trigger as $$ 
 declare isTask integer; 
 begin
-	-- can't remove if Task exists (i.e a successful bid exists)
 	select count(*) into isTask from Bids B where B.service_id=new.service_id and status=2; 
 	if isTask > 0 and new.status=0 then raise exception 'Cannot remove as task exists.'; return null;  
-	-- can't accept another bid for same program if already Task exists
 	elseif isTask > 0 and new.status=2 then raise exception 'Task already exists for this service'; return null;  
 	else return new; end if; 
 end; $$ language plpgsql; 
@@ -309,12 +306,9 @@ declare lastNum integer; endTime timestamp;
 begin 
 	select coalesce(max(reviewnum), 0) into lastNum from reviews where caretaker_id=new.caretaker_id; 
 	select ending into endTime from tasks natural join bids where task_id=new.task_id; 
-	
 	if endTime > NOW() then raise exception 'Wait till the task is over to send review.'; return null; 
 	else new.reviewnum = lastNum+1; return new; 
 	end if;
-		
-	-- TODO @ Psyf defensive coding by making sure owner and caretaker actually related to num. 
 end; $$ language plpgsql;
 
 create trigger sendingReview
