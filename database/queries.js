@@ -12,7 +12,7 @@ module.exports = {
   // call them SOFT deletes
   // WARNING: Use signUpUserInsert in a Transaction with one of the next two
   // TODO @ JJ
-  signupUserInsert: 'INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+  signupUserInsert: 'INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *;',
 
   signupOwnerInsert: 'INSERT INTO owners (user_id) VALUES ($1);',
 
@@ -29,7 +29,7 @@ module.exports = {
   fullUserProfileQuery: 'SELECT user_id, name, email, phone, address, created FROM users where user_id=$1;',
   petProfileQuery: 'SELECT * from PETS where pet_id=$1;',
 
-  userProfileUpdate: 'UPDATE Users SET name=$1, email=$2, phone=$3, address=$4 WHERE user_id=$1;',
+  userProfileUpdate: 'UPDATE Users SET name=$1, email=$2, phone=$3, address=$4 WHERE user_id=$5 RETURNING *;',
   // WARNING: Make sure Password is hashed with bcrypt when updating
   userPasswordUpdate: 'UPDATE Users SET password=$1 WHERE user_id=$2;',
 
