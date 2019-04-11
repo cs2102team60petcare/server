@@ -145,7 +145,8 @@ $(document).ready(function () {
     $(this).attr('disabled', 'disabled')
     var sendQueryText = $(this).parents('.container').find('input[type="text"]').val()
     var sendQueryData = {}
-    var queryResultTextBox = $('#results-query')
+    var queryResultTextBox = $('#resultsQuery')
+    queryResultTextBox.innerHtml = 'Hello world'
     console.log(queryResultTextBox)
     sendQueryData['Query'] = sendQueryText
     $.ajax({
@@ -160,7 +161,7 @@ $(document).ready(function () {
           alert('Query not send')
         } else {
           alert('Query send with result')
-          queryResultTextBox.html(JSON.stringify(updatedData))
+          queryResultTextBox.val('Hello world')
         }
       }
     })

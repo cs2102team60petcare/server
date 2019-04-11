@@ -209,7 +209,7 @@ $(document).ready(function () {
     console.log('Editing pet')
     $(this).parents('tr').find('td:not(:last-child)').each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
-      console.log($th.text())
+
       if ($th.text() == 'Bio' || $th.text() == 'Name') {
         $(this).html('<input type="text" class="form-control" name = "' + $th.text() + '"' + 'value = "' + $(this).text() + '">')
       }
@@ -241,6 +241,13 @@ $(document).ready(function () {
         addUpdatedPetData[text] = val
       })
 
+      $(this).parents('tr').find('td:not(:last-child)').each(function () {
+        var $th = $(this).closest('table').find('th').eq($(this).index())
+        if ($th.text() == 'Pid') {
+          console.log($(this).text())
+          addUpdatedPetData[$th.text()] = $(this).text()
+        }
+      })
       $.ajax({
         url: 'ownerprofile/updatePet',
         type: 'PUT',
@@ -260,35 +267,39 @@ $(document).ready(function () {
         }
       })
 
-      $(this).parents('tr').find('.update, .edit').toggle()
+      $(this).parents('tr').find('.add, .edit').toggle()
       $('.add-new-bid').removeAttr('disabled')
     }
   })
-  // =========================== Pets functions =================================== //
-  /**
-  var xData = {
-      1 : [
-        {
-            type: 'line',
-            showInLegend: true,
-            name: 'Demand by Hour',
-            markerType: 'square',
-            color: '#F08080',
-            dataPoints: [
-                {
-                    x: hour,
-                    y: ration
-                },
-                {
-                    x: hour,
-                    y: ration
-                },
 
-            ]
-          }
-      ]
-  }
-  */
+  // Edit row on edit button click
+  $(document).on('click', '.delete.pet', function () {
+    console.log('Deleting pet')
+    var deletedPetData = {}
+    var row = $(this).parents('tr')
+    $(this).parents('tr').find('td:not(:last-child)').each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      deletedPetData[$th.text()] = $(this).val()
+    })
+
+    $.ajax({
+      url: 'ownerprofile/deletePet',
+      type: 'DELETE',
+      data: deletedPetData,
+      success: function (res) {
+        var result = res.Updated
+        if (!result) {
+          alert('Pet is not deleted')
+        } else {
+          alert('Pet is deleted')
+          row.remove()
+        }
+      }
+    })
+  })
+
+  // =========================== Pets functions =================================== //
+
   var xData = {}
   for (var i = 0; i < graphData.length; i++) {
     var day = graphData[i].day
@@ -362,4 +373,86 @@ $(document).ready(function () {
     }
     e.chart.render()
   }
+
+  $('.ReviewBtn').click(function () {
+    var reviewDataRequest = {}
+    $(this).parents('tr').find('td:not(:last-child)').each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      reviewDataRequest[$th.text()] = $(this).text()
+    })
+    var careTakerName = reviewDataRequest['Caretaker Name']
+
+    $('#careTakerName').html(careTakerName)
+    $('#myReviewDialog').show(500)
+
+    /* 1. Visualizing things on Hover - See next part for action on click */
+    $('#stars li').on('mouseover', function () {
+      var onStar = parseInt($(this).data('value'), 10) // The star currently mouse on
+
+      // Now highlight all the stars that's not after the current hovered star
+      $(this).parent().children('li.star').each(function (e) {
+        if (e < onStar) {
+          $(this).addClass('hover')
+        } else {
+          $(this).removeClass('hover')
+        }
+      })
+    }).on('mouseout', function () {
+      $(this).parent().children('li.star').each(function (e) {
+        $(this).removeClass('hover')
+      })
+    })
+
+    /* 2. Action to perform on click */
+    $('#stars li').on('click', function () {
+      var onStar = parseInt($(this).data('value'), 10) // The star currently selected
+      var stars = $(this).parent().children('li.star')
+
+      for (i = 0; i < stars.length; i++) {
+        $(stars[i]).removeClass('selected')
+      }
+
+      for (i = 0; i < onStar; i++) {
+        $(stars[i]).addClass('selected')
+      }
+
+      var ratingValue = parseInt($('#stars li.selected').last().data('value'), 10)
+      var msg = ''
+      if (ratingValue > 1) {
+        msg = 'Thanks! You rated this ' + ratingValue + ' stars.'
+      } else {
+        msg = 'Thanks for your review! You rated this ' + ratingValue + ' stars.'
+      }
+      var reviewFormText = $('#careTakerReviewForm').val()
+      console.log('Review form text : ' + reviewFormText)
+      reviewDataRequest['note'] = reviewFormText
+      reviewDataRequest['rating'] = ratingValue
+      console.log(reviewDataRequest)
+      responseMessage(msg)
+
+      $.ajax({
+        url: 'ownerprofile/sendCareTakerReview',
+        type: 'POST',
+        data: reviewDataRequest,
+        success: function (res) {
+          var result = res.Updated
+          if (!result) {
+            alert('Review is not sent')
+          } else {
+            alert('Review sent')
+          }
+          location.reload(true)
+        }
+      })
+    })
+  })
+
+  $('#btnCloseReview').click(function () {
+    $('#myReviewDialog').hide(400)
+  })
 })
+
+function responseMessage (msg) {
+  $('.success-box').fadeIn(200)
+  $('.success-box div.text-message').html('<span>' + msg + '</span>')
+}
