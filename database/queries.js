@@ -13,7 +13,7 @@ module.exports = {
   // WARNING: Use signUpUserInsert in a Transaction with one of the next two
   // TODO @ JJ
   signupUserInsert: 'INSERT INTO users (name, email, phone, address, password) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-  
+
   signupOwnerInsert: 'INSERT INTO owners (user_id) VALUES ($1);',
 
   signupCareTakerInsert: 'INSERT INTO caretakers (user_id) VALUES ($1);',
@@ -37,9 +37,9 @@ module.exports = {
 
   getMyUpcomingTasksQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, U.phone, B.starting, B.ending, B.money FROM Tasks T JOIN Bids B on (T.bid_id=B.bid_id) JOIN Services S on (B.service_id=S.service_id) NATURAL JOIN Caretakers C NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;',
   getMyTaskHistoryQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=2 ORDER BY S.starting desc;',
-  getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;', 
+  getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;',
   finishTaskUpdate: 'UPDATE Tasks SET status=2 where task_id=$1;',
-  getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1 order by reviewnum desc;', 
+  getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1 order by reviewnum desc;',
 
   getMyPetsQuery: 'SELECT * FROM Pets P NATURAL JOIN Owns O WHERE O.owner_id=$1;',
 
@@ -59,9 +59,9 @@ module.exports = {
         'join Pets P on (B.pet_id=P.pet_id) join Users U on (B.owner_id=U.user_id) ' +
         'where S.status=1 and B.status=1 and S.caretaker_id=$1;',
   seeBidsForServiceQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) ' +
-        'WHERE S.service_id=$1 ORDER BY B.money desc;', 
-  seeMyBidsQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) where B.owner_id=$1;',   
-  getAllBids: 'SELECT * FROM Bids',      
+        'WHERE S.service_id=$1 ORDER BY B.money desc;',
+  seeMyBidsQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) where B.owner_id=$1;',
+  getAllBids: 'SELECT * FROM Bids',
   // Triggers placingBid
   placeBidInsert: 'INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);',
 
@@ -78,7 +78,7 @@ module.exports = {
   getSolvedRequestsAssignedToMe: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and status=2 ORDER by status OFFSET $2 LIMIT $3;',
   getUnresolvedRequestsAssignedToMe: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and status=1 ORDER by status OFFSET $2 LIMIT $3;',
   getRequestsAssignedToMeWithFilters: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and request_id=$2;',
-  
+
   rejectBidUpdate: 'UPDATE Bids SET status=0 WHERE bid_id=$1;',
 
   // Trigger sendReview()
@@ -110,12 +110,12 @@ module.exports = {
   // Complex Query 1
   // Gives you the average of (average made per hour) grouped by month, for each caretaker
   // on the manager dashboard
-  perHourAverageByMonthQuery: "select S.caretaker_id, extract(month from B.starting)::integer as month, coalesce(avg(money/((EXTRACT(EPOCH FROM B.ending) - EXTRACT(EPOCH FROM B.starting))/3600.0)), 0) as money from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) group by S.caretaker_id, extract(month from B.starting) order by extract(month from B.starting);",
+  perHourAverageByMonthQuery: 'select S.caretaker_id, extract(month from B.starting)::integer as month, coalesce(avg(money/((EXTRACT(EPOCH FROM B.ending) - EXTRACT(EPOCH FROM B.starting))/3600.0)), 0) as money from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) group by S.caretaker_id, extract(month from B.starting) order by extract(month from B.starting);',
 
   // Complex Query 2
   // Shows the caretaker the cumulative earning (by day)
   // on the caretaker_dashboard
-  perDayCumulativeSumQuery: "select extract(year from B.starting)::integer as year, extract(month from b.starting)::integer as month, extract(day from b.starting)::integer as day, sum(sum(money)) over (order by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting)) from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) where S.caretaker_id=$1 group by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting) order by sum desc offset $2 limit $3;",
+  perDayCumulativeSumQuery: 'select extract(year from B.starting)::integer as year, extract(month from b.starting)::integer as month, extract(day from b.starting)::integer as day, sum(sum(money)) over (order by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting)) from Bids B join Tasks T on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) where S.caretaker_id=$1 group by extract(year from B.starting), extract(month from b.starting), extract(day from b.starting) order by sum desc offset $2 limit $3;',
 
   // Complex Query 3
   // Shows the demand ratio by hour for days {1..7} (whichever we call)

@@ -211,7 +211,7 @@ $(document).ready(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
       console.log($th.text())
       if ($th.text() == 'Bio' || $th.text() == 'Name') {
-        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + "'" + "value= '" + $(this).text() + '">')
+        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + '"' + 'value = "' + $(this).text() + '">')
       }
     })
     $(this).parents('tr').find('.add, .edit').toggle()
@@ -219,7 +219,9 @@ $(document).ready(function () {
   })
 
   // Update edited row on update button click
-  $(document).on('click', '.update.pet', function () {
+  $(document).on('click', '.add.pet', function () {
+    console.log('Clicking update pet')
+    var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
     var addUpdatedPetData = {}
     input.each(function () {
@@ -239,9 +241,23 @@ $(document).ready(function () {
         addUpdatedPetData[text] = val
       })
 
-      var updateRequest = $.put('ownerprofile/updatePet', addUpdatedPetData)
-      updateRequest.done(function (res) {
-        console.log(res)
+      $.ajax({
+        url: 'ownerprofile/updatePet',
+        type: 'PUT',
+        data: addUpdatedPetData,
+        success: function (res) {
+          var result = res.Updated
+          if (!result) {
+            alert('Pet is not updated')
+          } else {
+            alert('Pet is updated')
+            input.each(function () {
+              var text = $(this).attr('name')
+              var val = $(this).val()
+              $(this).parent('td').html(val)
+            })
+          }
+        }
       })
 
       $(this).parents('tr').find('.update, .edit').toggle()
@@ -249,11 +265,33 @@ $(document).ready(function () {
     }
   })
   // =========================== Pets functions =================================== //
+  /**
+  var xData = {
+      1 : [
+        {
+            type: 'line',
+            showInLegend: true,
+            name: 'Demand by Hour',
+            markerType: 'square',
+            color: '#F08080',
+            dataPoints: [
+                {
+                    x: hour,
+                    y: ration
+                },
+                {
+                    x: hour,
+                    y: ration
+                },
 
+            ]
+          }
+      ]
+  }
+  */
   var xData = {}
   for (var i = 0; i < graphData.length; i++) {
-    console.log(graphData[i])
-    var ownerID = graphData[i].ownerID
+    var day = graphData[i].day
     var hour = graphData[i].hour
     var ratio = graphData[i].ratio
 
@@ -261,7 +299,29 @@ $(document).ready(function () {
       x: hour,
       y: ratio
     }
-    xData.push(graphPoint)
+
+    if (xData[day]) {
+      xData[day].push(graphPoint)
+    } else {
+      xData[day] = [graphPoint]
+    }
+  }
+
+  var multipleData = []
+  for (var dataKey in xData) {
+    if (xData.hasOwnProperty(dataKey)) {
+      var dataValue = xData[dataKey]
+
+      var dataColumn = {
+        type: 'line',
+        showInLegend: true,
+        name: 'Demand by Hour',
+        markerType: 'square',
+        color: '#F08080',
+        dataPoints: dataValue
+      }
+      multipleData.push(dataColumn)
+    }
   }
 
   var options = {
@@ -294,7 +354,7 @@ $(document).ready(function () {
       name: 'Demand by Hour',
       markerType: 'square',
       color: '#F08080',
-      dataPoints: xData
+      dataPoints: multipleData
     }]
   }
   $('#chartContainer').CanvasJSChart(options)
