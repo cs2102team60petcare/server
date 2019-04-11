@@ -308,6 +308,7 @@ $(document).ready(function () {
   }
 
   var multipleData = []
+  var colors = ['#Ffd700', '#Ffa500', '#40e0d0', '#00ff7f', '#FFC0CB', '#00ff00', '#C6e2ff']
   for (var dataKey in xData) {
     if (xData.hasOwnProperty(dataKey)) {
       var dataValue = xData[dataKey]
@@ -317,12 +318,13 @@ $(document).ready(function () {
         showInLegend: true,
         name: 'Demand by Hour',
         markerType: 'square',
-        color: '#F08080',
+        color: colors[parseInt(dataKey) - 1],
         dataPoints: dataValue
       }
       multipleData.push(dataColumn)
     }
   }
+  console.log(xData)
 
   var options = {
     animationEnabled: true,
@@ -348,14 +350,7 @@ $(document).ready(function () {
       dockInsidePlotArea: true,
       itemclick: toggleDataSeries
     },
-    data: [{
-      type: 'line',
-      showInLegend: true,
-      name: 'Demand by Hour',
-      markerType: 'square',
-      color: '#F08080',
-      dataPoints: multipleData
-    }]
+    data: multipleData
   }
   $('#chartContainer').CanvasJSChart(options)
 
