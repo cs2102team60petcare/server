@@ -1,9 +1,5 @@
 $(document).ready(function () {
-  $('.btn-success').trigger('click')
-  $('.star').on('click', function () {
-    $(this).toggleClass('star-checked')
-  })
-
+  
   $('.ckbox label').on('click', function () {
     $(this).parents('tr').toggleClass('selected')
   })
@@ -11,13 +7,14 @@ $(document).ready(function () {
   $('.btn-filter').on('click', function () {
     var $target = $(this).data('target')
     if ($target != 'all') {
-      $('.table.table-bids tr').css('display', 'none')
-      $('.table.table-bids tr[data-status="' + $target + '"]').fadeIn('slow')
+      $('.table.table-bids tbody tr').css('display', 'none')
+      $('.table.table-bids tbody tr[data-status="' + $target + '"]').fadeIn('slow')
     } else {
-      $('.table.table-bids tr').css('display', 'none').fadeIn('slow')
+      $('.table.table-bids tbody tr').css('display', 'none').fadeIn('slow')
     }
   })
 
+  $('.btn-success').trigger('click')
   // =========================== Bids functions =================================== //
   var actions = $('.table.table-bids td:last-child').html()
   // Append table with add new bid row form on add new bid button click
@@ -28,14 +25,15 @@ $(document).ready(function () {
     // var numDays = 10
     // var bidExpiryDateandTime = new Date(Date.now() + numDays * 24 * 60 * 60 * 1000)
     var row = '<tr>' +
-            '<td>' + '</td>' +
-            '<td><input type="text" class="form-control" name="pet_id" id="status"></td>' +
-            '<td><input type="text" class="form-control" name="service_id" id="status"></td>' +
-            '<td><input type="text" class="form-control" name="money" id="status"></td>' +
-            '<td>' + '</td>' +
-            '<td><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
-            '<td><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
-            '<td>' + actions + '</td>' +
+            '<td >' + '</td>' +
+            '<td ><input type="text" class="form-control" name="pet_id" id="status"></td>' +
+            '<td ><input type="text" class="form-control" name="service_id" id="status"></td>' +
+            '<td ><input type="text" class="form-control" name="money" id="status"></td>' +
+            '<td >' + '</td>' +
+            '<td >' + '</td>' +
+            '<td ><input type="datetime-local" class = "form-control" name="starting" value = ""></td>' +
+            '<td ><input type="datetime-local" class = "form-control" name="ending" value = ""></td>' +
+            '<td >' + actions + '</td>' +
             '</tr>'
     $('.table.table-bids').append(row)
     $('.table.table-bids tbody tr').eq(index + 1).find('.add').toggle()

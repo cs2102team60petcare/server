@@ -3,6 +3,7 @@
 	-------------------------------------------------- */
     body {
         font-family: 'Open Sans', sans-serif;
+        background: url(../images/profile-bg.jpg)no-repeat center center fixed;
         color: #353535;
     }
     .content h1 {
