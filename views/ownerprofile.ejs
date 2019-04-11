@@ -20,7 +20,98 @@
 
   </head>
   <body>
+
+        <div class="container">
+                <div class="row">
+            
+                    <section class="content">
+                        <h1>Services Available</h1>
+                        <div class="col-lg-10 col-lg-offset-1">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="table-container">
+                                        <table class="table table-services">
+                                            <thead>
+                                                <tr>
+                                                    <th>Services_ID</th>
+                                                    <th>Pet Type</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                    <th>MinWage</th>
+                                                    <th>Actions</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <% for(var i=0; i < service.length; i++) { %>
+                                                        <tr>
+                                                          <!-- <th scope="row">1</th> -->
+                                                          <td><%= service[i].service_id %></td>
+                                                          <td><%= service[i].petType %></td>
+                                                          <td><%= service[i].starting %></td>
+                                                          <td><%= service[i].ending %></td>
+                                                          <td><%= service[i].minwage %></td>
+                                                          <td> <button type="button" class="btn btn-info view-all-bids" data-toggle="collapse" data-target="#bidsTable">View All Bids</button></td>
+                                                        </tr>
+                                                        
+                                                     <% } %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+            </div>
+    
+    <div class = "collapse" id ="bidsTable">
+    <div class="container">
+            <div class="row">
         
+                <section class="content" >
+                    <h1>View All Bids</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-allbids">
+                                        <thead>
+                                            <tr>
+                                                <th>Bid</th>
+                                                <th>Oid</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Bids Placed</th>
+                                                <th>Status</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <% for(var i=0; i < viewBids.length; i++) { %>
+                                                    <tr>
+                                                        <td><%= viewBids[i].bids_id %></td>
+                                                        <td><%= viewBids[i].owner_id %></td>
+                                                        <td><%= viewBids[i].starting %></td>
+                                                        <td><%= viewBids[i].ending %></td>
+                                                        <td><%= viewBids[i].money %></td>
+                                                        <td><%= viewBids[i].status %></td>
+                                                    </tr>
+                                                <% } %>  
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    </div>
+
     <div class="container">
         <div class="row">
     

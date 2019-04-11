@@ -18,6 +18,39 @@ $(document).ready(function () {
     }
   })
 
+   // =========================== Services functions =================================== //
+  
+
+  // show bids for that service_id
+  $(document).on('click', '.view-all-bids', function () {
+    var row = $(this).parents('tr')
+    var rowData = row.find('td:first') //find the first data only
+    var serviceID = {}
+    rowData.each(function () {
+      var $th = $(this).closest('table').find('th').eq($(this).index())
+      console.log($th)
+      serviceID[$th.text()] = $(this).text()
+      console.log(serviceID)
+    })
+
+
+    $.ajax({
+      url: 'ownerprofile/viewBid',
+      type: 'GET',
+      data: serviceID,
+      success: function (res) {
+        console.log(res)
+        var result = res.Updated
+        if (!result) {
+          alert('No bids')
+        } else {
+          alert('All Bids')
+        }
+      }
+    })
+
+  })
+
   // =========================== Bids functions =================================== //
   var actions = $('.table.table-bids td:last-child').html()
   // Append table with add new bid row form on add new bid button click

@@ -1,6 +1,36 @@
 const pool = require('../database/connection')
 const queries = require('../database/queries')
 
+
+exports.viewBid= function (req, res, next) {
+  (async () => {
+    const client = await pool.connect()
+    var serviceID = req.body.Services_ID
+    
+    console.log(serviceID)
+    try {
+      var viewBids = await client.query(queries.seeBidsForServiceQuery,[serviceID])
+      Promise.all([viewBids]).then((data) => {
+        var bidsData = data[0].rows
+        console.log(bidsData)
+        res.json({'Updated' : true, 
+                    bidsDataValues: bidsData})
+      })
+
+      
+      
+    } catch (e) {
+      await client.query('ROLLBACK')
+      res.json({'Updated' : false})
+      throw e
+    } finally {
+      client.release()
+    }
+  })().catch(e => console.log(e.stack))
+}
+
+
+
 exports.addBid = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
@@ -111,7 +141,11 @@ exports.getOwnerProfile = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
     var userID = req.user.user_id
+  
+
+    
     try {
+      const service = await client.query(queries.searchAvailableServicesBase)
       const pets = await client.query(queries.getMyPetsQuery, [userID])
       const bids = await client.query(queries.seeMyBidsQuery, [userID])
       const tasks = await client.query(queries.getMyTaskHistoryAsOwnerQuery, [userID])
@@ -122,18 +156,24 @@ exports.getOwnerProfile = function (req, res, next) {
       var demand5 = await client.query(queries.ratioOfBidsByHourByDay, [5])
       var demand6 = await client.query(queries.ratioOfBidsByHourByDay, [6])
       var demand7 = await client.query(queries.ratioOfBidsByHourByDay, [7])
-      Promise.all([pets, bids, tasks, demand1, demand2, demand3, demand4, demand5, demand6, demand7]).then((data) => {
-        var petsData = data[0]
-        var bidsData = data[1]
-        var tasksData = data[2]
-        var graphData = data[3].rows.concat(data[4].rows, data[5].rows, data[6].rows, data[7].rows, data[8].rows, data[9].rows)
+
+
+      Promise.all([service, pets, bids, tasks, demand1, demand2, demand3, demand4, demand5, demand6, demand7]).then((data) => {
+        var serviceData = data[0]
+        var petsData = data[1]
+        var bidsData = data[2]
+        var tasksData = data[3]
+        var graphData = data[4].rows.concat(data[5].rows, data[6].rows, data[7].rows, data[8].rows, data[9].rows, data[10].rows)
+  
 
         console.log(graphData)
         res.render('ownerprofile', {
+          service: serviceData.rows,
           bids: bidsData.rows,
           pets: petsData.rows,
           tasks: tasksData.rows,
-          graphDataValues: graphData
+          graphDataValues: graphData,
+          viewBids:[]
         })
       }).catch(err => {
         console.log(err)
