@@ -142,7 +142,12 @@ $(document).ready(function () {
             '<td>' + '</td>' +
             '<td><input type="text" class = "form-control" name="pet_name" value = ""></td>' +
             '<td><input type="text" class = "form-control" name="pet_information" value = ""></td>' +
-            '<td><input type="text" class = "form-control" name="pet_type" value = ""></td>' +
+            '<td>' +
+            '<select> ' + 
+            '<option value="cat">Cat</option>' +
+            '<option value="dog">Dog</option>' +
+            '<option value="hamster">Hamster</option>' +
+            '</select></td>' +
             '<td><input type="datetime-local" class = "form-control" name="pet_born" value = ""></td>' +
            '<td>' + petActions + '</td>' +
             '</tr>'
@@ -204,6 +209,7 @@ $(document).ready(function () {
   })
   // Edit row on edit button click
   $(document).on('click', '.edit.pet', function () {
+    $('.add-new-pet').attr('disabled', 'disabled')
     console.log('Editing pet')
     $(this).parents('tr').find('td:not(:last-child)').each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
@@ -213,11 +219,11 @@ $(document).ready(function () {
       }
     })
     $(this).parents('tr').find('.add, .edit').toggle()
-    $('.add-new-pet').attr('disabled', 'disabled')
   })
 
   // Update edited row on update button click
   $(document).on('click', '.add.pet', function () {
+    $('.add-new-pet').removeAttr('disabled')
     console.log('Clicking update pet')
     var empty = false
     var input = $(this).parents('tr').find('input[type="text"]')
