@@ -13,12 +13,11 @@ $(document).ready(function () {
     }
   })
 
-
-
   // show bids for that service_id
   $(document).on('click', '.view-all-bids', function () {
+    console.log('Hello')
     var row = $(this).parents('tr')
-    var rowData = row.find('td:first') //find the first data only
+    var rowData = row.find('td:first') // find the first data only
     var serviceID = {}
     rowData.each(function () {
       var $th = $(this).closest('table').find('th').eq($(this).index())
@@ -27,10 +26,9 @@ $(document).ready(function () {
       console.log(serviceID)
     })
 
-
     $.ajax({
       url: 'ownerprofile/viewBid',
-      type: 'GET',
+      type: 'PUT',
       data: serviceID,
       success: function (res) {
         console.log(res)
@@ -39,12 +37,30 @@ $(document).ready(function () {
           alert('No bids')
         } else {
           alert('All Bids')
+          $('.table-allbids').find('tbody').empty()
+          var bidsData = res.bidsDataValues
+          for (var i = 0; i < bidsData.length; i++) {
+            var bidID = bidsData[i].bid_id
+            var status = bidsData[i].status
+            var starting = bidsData[i].starting
+            var ending = bidsData[i].ending
+            var ownerID = bidsData[i].owner_id
+            var money = bidsData[i].money
+            var row = '<tr>' +
+                      '<td>' + bidID + '</td>' +
+                      '<td>' + ownerID + '</td>' +
+                      '<td>' + starting + '</td>' +
+                      '<td>' + ending + '</td>' +
+                      '<td>' + money + '</td>' +
+                      '<td>' + status + '</td>' +
+                      '<tr>'
+            $('.table-allbids').append(row)
+
+          }
         }
       }
     })
-
   })
-
 
   $('.btn-success').trigger('click')
 
@@ -469,7 +485,6 @@ $(document).ready(function () {
       reviewDataRequest['rating'] = ratingValue
       console.log(reviewDataRequest)
       responseMessage(msg)
-
 
       $.ajax({
         url: 'ownerprofile/sendCareTakerReview',

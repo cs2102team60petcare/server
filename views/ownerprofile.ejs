@@ -24,112 +24,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
-
-
-        <div class="container">
-                <div class="row">
-            
-                    <section class="content">
-                        <h1>Services Available</h1>
-                        <div class="col-lg-10 col-lg-offset-1">
-                            <div class="panel panel-default">
-                                <div class="panel-body">
-                                    <div class="table-container">
-                                        <table class="table table-services">
-                                            <thead>
-                                                <tr>
-                                                    <th>Services_ID</th>
-                                                    <th>Pet Type</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>MinWage</th>
-                                                    <th>Actions</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                    <% for(var i=0; i < service.length; i++) { %>
-                                                        <tr>
-                                                          <!-- <th scope="row">1</th> -->
-                                                          <td><%= service[i].service_id %></td>
-                                                          <td><%= service[i].petType %></td>
-                                                          <td><%= service[i].starting %></td>
-                                                          <td><%= service[i].ending %></td>
-                                                          <td><%= service[i].minwage %></td>
-                                                          <td> <button type="button" class="btn btn-info view-all-bids" data-toggle="collapse" data-target="#bidsTable">View All Bids</button></td>
-                                                        </tr>
-                                                        
-                                                     <% } %>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                </div>
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
             </div>
-    
-    <div class = "collapse" id ="bidsTable">
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="./profile">Edit Profile</a></li>
+                </ul>
+                <ul class ="nav navbar-nav pull-right" id="right">
+                    <li><a href="../logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
             <div class="row">
-
-            <nav role = "navigation" class = "navbar navbar-inverse">
-                <div class = "container-fluid">
-                    <div class ="navbar-header">
-                        <a class = "navbar-brand" href= "#">
-                            <img src="images/paw.png" class ="logo">
-                        </a>
-                        <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
-                            <span class ="sr-only">Toggle navigation</span>
-                            <span class ="icon bar"></span>
-                            <span class ="icon bar"></span>
-                            <span class ="icon bar"></span>
-                        </button>
-                        
-                    </div>
-                    <div class="navbar-collapse collapse" id ="navbarCollapse">
-                        <ul class ="nav navbar-nav">
-                            <li><a href="./profile">Edit Profile</a></li>
-                        </ul>
-                        <ul class ="nav navbar-nav pull-right" id="right">
-                            <li><a href="../logout">Logout</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
         
-                <section class="content" >
-                    <h1>View All Bids</h1>
+                <section class="content">
+                    <h1>Services Available</h1>
                     <div class="col-lg-10 col-lg-offset-1">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
-                                    <table class="table table-allbids">
+                                    <table class="table table-services">
                                         <thead>
                                             <tr>
-                                                <th>Bid</th>
-                                                <th>Oid</th>
-                                                <th>Start Time</th>
-                                                <th>End Time</th>
-                                                <th>Bids Placed</th>
-                                                <th>Status</th>
+                                                <th>Services_ID</th>
+                                                <th>Pet Type</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>MinWage</th>
+                                                <th>Actions</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                <% for(var i=0; i < viewBids.length; i++) { %>
+                                                <% for(var i=0; i < service.length; i++) { %>
                                                     <tr>
-                                                        <td><%= viewBids[i].bids_id %></td>
-                                                        <td><%= viewBids[i].owner_id %></td>
-                                                        <td><%= viewBids[i].starting %></td>
-                                                        <td><%= viewBids[i].ending %></td>
-                                                        <td><%= viewBids[i].money %></td>
-                                                        <td><%= viewBids[i].status %></td>
+                                                      <!-- <th scope="row">1</th> -->
+                                                      <td><%= service[i].service_id %></td>
+                                                      <td><%= service[i].petType %></td>
+                                                      <td><%= service[i].starting %></td>
+                                                      <td><%= service[i].ending %></td>
+                                                      <td><%= service[i].minwage %></td>
+                                                      <td> <button type="button" class="btn btn-info view-all-bids" data-toggle="collapse" data-target="#bidsTable">View All Bids</button></td>
                                                     </tr>
-                                                <% } %>  
+                                                    
+                                                 <% } %>
                                         </tbody>
                                     </table>
                                 </div>
@@ -141,8 +94,44 @@
             </div>
         </div>
 
-    </div>
 
+        <section class="content" >
+                <h1>View All Bids</h1>
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-container">
+                                <table class="table table-allbids">
+                                    <thead>
+                                        <tr>
+                                            <th>Bid</th>
+                                            <th>Oid</th>
+                                            <th>Start Time</th>
+                                            <th>End Time</th>
+                                            <th>Bids Placed</th>
+                                            <th>Status</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <% for(var i=0; i < viewBids.length; i++) { %>
+                                                <tr>
+                                                    <td><%= viewBids[i].bids_id %></td>
+                                                    <td><%= viewBids[i].owner_id %></td>
+                                                    <td><%= viewBids[i].starting %></td>
+                                                    <td><%= viewBids[i].ending %></td>
+                                                    <td><%= viewBids[i].money %></td>
+                                                    <td><%= viewBids[i].status %></td>
+                                                </tr>
+                                            <% } %>  
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
     <div class="container">
         <div class="row">
     
@@ -352,7 +341,6 @@
     <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 30px auto;"></div>
     <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
     <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
