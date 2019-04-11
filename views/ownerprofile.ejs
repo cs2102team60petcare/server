@@ -26,15 +26,14 @@
     
             <section class="content">
                 <h1>My Bids</h1>
-                <div class="col-md-8 col-md-offset-2">
+                <div class="col-lg-10 col-lg-offset-1">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="pull-right">
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-success btn-filter" data-target="successful">Successful</button>
-                                    <button type="button" class="btn btn-warning btn-filter" data-target="pending">Pending</button>
-                                    <button type="button" class="btn btn-danger btn-filter" data-target="cancelled">Cancelled</button>
-                                    <button type="button" class="btn btn-default btn-filter" data-target="all">Show All</button>
+                                    <button type="button" class="btn btn-success btn-filter" data-target="2">Successful</button>
+                                    <button type="button" class="btn btn-warning btn-filter" data-target="1">Pending</button>
+                                    <button type="button" class="btn btn-danger btn-filter" data-target="0">Rejected</button>
                                 </div>
                             </div>
                             <div class="pull-left">
@@ -49,8 +48,9 @@
                                             <th>bid_id</th>
                                             <th>pid_id</th>
                                             <th>service_id</th>
+                                            <th>Caretaker</th>
                                             <th>Offered</th>
-                                            <th>Status</th>
+                                            <th>Bid Status</th>
                                             <th>Starting</th>
                                             <th>Ending</th>
                                             <th>Actions</th>
@@ -62,14 +62,13 @@
                                             <td><%=bids[i].bid_id    %></td>
                                             <td><%=bids[i].pet_id    %></td>
                                             <td><%=bids[i].service_id    %></td>
+                                            <td><%=bids[i].name    %></td>
                                             <td><%=bids[i].money    %></td>
                                             <td><%=bids[i].status    %></td>
                                             <td><%=bids[i].starting    %></td>
                                             <td><%=bids[i].ending    %></td>
                                             <td>
                                                 <a class="add bid" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
-                                                <a class="edit bid" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                                                <a class="update bid" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>
                                                 <a class="delete bid" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                             </td>
                                         </tr>
@@ -90,7 +89,7 @@
         
                 <section class="content">
                     <h1>My Pets</h1>
-                    <div class="col-md-8 col-md-offset-2">
+                    <div class="col-lg-10 col-lg-offset-1">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
@@ -108,7 +107,6 @@
                                                     <th>Bio</th>
                                                     <th>Type</th>
                                                     <th>Born</th>
-                                                    <th>Death</th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
@@ -120,7 +118,6 @@
                                                     <td><%=pets[i].biography    %></td>
                                                     <td><%=pets[i].type    %></td>
                                                     <td><%=pets[i].born    %></td>
-                                                    <td><%=pets[i].death    %></td>
                                                     <td>
                                                         <a class="add pet" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                                         <a class="edit pet" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
@@ -144,7 +141,7 @@
         
                 <section class="content">
                     <h1>Task History</h1>
-                    <div class="col-md-8 col-md-offset-2">
+                    <div class="col-lg-10 col-lg-offset-1">
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="table-container">
@@ -152,8 +149,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>Task ID</th>
-                                                    <th>Status</th>
+                                                    <th>Task Status</th>
                                                     <th>Caretaker Name</th>
+                                                    <th>Phone# Name</th>
                                                     <th>Starting</th>
                                                     <th>Ending</th>
                                                     <th>Money</th>
@@ -165,6 +163,7 @@
                                                     <td><%=tasks[i].task_id    %></td>
                                                     <td><%=tasks[i].status      %></td>
                                                     <td><%=tasks[i].caretakername    %></td>
+                                                    <td><%=tasks[i].phone    %></td>
                                                     <td><%=tasks[i].starting    %></td>
                                                     <td><%=tasks[i].ending    %></td>
                                                     <td><%=tasks[i].money    %></td>
