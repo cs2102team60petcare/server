@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  
   $('.ckbox label').on('click', function () {
     $(this).parents('tr').toggleClass('selected')
   })
@@ -143,10 +142,10 @@ $(document).ready(function () {
             '<td><input type="text" class = "form-control" name="pet_name" value = ""></td>' +
             '<td><input type="text" class = "form-control" name="pet_information" value = ""></td>' +
             '<td>' +
-            '<select> ' + 
-            '<option value="cat">Cat</option>' +
-            '<option value="dog">Dog</option>' +
-            '<option value="hamster">Hamster</option>' +
+            '<select class="pet_type"> ' +
+            '<option value="Cat">Cat</option>' +
+            '<option value="Dog">Dog</option>' +
+            '<option value="Hamster">Hamster</option>' +
             '</select></td>' +
             '<td><input type="datetime-local" class = "form-control" name="pet_born" value = ""></td>' +
            '<td>' + petActions + '</td>' +
@@ -158,7 +157,7 @@ $(document).ready(function () {
   // Add input row on add button click
   $(document).on('click', '.update.pet', function () {
     var empty = false
-    var input = $(this).parents('tr').find('input[type="text"], input[type="datetime-local"]')
+    var input = $(this).parents('tr').find('input[type="text"], input[type="datetime-local"], select')
     var addPetData = {}
     input.each(function () {
       if (!$(this).val()) {
@@ -179,6 +178,9 @@ $(document).ready(function () {
           var time = splitDate[1] + ':00'
           var parsedDate = date + ' ' + time
           addPetData[text] = parsedDate
+        } else if ($(this).attr('class') == 'pet_type') {
+          var selectedPet = $(this).children('option:selected').val()
+          addPetData['pet_type'] = selectedPet
         } else {
           addPetData[text] = val
         }
@@ -433,7 +435,7 @@ $(document).ready(function () {
       reviewDataRequest['rating'] = ratingValue
       console.log(reviewDataRequest)
       responseMessage(msg)
-    
+
 
       $.ajax({
         url: 'ownerprofile/sendCareTakerReview',

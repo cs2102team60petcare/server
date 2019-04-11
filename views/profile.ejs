@@ -7,7 +7,11 @@
   <meta name="description" content="">
   <meta name="author" content="Dashboard">
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+<<<<<<< HEAD
   <title>Profile Page</title>
+=======
+  <title>Grabpets Profile</title>
+>>>>>>> 50e52b1d55719f6f87d86afc2ee6ebe801cb63ba
 
     <!-- Favicons -->
     <link href="images/favicon.png" rel="icon">
@@ -38,7 +42,10 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="" class="logo"><b>PET<span>CARE</span></b></a>
+      <!-- <a href="" class="logo"><b>PET<span>CARE</span></b></a> -->
+      <a class = "navbar-brand" href= "./redirectToCorrectProfile">
+          <img src="images/paw.png" class ="logo">
+      </a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -146,7 +153,7 @@
                       <div class="clearfix"></div>
                       <div class="bot-border"></div>
                       
-                      <div class="col-sm-5 col-xs-6 tital " >Address:</div><div class="col-sm-7 address edit" id = "address"><pre id="json"><%=address%></pre></div>
+                      <div class="col-sm-5 col-xs-6 tital " >Address:</div><div class="col-sm-7 address edit" id = "address"><%=address.address%></div>
                       
                       <div class="clearfix"></div>
                       <div class="bot-border"></div>

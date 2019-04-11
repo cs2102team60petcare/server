@@ -22,7 +22,7 @@ module.exports = {
 
   // WARNING: Use signupPetInsert with the next query in a transaction
   // TODO @ JJ
-  signupPetInsert: 'INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4);',
+  signupPetInsert: 'INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4) RETURNING *;',
   ownsPetInsert: 'INSERT INTO owns (pet_id, owner_id, since) VALUES ($1, $2, $3);',
 
   /* PROFILE RELATED QUERIES */
