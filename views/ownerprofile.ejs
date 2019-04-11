@@ -71,7 +71,7 @@
                                 </div>
                             </div>
                             <div class="table-container">
-                                <table class="table table-bids" id="bids">
+                                <table class="table table-bids">
                                     <thead>
                                         <tr>
                                             <th>bid_id</th>
@@ -87,7 +87,7 @@
                                     </thead>
                                     <tbody>
                                     <% for(var i=0; i < bids.length; i++) { %>
-                                        <tr data-status="<%=bids[i].status%>">
+                                        <tr id="bid" data-status="<%=bids[i].status%>">
                                             <td style ="word-break:break-all;"><%=bids[i].bid_id    %></td>
                                             <td style ="word-break:break-all;"><%=bids[i].pet_id    %></td>
                                             <td style ="word-break:break-all;"><%=bids[i].service_id    %></td>

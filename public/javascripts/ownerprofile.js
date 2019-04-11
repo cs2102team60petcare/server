@@ -1,9 +1,5 @@
 $(document).ready(function () {
-  $('.btn-success').trigger('click')
-  $('.star').on('click', function () {
-    $(this).toggleClass('star-checked')
-  })
-
+  
   $('.ckbox label').on('click', function () {
     $(this).parents('tr').toggleClass('selected')
   })
@@ -11,13 +7,14 @@ $(document).ready(function () {
   $('.btn-filter').on('click', function () {
     var $target = $(this).data('target')
     if ($target != 'all') {
-      $('.table.table-bids tr').css('display', 'none')
-      $('.table.table-bids tr[data-status="' + $target + '"]').fadeIn('slow')
+      $('.table.table-bids tbody tr').css('display', 'none')
+      $('.table.table-bids tbody tr[data-status="' + $target + '"]').fadeIn('slow')
     } else {
-      $('.table.table-bids tr').css('display', 'none').fadeIn('slow')
+      $('.table.table-bids tbody tr').css('display', 'none').fadeIn('slow')
     }
   })
 
+  $('.btn-success').trigger('click')
   // =========================== Bids functions =================================== //
   var actions = $('.table.table-bids td:last-child').html()
   // Append table with add new bid row form on add new bid button click
