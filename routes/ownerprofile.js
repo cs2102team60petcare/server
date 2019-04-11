@@ -7,6 +7,7 @@ router.delete('/deleteBid', ownerprofileController.deleteBid)
 router.post('/addPet', ownerprofileController.addPet)
 router.put('/updatePet', ownerprofileController.updatePet)
 router.delete('/deletePet', ownerprofileController.deletePet)
+router.post('/sendCareTakerReview', ownerprofileController.submitCareTakerReview)
 router.get('/', ownerprofileController.getOwnerProfile)
 
 module.exports = router

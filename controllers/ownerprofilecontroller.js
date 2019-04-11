@@ -86,7 +86,7 @@ exports.addPet = function (req, res, next) {
 exports.updatePet = function (req, res, next) {
   (async () => {
     const client = await pool.connect()
-    var petID = req.body.Pid
+    var petID = parseInt(req.body.Pid)
     var newPetName = req.body.Name
     var newPetBiography = req.body.Bio
     console.log(req.body)
@@ -103,8 +103,37 @@ exports.updatePet = function (req, res, next) {
 }
 
 exports.deletePet = function (req, res, next) {
-  console.log(req.body)
-  res.json({ 'Updated': true })
+
+}
+
+exports.submitCareTakerReview = function (req, res, next) {
+  (async () => {
+    const client = await pool.connect()
+    var stars = req.body.rating
+    var note = req.body.note
+    var taskID = req.body['Task ID']
+    var careTakerName = req.body['Caretaker Name']
+    var ownerID = req.user.user_id
+    console.log(req.body)
+    console.log('Stars : ' + stars)
+    try {
+      await client.query('BEGIN')
+      const { rows } = await client.query(queries.getCareTakerIDByName, [careTakerName])
+      var careTakerID = rows[0].user_id
+      await client.query(queries.sendReviewInsert1, [stars, note, taskID, careTakerID, ownerID])
+      await client.query(queries.sendReviewInsert2, [taskID])
+      await client.query(queries.sendReviewInsert3, [careTakerID])
+      await client.query('COMMIT')
+      res.json({ 'Updated': true })
+    } catch (e) {
+      await client.query('ROLLBACK')
+      res.json({ 'Updated': false })
+
+      throw e
+    } finally {
+      client.release()
+    }
+  })().catch(e => console.error(e.stack))
 }
 
 exports.getOwnerProfile = function (req, res, next) {
