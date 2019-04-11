@@ -91,6 +91,7 @@
                         <th>Status</th>
                         <th>Created</th>
                         <th>Message</th>
+                        <th>Justification</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -102,10 +103,47 @@
                             <td><%=requests[i].status         %></td>
                             <td><%=requests[i].created        %></td>
                             <td><%=requests[i].message        %></td>
+                            <td>NIL</td>
                             <td>
                                 <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
                                 <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                             </td>
+                        </tr>
+        
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-12"><h2>My <b>Past Solved Requests</b></h2> </div>
+                </div>
+            </div>
+            <table class="table table-bordered" id="table-past-requests">
+                <thead>
+                    <tr>
+                        <th>Request_id</th>
+                        <th>User_id</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Message</th>
+                        <th>Justification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i =0 ; i< pastRequests.length ; i++) { %>
+                        <tr>
+                            <td><%=pastRequests[i].request_id     %></td>
+                            <td><%=pastRequests[i].user_id        %></td>
+                            <td><%=pastRequests[i].status         %></td>
+                            <td><%=pastRequests[i].created        %></td>
+                            <td><%=pastRequests[i].message        %></td>
+                            <td><%=pastRequests[i].justification  %></td>
                         </tr>
         
                     <% } %>

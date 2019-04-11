@@ -75,7 +75,8 @@ module.exports = {
   /* REQUEST or SUPPORTTICKET RELATED QUERIES */
   sendRequestInsert: 'INSERT INTO Requests (message, user_id) VALUES ($1, $2);',
   getUnassignedRequests: 'SELECT * FROM Requests WHERE status=0;',
-  getRequestsAssignedToMe: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 ORDER by status OFFSET $2 LIMIT $3;',
+  getSolvedRequestsAssignedToMe: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and status=2 ORDER by status OFFSET $2 LIMIT $3;',
+  getUnresolvedRequestsAssignedToMe: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and status=1 ORDER by status OFFSET $2 LIMIT $3;',
   getRequestsAssignedToMeWithFilters: 'SELECT * FROM Requests NATURAL JOIN Handles WHERE manager_id=$1 and request_id=$2;',
   
   rejectBidUpdate: 'UPDATE Bids SET status=0 WHERE bid_id=$1;',

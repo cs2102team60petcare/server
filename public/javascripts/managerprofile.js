@@ -77,6 +77,8 @@ $(document).ready(function () {
     var empty = false
     var updateRequestData = {}
     var input = $(this).parents('tr').find('input[type="text"]')
+    var requestTableData = $(this).parents('tr').find('td:not(:last-child)')
+
     input.each(function () {
       if (!$(this).val()) {
         $(this).addClass('error')
@@ -90,13 +92,32 @@ $(document).ready(function () {
       input.each(function () {
         var text = $(this).attr('name')
         var val = $(this).val()
-        $(this).parent('td').html(val)
+        $(this).parents('td').html(val)
         updateRequestData[text] = val
       })
-      var updateRequest = $.put('managerprofile/updateRequest', updateRequestData)
-      updateRequest.done(function (res) {
-        console.log(res)
+
+      requestTableData.each(function () {
+        var $th = $(this).closest('table').find('th').eq($(this).index())
+        if ($th.text() != 'Justification') {
+          updateRequestData[$th.text()] = $(this).text() 
+        }
       })
+
+      $.ajax({
+        type: 'PUT',
+        url: 'managerprofile/updateRequest',
+        data: updateRequestData,
+        success: function (res) {
+          var result = res.Updated
+          console.log(res)
+          if (!result) {
+            alert('Request not resolved')
+          } else {
+            alert('Request resolved with justification')
+          }
+        }
+      })
+
       $(this).parents('tr').find('.add, .edit').toggle()
       $('.add-new').removeAttr('disabled')
     }
@@ -106,8 +127,8 @@ $(document).ready(function () {
   $(document).on('click', '.edit', function () {
     $(this).parents('tr').find('td:not(:last-child)').each(function () { // iterates thru except for the last child
       var $th = $(this).closest('table').find('th').eq($(this).index()) // find the closest data
-      if ($th.text() == 'Message') { // add value to the header
-        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + "value= '" + $(this).text() + '">')
+      if ($th.text() == 'Justification') { // add value to the header
+        $(this).html('<input type="text" class="form-control" name = "' + $th.text() + '">')
       }
     })
     $(this).parents('tr').find('.add, .edit').toggle()
