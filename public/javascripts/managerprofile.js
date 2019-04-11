@@ -99,7 +99,7 @@ $(document).ready(function () {
       requestTableData.each(function () {
         var $th = $(this).closest('table').find('th').eq($(this).index())
         if ($th.text() != 'Justification') {
-          updateRequestData[$th.text()] = $(this).text() 
+          updateRequestData[$th.text()] = $(this).text()
         }
       })
 
@@ -141,6 +141,32 @@ $(document).ready(function () {
     $('.add-new').removeAttr('disabled')
   })
 
+  $('#SendQueryBtn').click(function () {
+    $(this).attr('disabled', 'disabled')
+    var sendQueryText = $(this).parents('.container').find('input[type="text"]').val()
+    var sendQueryData = {}
+    var queryResultTextBox = $('#resultsQuery')
+    queryResultTextBox.innerHtml = 'Hello world'
+    console.log(queryResultTextBox)
+    sendQueryData['Query'] = sendQueryText
+    $.ajax({
+      type: 'POST',
+      url: 'managerprofile/sendQuery',
+      data: sendQueryData,
+      success: function (res) {
+        var result = res.Updated
+        var updatedData = res.UpdatedData
+        console.log(res)
+        if (!result) {
+          alert('Query not send')
+        } else {
+          alert('Query send with result')
+          queryResultTextBox.val('Hello world')
+        }
+      }
+    })
+  })
+
   var xData = {}
   for (var i = 0; i < graphData.length; i++) {
     var careTakerID = graphData[i].caretaker_id
@@ -173,23 +199,6 @@ $(document).ready(function () {
   }
 
   var options = {
-    animationEnabled: true,
-    theme: 'light2',
-    axisX: {
-      valueFormatString: 'MM'
-    },
-    axisY: {
-      title: 'Cash',
-      minimum: 0,
-      prefix: '$'
-    },
-    legend: {
-      cursor: 'pointer',
-      verticalAlign: 'bottom',
-      horizontalAlign: 'left',
-      dockInsidePlotArea: true,
-      itemclick: toggleDataSeries
-    },
     title: {
       text: 'Average earnings per hour'
     },
