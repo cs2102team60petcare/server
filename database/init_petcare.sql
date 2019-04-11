@@ -144,73 +144,103 @@ create table REVIEWS (
 	foreign key (owner_id) references OWNERS,
 	primary key (caretaker_id, reviewNum)
 );
-/* INIT DATA */
 
--- types of animals
+/* INIT DATA */
+-- types of animals supported
 insert into animals (type) values ('Cat'); 
 insert into animals (type) values ('Dog'); 
 insert into animals (type) values ('Hamster'); 
 
--- insert 2 caretakers (all have password 123456)
-INSERT INTO users (name, email, phone, address, password) VALUES ('caretakerA', 'caretakerA@u.nus.edu', '123456', '{"address": "pgph"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+-- all users have passwords 123456
+-- insert 2 caretakers
+-- CaretakerA==Saif and likes both Cats and Dogs 
+INSERT INTO users (name, email, phone, address, password) VALUES ('Saif', 'caretakerA@u.nus.edu', '81209298', '{"address": "35 PGPH"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into caretakers (user_id) values (1);
 insert into likes (caretaker_id, type) values (1, 'Cat');
 insert into likes (caretaker_id, type) values (1, 'Dog');
 
-INSERT INTO users (name, email, phone, address, password) VALUES ('careatakerB', 'caretakerB@u.nus.edu', '123457', '{"address": "pgpr"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+-- CaretakerB==JJ and likes Dogs 
+INSERT INTO users (name, email, phone, address, password) VALUES ('JunJie', 'caretakerB@u.nus.edu', '09812372', '{"address": "31 KE7"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into caretakers (user_id) values (2);
+insert into likes (caretaker_id, type) values (2, 'Cat');
 insert into likes (caretaker_id, type) values (2, 'Dog'); 
+insert into likes (caretaker_id, type) values (2, 'Hamster');  
 
--- insert 2 owners (all have password 123456) with two pets
-INSERT INTO users (name, email, phone, address, password) VALUES ('ownerA', 'ownerA@u.nus.edu', '123458', '{"address": "ke7"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+-- insert 2 owners
+-- OwnerA=Kevin and adopts baby kitten Tom
+INSERT INTO users (name, email, phone, address, password) VALUES ('Kevin', 'ownerA@u.nus.edu', '1209382', '{"address": "625 Senja Road"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into owners (user_id) values (3); 
-INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'Tom is a cat.', '2016-06-23');
-INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 3, '2016-07-23');
+INSERT INTO pets (name, type, biography, born) VALUES ('Tom','Cat', 'A cute little munchkin.', '2018-12-25');
+INSERT INTO owns (pet_id, owner_id, since) VALUES (1, 3, '2019-1-1');
 
-INSERT INTO users (name, email, phone, address, password) VALUES ('ownerB', 'ownerB@u.nus.edu', '123459', '{"address": "raffles"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
+--OwnerB=SingJie and has two pets (Bubba, a grown up female)
+INSERT INTO users (name, email, phone, address, password) VALUES ('Singjie', 'ownerB@u.nus.edu', '1989812', '{"address": "42 Raffles Hall"}', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy') RETURNING *;
 insert into owners (user_id) values (4); 
-INSERT INTO pets (name, type, biography, born) VALUES ('Doge','Dog', 'Doge is a dog.', '2016-07-23');
-INSERT INTO owns (pet_id, owner_id, since) VALUES (2, 4, '2016-06-23');
-INSERT INTO pets (name, type, biography, born) VALUES ('Ham','Hamster', 'Ham is a hamster.', '2015-07-23');
-INSERT INTO owns (pet_id, owner_id, since) VALUES (3, 4, '2015-07-23');
+INSERT INTO pets (name, type, biography, born) VALUES ('Bubba','Dog', 'The terrier looks fierce but does not bite :)', '2016-08-1');
+INSERT INTO owns (pet_id, owner_id, since) VALUES (2, 4, '2018-09-30');
+INSERT INTO pets (name, type, biography, born) VALUES ('Lola','Hamster', 'Small package, lotsa fun!', '2019-02-28');
+INSERT INTO owns (pet_id, owner_id, since) VALUES (3, 4, '2019-02-28');
 
--- insert 2 managers (all have password 123456)
-insert into managers (email, username, password, phone) values ('managerA@u.nus.edu', 'managerA', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '1234111'); 
-insert into managers (email, username, password, phone) values ('managerB@u.nus.edu', 'managerB', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '1234510'); 
+-- insert 2 managers
+insert into managers (email, username, password, phone) values ('managerA@u.nus.edu', 'Adi', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '1234111'); 
+insert into managers (email, username, password, phone) values ('managerB@u.nus.edu', 'CCY', '$2b$10$Ylwc8mZnLwD8RbZSYr3kx.6nmIHocDE4ZoH2kFwEx9BkhSW8Ucwqy', '1234510'); 
 
--- 3 old tasks for caretakerA (different months)
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2018-01-02 18:00:00', '2018-01-02 20:00:00', 50, 2);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2018-01-02 18:30:00', '2018-01-02 20:00:00', 100, 3, 1, 1, 2); 
+-- Last weekend of March, Tom is left with Saif for 4 hours (instead of 6)
+-- and paid more than asked! 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-03-30 10:00:00', '2019-03-30 17:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-03-30 12:00:00', '2019-03-30 16:00:00', 250, 3, 1, 1, 2); 
 insert into TASKS (bid_id, status) values (1, 2); 
 
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2018-02-02 18:00:00', '2018-02-02 19:00:00', 50, 2);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2018-02-02 18:30:00', '2018-02-02 19:00:00', 100, 3, 1, 2, 2); 
+-- Offered again the next day, Singjie took it up
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-03-31 10:00:00', '2019-03-31 20:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-03-03 10:00:00', '2019-03-03 13:00:00', 150, 4, 2, 2, 2); 
 insert into TASKS (bid_id, status) values (2, 2); 
 
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2018-03-02 18:00:00', '2018-03-02 19:00:00', 50, 2);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2018-03-02 18:30:00', '2018-03-02 19:00:00', 150, 3, 1, 3, 2); 
-insert into TASKS (bid_id) values (3);	-- finished but never clicked on finished 
+-- JJ was working during the week, thus charged more
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (2, '2019-03-29 19:00:00', '2019-03-29 22:00:00', 100, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-03-29 19:00:00', '2019-03-29 21:00:00', 200, 4, 3, 3, 2); 
+insert into TASKS (bid_id, status) values (3, 2); 
 
--- 2 pending tasks for caretakerA (different months again)
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-05-02 18:00:00', '2019-05-02 19:00:00', 50, 2);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-05-02 18:30:00', '2019-05-02 19:00:00', 150, 3, 1, 4, 2); 
-insert into TASKS (bid_id, status) values (4, 1); 
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-06-02 18:00:00', '2019-06-02 19:00:00', 50, 2);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-06-02 18:30:00', '2019-06-02 19:00:00', 150, 3, 1, 5, 2); 
-insert into TASKS (bid_id, status) values (5, 1); 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (2, '2019-04-01 19:00:00', '2019-04-01 22:00:00', 100, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-01 19:30:00', '2019-04-01 22:00:00', 300, 4, 2, 4, 2); 
+insert into TASKS (bid_id, status) values (4, 2);
 
--- 1 available services for caretakerA (2 pending bids)  
-INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-07-02 18:00:00', '2019-07-02 19:00:00', 50, 1);
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-07-02 18:30:00', '2019-07-02 19:00:00', 150, 3, 1, 6, 1);	-- for Tom 
-insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-07-02 18:30:00', '2019-07-02 19:00:00', 150, 4, 2, 6, 1); 	-- for Doge
+-- next weekend, Saif again; JJ offers service on Saturday night too this time. 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-06 10:00:00', '2019-04-06 17:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-06 11:00:00', '2019-04-06 16:00:00', 300, 3, 1, 5, 2); 
+insert into TASKS (bid_id, status) values (5, 2); 
 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-06 18:00:00', '2019-04-06 22:00:00', 75, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-06 18:00:00', '2019-04-06 22:00:00', 400, 4, 2, 6, 2); 
+insert into TASKS (bid_id) values (6); -- Never clicked Finish Task
 
--- dummy data for caretakerB down here 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (2, '2019-04-06 18:00:00', '2019-04-06 22:00:00', 125, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-06 18:00:00', '2019-04-06 22:00:00', 400, 3, 1, 7, 2); 
+insert into TASKS (bid_id, status) values (7, 2);
+
+-- 2 pending tasks for caretakerA
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-13 18:00:00', '2019-04-13 20:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-13 18:30:00', '2019-04-13 19:30:00', 150, 3, 1, 8, 2); 
+insert into TASKS (bid_id, status) values (8, 1);
+
+-- Singjie bid, but Kevin beat her to it
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-14 10:00:00', '2019-04-14 16:00:00', 50, 2);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-14 10:00:00', '2019-04-14 16:00:00', 300, 4, 2, 9, 0); 
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-14 10:00:00', '2019-04-14 16:00:00', 320, 3, 1, 9, 2); 
+insert into TASKS (bid_id, status) values (9, 1); 
+
+-- 1 available services for caretakerA (2 pending bids); same time careTakerB is offering but only 1 bid
+-- Both Kevin and SJ going to the same party, and both JJ and Saif were not invited? 
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-20 18:00:00', '2019-04-20 21:00:00', 65, 1);
+INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (2, '2019-04-20 18:00:00', '2019-04-20 21:00:00', 70, 1);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-20 18:30:00', '2019-04-20 20:30:00', 150, 3, 1, 10, 1); 
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-20 18:30:00', '2019-04-20 20:30:00', 200, 4, 2, 10, 1);
+insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-20 18:30:00', '2019-04-20 20:30:00', 200, 4, 2, 11, 1);
 
 -- user requests 
-insert into requests (user_id, message, status) values (2, 'I am a caretaker and your site $uX', 1);
+insert into requests (user_id, message, status) values (2, 'Can we have more pet options, please?', 1);
 insert into handles (manager_id, request_id) values (1, 1);
-insert into requests (user_id, message) values (3, 'I am an owner and has anyone seen Nagini?');
+insert into requests (user_id, message) values (3, '*insert generic complaint by Kevin*');
 
 ------TRIGGERS------------
 create or replace function updateService() returns trigger as $$ 
@@ -319,7 +349,10 @@ for each row
 execute procedure finishTask(); 
 
 -- more init data 
-INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (5, 'My pet was so happy! :)', 1, 1, 3);
-INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (4, 'Keep it up.', 2, 1, 3);
+-- Reviews could be denormalized further, but we did not want for performance reasons. 
+INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (5, 'Tom was sleeping when I got there.', 1, 1, 3);
+INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (4, 'Keep it up!', 2, 1, 4);
+INSERT INTO Reviews (stars, note, task_id, caretaker_id, owner_id) VALUES (4.7, 'Well done', 4, 2, 4);
 UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=1)/(select count(*) from reviews where caretaker_id=1)) where user_id=1;
+UPDATE Caretakers SET rating=((select sum(stars)::float4 from reviews where caretaker_id=2)/(select count(*) from reviews where caretaker_id=2)) where user_id=2;
 
