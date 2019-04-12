@@ -33,7 +33,7 @@ module.exports = {
 
   getMyUpcomingTasksQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, U.phone, B.starting, B.ending, B.money FROM Tasks T JOIN Bids B on (T.bid_id=B.bid_id) JOIN Services S on (B.service_id=S.service_id) NATURAL JOIN Caretakers C NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=1 ORDER BY S.starting desc;',
   getMyTaskHistoryQuery: 'SELECT task_id, P.type, P.name as petname, U.name as ownername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (B.owner_id=U.user_id) WHERE C.user_id=$1 and T.status=2 ORDER BY S.starting desc;',
-  getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;',
+  getMyTaskHistoryAsOwnerQuery: 'SELECT task_id, T.status, P.name as petname, U.name as caretakername, U.phone, B.starting, B.ending, B.money FROM Tasks T join Bids B on (T.bid_id=B.bid_id and B.owner_id=$1) join Services S on (B.service_id=S.service_id) JOIN Caretakers C on (S.caretaker_id=C.user_id) NATURAL JOIN Pets P JOIN Users U on (S.caretaker_id=U.user_id) ORDER BY S.starting desc;',
   finishTaskUpdate: 'UPDATE Tasks SET status=2 where task_id=$1;',
   getMyReviews: 'SELECT * from REVIEWS where caretaker_id=$1 order by reviewnum desc;',
 
@@ -54,9 +54,9 @@ module.exports = {
         'from caretakers C join services S on (C.user_id=S.caretaker_id) join Bids B on (B.service_id=S.service_id) ' +
         'join Pets P on (B.pet_id=P.pet_id) join Users U on (B.owner_id=U.user_id) ' +
         'where S.status=1 and B.status=1 and S.caretaker_id=$1;',
-  seeBidsForServiceQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) ' +
+  seeBidsForServiceQuery: 'SELECT B.owner_id, B.status, B.bid_id, S.service_id, B.money, B.starting, B.ending FROM Bids B JOIN Services S on (B.service_id=S.service_id) ' +
         'WHERE S.service_id=$1 ORDER BY B.money desc;',
-  seeMyBidsQuery: 'SELECT * FROM Bids B JOIN Services S on (B.service_id=S.service_id) where B.owner_id=$1;',
+  seeMyBidsQuery: 'SELECT B.bid_id, B.pet_id, B.service_id, B.money, B.status, U.name, B.starting, B.ending FROM Bids B JOIN Services S on (B.service_id=S.service_id) join Users U on (U.user_id=S.caretaker_id) where B.owner_id=$1;',
   getAllBids: 'SELECT * FROM Bids',
   // Triggers placingBid
   placeBidInsert: 'INSERT INTO Bids (starting, ending, money, owner_id, pet_id, service_id) VALUES ($1, $2, $3, $4, $5, $6);',

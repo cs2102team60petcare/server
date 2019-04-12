@@ -104,19 +104,19 @@
                                 <table class="table table-allbids">
                                     <thead>
                                         <tr>
-                                            <th>Bid</th>
-                                            <th>Oid</th>
-                                            <th>Start Time</th>
-                                            <th>End Time</th>
-                                            <th>Bids Placed</th>
-                                            <th>Status</th>
+                                            <th>Bid_id</th>
+                                            <th>Owner_id</th>
+                                            <th>Starting</th>
+                                            <th>Ending</th>
+                                            <th>Offer </th>
+                                            <th>Bid Status</th>
 
                                         </tr>
                                     </thead>
                                     <tbody>
                                             <% for(var i=0; i < viewBids.length; i++) { %>
                                                 <tr>
-                                                    <td><%= viewBids[i].bids_id %></td>
+                                                    <td><%= viewBids[i].bid_id %></td>
                                                     <td><%= viewBids[i].owner_id %></td>
                                                     <td><%= viewBids[i].starting %></td>
                                                     <td><%= viewBids[i].ending %></td>
@@ -159,8 +159,8 @@
                                             <th>bid_id</th>
                                             <th>pid_id</th>
                                             <th>service_id</th>
-                                            <th>Caretaker</th>
                                             <th>Offered</th>
+                                            <th>Caretaker</th>
                                             <th>Bid Status</th>
                                             <th>Starting</th>
                                             <th>Ending</th>
@@ -173,8 +173,8 @@
                                             <td ><%=bids[i].bid_id    %></td>
                                             <td ><%=bids[i].pet_id    %></td>
                                             <td ><%=bids[i].service_id    %></td>
-                                            <td ><%=bids[i].name    %></td>
                                             <td ><%=bids[i].money    %></td>
+                                            <td ><%=bids[i].name    %></td>
                                             <td ><%=bids[i].status    %></td>
                                             <td ><%=bids[i].starting    %></td>
                                             <td ><%=bids[i].ending    %></td>
