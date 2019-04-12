@@ -115,7 +115,7 @@ module.exports = {
   // Complex Query 3
   // Shows the demand ratio by hour for days {1..7} (whichever we call)
   ratioOfBidsByHourByDay: 'select extract(DOW from starting) as day, extract(hour from starting)::integer as hour, ' +
-        'count(*)::float4/(select count(*) from Bids where status=2 and extract(DOW from starting)=$1) as ratio ' +
+        'count(*)::float4/(select count(*) from Bids where extract(DOW from starting)=$1) as ratio ' +
         'from bids where extract(DOW from starting)=$1 group by day, hour;',
 
   // Do inside a transaction
