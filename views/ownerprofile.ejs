@@ -62,6 +62,8 @@
                                         <thead>
                                             <tr>
                                                 <th>Services_ID</th>
+                                                <th>Caretaker Name</th>
+                                                <th>Rating</th>
                                                 <th>Pet Type</th>
                                                 <th>Start Date</th>
                                                 <th>End Date</th>
@@ -75,7 +77,9 @@
                                                     <tr>
                                                       <!-- <th scope="row">1</th> -->
                                                       <td><%= service[i].service_id %></td>
-                                                      <td><%= service[i].petType %></td>
+                                                      <td><%= service[i].name %></td>
+                                                      <td><%= service[i].rating %></td>
+                                                      <td><%= service[i].pettype %></td>
                                                       <td><%= service[i].starting %></td>
                                                       <td><%= service[i].ending %></td>
                                                       <td><%= service[i].minwage %></td>

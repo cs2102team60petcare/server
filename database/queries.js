@@ -128,8 +128,9 @@ module.exports = {
   // use the base string + other strings
   // use for the filter in the owner_home page
   // add num accordingly at the end of every non-base string (or $)
-  searchAvailableServicesBase: 'Select * from Services S ' +
-        'join Caretakers C on (C.user_id=S.caretaker_id) natural join Users U where status=1',
+  searchAvailableServicesBase: "SELECT S.service_id, S.starting, S.ending, S.minWage, U.name, C.rating, " +
+      "array_to_string(array_agg(distinct L.type), ',') as petType " + 
+      "FROM SERVICES S JOIN Caretakers C on (S.caretaker_id=C.user_id) JOIN USERS U on (U.user_id=C.user_id) join Likes L on (C.user_id=L.caretaker_id) WHERE status=1 GROUP BY S.service_id, U.name, C.rating",
   serachAvailableServicesStarting: ' and S.starting>=$',
   searchAvailableServicesEnding: ' and S.ending<=$',
   searchAvailableServicesCaretaker: ' and U.name=$',
