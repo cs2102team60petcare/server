@@ -13,7 +13,7 @@ exports.signUpCareTaker = function (req, res, next) {
   var password = req.body.password
   var address = '{ "address" :' + '"' + req.body.address + '"' + '}'
   var number = req.body.number
-  var petType = [req.body.petType]
+  var petType = req.body.petType
 
   bcrypt.genSalt(saltRounds, function (err, salt) {
     if (err) next(err)
