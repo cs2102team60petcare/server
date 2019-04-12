@@ -5,59 +5,51 @@ var loginRoute = require('./login')
 var logoutRoute = require('./logout')
 var homeRoute = require('./home')
 var signUpRoute = require('./signup')
+var ownerprofileRoute = require('./ownerprofile')
+var managerprofileRoute = require('./managerprofile')
+var caretakerprofileRoute = require('./caretakerprofile')
+var profileRoute = require('./profileRoute')
+var bidsRoute = require('./bids')
+var servicesRoute = require('./services')
 var utilities = require('../controllers/utilities')
-const pool = require('../database/connection')
-
 
 router.use('/login', loginRoute)
 router.use('/home', homeRoute)
 router.use('/signup', signUpRoute)
 router.use('/logout', logoutRoute)
-
+router.use('/ownerprofile', utilities.loggedInOnly, ownerprofileRoute)
+router.use('/managerprofile', utilities.loggedInOnly, managerprofileRoute)
+router.use('/caretakerprofile', utilities.loggedInOnly, caretakerprofileRoute)
+router.use('/profile',utilities.loggedInOnly, profileRoute)
+router.use('/bids', bidsRoute)
+router.use('/services', servicesRoute)
 router.get('/', mainController.getMainPage)
 
-router.get('/profile' , utilities.loggedInOnly, function(req, res, next) {
-    res.render('profile')
+router.get('/redirectToCorrectProfile', function (req, res, next) {
+  var isUser = req.user.user
+  if (isUser) {
+    var role = req.user.role
+    if (role == 'CARETAKER') {
+      console.log('Is caretaker')
+      res.redirect('/caretakerprofile')
+    } else if (role == 'OWNER') {
+      console.log('Is owner')
+      res.redirect('/ownerprofile')
+    } else {
+      res.redirect('/login')
+    }
+  } else {
+    console.log('Is manager')
+    res.redirect('/managerprofile')
+  }
 })
 
-router.get('/bids', function(req, res, next) { 
-  pool.query("SELECT * FROM bids", (err, data) => {
-    if (err) next(err)
-    var databids = data.rows
-    res.render('bids', {bids : databids})
-    // res.render('bids',{ bids: [
-    //   { "oid": 1,
-    //     "starttime": "30/03/2019 1130",
-    //     "endtime":  "31/03/2019 2340" ,
-    //     "bidplaced": 20,
-    //     "status": 1
-    //   },
-  
-    //   { "oid": 2,
-    //   "starttime": "30/03/2019 1330",
-    //   "endtime": "31/03/2019 2340" ,
-    //   "bidplaced": 25,
-    //   "status": 1
-    //   } ] 
-    // });
-  
-  })
-
+router.get('/caretakerform', function (req, res, next) {
+  res.render('caretakerform')
 })
 
-router.get('/services',function (req, res, next) {
-  pool.query("SELECT * FROM services" , (err, data) => {
-    if (err) next (err)
-    var servicesData = data.rows
-    console.log(servicesData)
-    res.render('servicesPage', {service : servicesData})
-    // res.render('servicesPage', {service: [
-    //   { sid: 1, petType: 'Dog' ,startDate: 310319 ,endDate: 090419, minWage: 20},
-    //   { sid: 2, petType: 'Cat' ,startDate: 310319 ,endDate: 100419, minWage: 15},
-    //   { sid: 3, petType: 'Snake' ,startDate: 310319 ,endDate: 110419, minWage: 1500}
-    //   ]})
-    
-  })
+router.get('/serviceForm', function (req, res, next) {
+  res.render('serviceform')
 })
 
 module.exports = router

@@ -13,35 +13,36 @@ exports.signUpCareTaker = function (req, res, next) {
   var password = req.body.password
   var address = '{ "address" :' + '"' + req.body.address + '"' + '}'
   var number = req.body.number
-  var petType = [req.body.petType]
+  var petType = req.body.petType
 
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(password, salt, function(err, hash) {
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    if (err) next(err)
+    bcrypt.hash(password, salt, function (err2, hash) {
+      if (err2) { next(err2) }
       (async () => {
         const client = await pool.connect()
-      
+        console.log(petType)
         try {
           await client.query('BEGIN')
-          const { rows } = await client.query(queries.signupUserInsert, [name, email , number, address, hash])
-          const insertCareTakerValues = [rows[0].user_id, petType]
-          await client.query(queries.signupCareTakerInsert, insertCareTakerValues)
+          const { rows } = await client.query(queries.signupUserInsert, [name, email, number, address, hash])
+          var userID = rows[0].user_id
+          await client.query(queries.signupCareTakerInsert, [userID])
+          await client.query(queries.careTakerLikesInsert, [userID, petType])
           await client.query('COMMIT')
         } catch (e) {
           await client.query('ROLLBACK')
           throw e
         } finally {
           client.release()
-          res.redirect("../bids")
+          res.redirect('../login')
         }
       })().catch(e => console.error(e.stack))
-      
     })
   })
 }
 
-
-exports.getSignUpOwnerPage = function (req ,res, next) {
-  res.render('signupOwner', { title : 'Sign up for Percare as an Owner' })
+exports.getSignUpOwnerPage = function (req, res, next) {
+  res.render('signupOwner', { title: 'Sign up for Percare as an Owner' })
 }
 
 exports.signUpOwner = function (req, res, next) {
@@ -52,33 +53,35 @@ exports.signUpOwner = function (req, res, next) {
   console.log(address)
   var number = req.body.number
 
-  bcrypt.genSalt(saltRounds, function(err, salt) {
-    bcrypt.hash(password, salt, function(err, hash) {
-      
+  bcrypt.genSalt(saltRounds, function (err, salt) {
+    if (err) next(err)
+    bcrypt.hash(password, salt, function (err, hash) {
+      if (err) { next(err) }
       (async () => {
         const client = await pool.connect()
 
         try {
           await client.query('BEGIN')
-          const {rows} = await client.query(queries.signupUserInsert, [name, email , number, address, hash])
+          const { rows } = await client.query(queries.signupUserInsert, [name, email, number, address, hash])
           console.log(rows)
           const insertOwnerValues = [rows[0].user_id]
           await client.query(queries.signupOwnerInsert, insertOwnerValues)
-
+          res.redirect('../ownerprofile')
           await client.query('COMMIT')
         } catch (e) {
           await client.query('ROLLBACK')
+          res.redirect('../signup')
           throw e
         } finally {
           client.release()
-          res.redirect("../services")
-        }
 
-      })().catch(e => setImmediate(() => { throw e }))    })
+        }
+      })().catch(e => setImmediate(() => { throw e }))
+    })
   })
 }
 
-  //DO INPUT VALIDATION @teojunjie 
-  	//valid value on all fields
-  	//use userExistsQuery. if data.rows.length != 0, REJECT
-  	//similarly, gotta check all unique fields in USERS. Please see init_petcare.sql
+// DO INPUT VALIDATION @teojunjie
+  	// valid value on all fields
+  	// use userExistsQuery. if data.rows.length != 0, REJECT
+  	// similarly, gotta check all unique fields in USERS. Please see init_petcare.sql

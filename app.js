@@ -14,18 +14,18 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 // Load environment variables
 require('dotenv').load()
-//Authentication
+// Authentication
 app.use(session({
   // use the dB to store sessions @psyf
   secret: process.env.SESSION_SECRET,
   resave: true,
   saveUninitialized: false,
-  cookie: { maxAge: 180000, 
-            secure: false, 
-            httpOnly: true,   //protects against Cross Site Scripting  
-          }, 
-  name: "id"    //SECURITY NOTE: making it harder to tell we're using express-session
-  //courtesy of: https://lockmedown.com/securing-node-js-managing-sessions-express-js/
+  cookie: { maxAge: 180000,
+    secure: false,
+    httpOnly: true // protects against Cross Site Scripting
+  },
+  name: 'id' // SECURITY NOTE: making it harder to tell we're using express-session
+  // courtesy of: https://lockmedown.com/securing-node-js-managing-sessions-express-js/
 }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -40,7 +40,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // Add routes
 var routes = require('./routes/main')
 app.use('/', routes)
-
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

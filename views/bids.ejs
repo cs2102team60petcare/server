@@ -5,33 +5,118 @@
 <head>
     <title>Filter Table</title>
     <link href="../stylesheets/bidstyle.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <link href="../stylesheets/styling.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="javascripts/bids.js"></script>
 </head>
 
 
 <body>
-    
-    <table id="myTable">
-        <tr id="HeadRow">
-            <td>Oid</td>
-            <td>Start Time</td>
-            <td>End Time</td>
-            <td>Bid Placed</td>
-            <td>Status</td>
-        </tr>
-
-        <% for(var i=0; i < bids.length; i++) { %>
-            <tr>
-                <td><%= bids[i].bid_id %></td>
-                <td><%= bids[i].starting %></td>
-                <td><%= bids[i].ending %></td>
-                <td><%= bids[i].money %></td>
-                <td><%= bids[i].status %></td>
-            </tr>
-        <% } %>
-
-
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <a class = "navbar-brand" >
+                <img src="images/paw.png" class ="logo">
+            </a>
+            <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                <span class ="sr-only">Toggle navigation</span>
+                <span class ="icon bar"></span>
+                <span class ="icon bar"></span>
+                <span class ="icon bar"></span>
+            </button>
         
-    </table>
+        <div class="navbar-collapse collapse" id ="navbarCollapse">
+            <ul class ="nav navbar-nav">
+                <li><a href= "../home">Home</a></li>
+                <li><a href="../services">Services</a></li>
+                <li><a href="../profile">Profile</a></li>
+            </ul>                
+        </div>
+    </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-wrapper">
+        <h1>Bid Status</h1>
+        <p>Click to place a bid</p>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#bidForm">Bid</button>
+        <div id="bidForm" class="collapse">
+                <form action="" method ="POST" enctype="application/x-www-form-urlencoded">  
+                    <p>Oid</p>
+                    <input type="text" id ="oid" name="owner" placeholder="Enter Oid"> 
+                    <p>Bid Amount</p>
+                    <input type="text" name="BidAmount" placeholder="Enter Bid Amount">
+                    <button type="submit">Place bid</button>
+                </form>
+        </div>
+
+        <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h3>My Bids</h3></div>
+                </div>
+        </div>
+        <div id="mybid" >
+            <table id="myTable">
+                <tr id="HeadRow">
+                    <td>Bid</td>
+                    <td>Oid</td>
+                    <td>Start Time</td>
+                    <td>End Time</td>
+                    <td>Bid Placed</td>
+                    <td>Status</td>
+                    <td>Actions</td>
+                </tr>
+                
+                <% for(var i=0; i < bids.length; i++) { %>
+                    <tr>
+                        <td><%= bids[i].bids_id %></td>
+                        <td><%= bids[i].owner_id %></td>
+                        <td><%= bids[i].starting %></td>
+                        <td><%= bids[i].ending %></td>
+                        <td><%= bids[i].money %></td>
+                        <td><%= bids[i].status %></td>
+                        <td>
+                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                        </td>
+                    </tr>
+                <% } %>      
+            </table>       
+        </div>
+        <div class="row">
+            <div class="col-sm-8"><h3>Current Bids</h3></div>
+        </div>
+        <p>Click to view the current bid status</p>
+        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#bidsTable">Expand</button>
+        <div id="bidsTable" class="collapse">
+            <table id="myTable">
+                <tr id="HeadRow">
+                    <td>Bid</td>
+                    <td>Oid</td>
+                    <td>Start Time</td>
+                    <td>End Time</td>
+                    <td>Bid Placed</td>
+                    <td>Status</td>
+                </tr>
+                
+                <% for(var i=0; i < bids.length; i++) { %>
+                    <tr>
+                        <td><%= bids[i].bids_id %></td>
+                        <td><%= bids[i].owner_id %></td>
+                        <td><%= bids[i].starting %></td>
+                        <td><%= bids[i].ending %></td>
+                        <td><%= bids[i].money %></td>
+                        <td><%= bids[i].status %></td>
+                    </tr>
+                <% } %>      
+            </table>       
+        </div>
+    </div>
+    </div>
+    
 
 </body>
 </html>

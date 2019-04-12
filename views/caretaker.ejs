@@ -1,0 +1,289 @@
+<!--index.html-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>CareTaker Profile</title>
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link href="stylesheets/caretakerprofilestyling.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script>
+            var graphData = <%- JSON.stringify(graphDataValues) %>
+    </script>
+    <script src="javascripts/caretaker.js"></script>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/navbarmanager.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+
+  </head>
+  <body>
+            <nav role = "navigation" class = "navbar navbar-inverse">
+                <div class = "container-fluid">
+                    <div class ="navbar-header">
+                        <a class = "navbar-brand" href= "#">
+                            <img src="images/paw.png" class ="logo">
+                        </a>
+                        <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                            <span class ="sr-only">Toggle navigation</span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                        </button>
+                        
+                    </div>
+                    <div class="navbar-collapse collapse" id ="navbarCollapse">
+                        <ul class ="nav navbar-nav">
+                            <li><a href="./profile"">Edit Profile</a></li>
+                        </ul>
+                        <ul class ="nav navbar-nav pull-right" id="right">
+                            <li><a href="../logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Upcoming Tasks</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Task_id</th>
+                                                <th >Type</th>
+                                                <th >Owner</th>
+                                                <th >Phone#</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                                <th >Pay</th>
+                                                <th> Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<upcomingTasks.length; i++) { %>
+                                                <tr>
+                                                    <td><%=upcomingTasks[i].task_id   %></td>
+                                                    <td><%=upcomingTasks[i].type      %></td>
+                                                    <td><%=upcomingTasks[i].ownername %></td>
+                                                    <td><%=upcomingTasks[i].phone     %></td>
+                                                    <td><%=upcomingTasks[i].starting  %></td>
+                                                    <td><%=upcomingTasks[i].ending    %></td>
+                                                    <td><%=upcomingTasks[i].money     %></td>
+                                                    <td>
+                                                        <button type="button" class="btn finished-task">Finish Task</button>
+                                                    </td>
+
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Pending Bids</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Bid_id</th>
+                                                <th >Service_id</th>
+                                                <th >Type</th>
+                                                <th >Owner</th>
+                                                <th >Money</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                                <th >Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<bids.length; i++) { %>
+                                                <tr>
+                                                    <td><%=bids[i].bid_id       %></td>
+                                                    <td><%=bids[i].service_id   %></td>
+                                                    <td><%=bids[i].type         %></td>
+                                                    <td><%=bids[i].name         %></td>
+                                                    <td><%=bids[i].money        %></td>
+                                                    <td><%=bids[i].starting     %></td>
+                                                    <td><%=bids[i].ending       %></td>
+                                                    <td>
+                                                        <button type="button" class="btn accept-bid">Accept</button>
+                                                        <button type="button" class="btn reject-bid">Reject</button>                
+                                                    </td>
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Available Services</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="pull-left">
+                                        <div class="add-btn">
+                                            <button type="button" class="btn btn-info add-new-service"><i class="fa fa-plus"></i> Add Service</button>
+                                        </div>
+                                    </div>
+    
+                                <div class="table-container">
+                                    <table class="table table-services">
+                                        <thead>
+                                            <tr>
+                                                <th >Service_id</th>
+                                                <th >Min Wage</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                                <th >Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<services.length; i++) { %>
+                                                <tr>
+                                                    <td><%=services[i].service_id       %></td>
+                                                    <td><%=services[i].minwage          %></td>
+                                                    <td><%=services[i].starting         %></td>
+                                                    <td><%=services[i].ending           %></td>
+                                                    <td>
+                                                        <a class="add service" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                        <a class="delete service" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                                    </td>
+
+                                                </tr>
+                                            <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+    <div class="container">
+        <div class="row">
+    
+            <section class="content">
+                <h1>Reviews</h1>
+                <div class="col-lg-8 col-lg-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-container">
+                                <table class="table table-bids">
+                                    <thead>
+                                        <tr>
+                                            <th >Review#</th>
+                                            <th >Note</th>
+                                            <th >Stars</th>
+                                            <th >Task_id</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% for(var i = 0; i<reviews.length; i++) { %>
+                                                <tr>
+                                                    <td><%= reviews[i].reviewnum  %></td>
+                                                    <td><%= reviews[i].note  %></td>
+                                                    <td><%= reviews[i].stars%></td>
+                                                    <td><%= reviews[i].task_id %></td>
+                                                </tr>
+                                            <% } %>    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Tasks History</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-bids">
+                                        <thead>
+                                            <tr>
+                                                <th >Task_id</th>
+                                                <th >Type</th>
+                                                <th >OwnerName</th>
+                                                <th >Starting</th>
+                                                <th >Ending</th>
+                                                <th >Money</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i = 0; i<tasksHistory.length; i++) { %>
+                                                    <tr>
+                                                        <td><%= tasksHistory[i].task_id  %></td>
+                                                        <td><%= tasksHistory[i].type  %></td>
+                                                        <td><%= tasksHistory[i].ownername%></td>
+                                                        <td><%= tasksHistory[i].starting %></td>
+                                                        <td><%= tasksHistory[i].ending   %></td>
+                                                        <td><%= tasksHistory[i].money   %></td>
+                                                    </tr>
+                                                <% } %>    
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+        
+    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 30px auto;"></div>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

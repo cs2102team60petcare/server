@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manager Profile</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link href="stylesheets/managerprofile.css" rel="stylesheet">
+
+<script>
+        var graphData = <%- JSON.stringify(graphDataValues) %>
+</script>
+
+<script src="javascripts/managerprofile.js"></script>
+<link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+<link href="stylesheets/navbarmanager.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+</head>
+
+<!-- Unassigned Requests -->
+<body>
+            <nav role = "navigation" class = "navbar navbar-inverse">
+                <div class = "container-fluid">
+                    <div class ="navbar-header">
+                        <a class = "navbar-brand" href= "#">
+                            <img src="images/paw.png" class ="logo">
+                        </a>
+                        <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                            <span class ="sr-only">Toggle navigation</span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                            <span class ="icon bar"></span>
+                        </button>
+                        
+                    </div>
+                    <div class="navbar-collapse collapse" id ="navbarCollapse">
+                        <ul class ="nav navbar-nav">
+                            <li><a href="./profile"">Edit Profile</a></li>
+                        </ul>
+                        <ul class ="nav navbar-nav pull-right" id="right">
+                            <li><a href="../logout">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+    
+    <div class="container">
+            <div class="table-wrapper">
+                <div class="table-title">
+                    <div class="row">
+                        <div class="col-sm-8"><h2>Unassigned <b>Requests</b></h2>
+
+                        </div>
+                        <!-- previous and next buttons -->
+                        <div> 
+
+                        </div>
+                        </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Rid</th>
+                            <th>User_id</th>
+                            <th>Created</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i =0 ; i< unassignedRequests.length ; i++) { %>
+                            <tr>
+                                <td><%=unassignedRequests[i].request_id     %></td>
+                                <td><%=unassignedRequests[i].user_id        %></td>
+                                <td><%=unassignedRequests[i].created        %></td>
+                                <td><%=unassignedRequests[i].message        %></td>
+                                <td>
+                                    <button type="button" class="btn btn-info assign"><i class="fa fa-plus"></i>Assign</button>
+                                </td>
+                            </tr>
+            
+                        <% } %>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+    </div>    
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-12"><h2>My <b>Requests</b></h2> </div>
+                    
+                </div>
+                
+            </div>
+            <table class="table table-bordered" id="table-requests">
+                <thead>
+                    <tr>
+                        <th>Request_id</th>
+                        <th>User_id</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Message</th>
+                        <th>Justification</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i =0 ; i< requests.length ; i++) { %>
+                        <tr>
+                            <td><%=requests[i].request_id     %></td>
+                            <td><%=requests[i].user_id        %></td>
+                            <td><%=requests[i].status         %></td>
+                            <td><%=requests[i].created        %></td>
+                            <td><%=requests[i].message        %></td>
+                            <td>NIL</td>
+                            <td>
+                                <a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                            </td>
+                        </tr>
+        
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-12"><h2>My <b>Past Solved Requests</b></h2> </div>
+                </div>
+            </div>
+            <table class="table table-bordered" id="table-past-requests">
+                <thead>
+                    <tr>
+                        <th>Request_id</th>
+                        <th>User_id</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Message</th>
+                        <th>Justification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for (var i =0 ; i< pastRequests.length ; i++) { %>
+                        <tr>
+                            <td><%=pastRequests[i].request_id     %></td>
+                            <td><%=pastRequests[i].user_id        %></td>
+                            <td><%=pastRequests[i].status         %></td>
+                            <td><%=pastRequests[i].created        %></td>
+                            <td><%=pastRequests[i].message        %></td>
+                            <td><%=pastRequests[i].justification  %></td>
+                        </tr>
+        
+                    <% } %>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="container">
+
+        <h1>Query database</h1>
+        <input type="text" class="form-control-query" name="query"></input>
+        <button id="SendQueryBtn">Send Query</button>
+        <textarea id = "results-query"
+            rows = "3"
+            cols = "80">Results shown here as JSON</textarea>
+    </div>
+
+    <div id="chartContainer" style="height: 270px; width: 80%; margin: 30px auto;"></div>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+</body>
+</html>                            

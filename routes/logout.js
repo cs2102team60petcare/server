@@ -3,7 +3,7 @@ var router = express.Router()
 
 router.get('/', function(req, res) {
 	req.logout()
-	res.redirect('/home')
+	res.redirect('/login')
 })
 
 module.exports = router

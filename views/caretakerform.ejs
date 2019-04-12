@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+            <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <link href="stylesheets/servicesStyle.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+        
+    <title>Services</title>
+    <style>
+        .PT {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            
+        }
+        #cForm {
+            color:white;
+        }
+    </style>
+    </head>
+    
+<body>
+    <!-- Create Nav Bar -->
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="../home">Home</a></li>
+                    <li><a href="../signup">Signup</a></li>
+                    <li><a href="../login">Login</a></li>
+                    <li><a href="../search">Search</a></li>   
+                    <li><a href="../contact">Contact</a></li>  
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Create Header --> 
+    <div class="jumbotron">
+        <div class ="container">
+            <h1> Take care of a pet now!</h1>
+        </div>
+    </div>
+    
+    <div class = "container" id ="cForm">
+    
+              <form action="/action_page.php">
+                <div class="form-group">
+                  <label for="sDate">Start Date:</label>
+                  <div class='input-group date' id='datetimepicker4'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                <div class="form-group">
+                  <label for="eDate">End Date:</label>
+                  <div class='input-group date' id='datetimepicker4'>
+                        <input type='text' class="form-control" />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+                        </span>
+                    </div>
+                <script type="text/javascript">
+                        $(function() {              
+                        // Bootstrap DateTimePicker v4
+                        $('#datetimepicker4').datetimepicker({
+                                format: 'DD/MM/YYYY'
+                        });
+                        });
+                </script>
+
+                <div class= "PT">
+                        <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Pet Types</button>
+
+                        <div id="demo" class="collapse">
+                                <label class="checkbox-inline"><input type="checkbox" classs = "pettype" value="">Dog</label>
+                                <label class="checkbox-inline"><input type="checkbox" classs = "pettype" value="">Cat</label>
+                                <label class="checkbox-inline"><input type="checkbox" classs = "pettype" value="">Hamster</label>
+                        </div>
+        
+                </div>
+
+                <button type="submit" class="btn btn-default">Submit</button>
+
+              </form>    
+            
+    </div>
+       
+</body>
+
+</html>

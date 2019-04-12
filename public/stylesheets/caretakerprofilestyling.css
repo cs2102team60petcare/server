@@ -1,0 +1,64 @@
+/*    --------------------------------------------------
+	:: General
+	-------------------------------------------------- */
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background: url(../images/profile-bg.jpg)no-repeat center center fixed;
+        color: #353535;
+    }
+    .content h1 {
+        text-align: center;
+    }
+    .content .content-footer p {
+        color: #6d6d6d;
+        font-size: 12px;
+        text-align: center;
+    }
+    .content .content-footer p a {
+        color: inherit;
+        font-weight: bold;
+    }
+    
+    /*	--------------------------------------------------
+        :: Table 
+        -------------------------------------------------- */
+    .panel {
+        border: 10px solid #ddd;
+        background-color: #fcfcfc;
+    }
+    .panel .btn-group .add-btn {
+        margin: 15px 0 30px;
+    }
+    
+    .panel .btn-group .btn {
+        transition: background-color .3s ease;
+    }
+    .table {
+        background-color: #fff;
+        border-bottom: 1px solid #eee;
+    }
+    .table tbody tr:hover {
+        cursor: pointer;
+        background-color: #eee;
+    }
+    .table tbody tr td {
+        padding: 10px;
+        vertical-align: middle;
+        border-top-color: #eee;
+    }
+    .table tbody tr.selected td {
+        background-color: #eee;
+    }
+
+    
+    .add.service {
+        display: none
+    }
+
+    .update-service {
+        display: none;
+    }
+
+    .finished-task {
+        background-color : greenyellow;
+    }

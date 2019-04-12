@@ -1,0 +1,352 @@
+<!--index.html-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Owner Profile</title>
+
+    <link href="stylesheets/ownerprofilestyling.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script>
+            var graphData = <%- JSON.stringify(graphDataValues) %>
+    </script>
+    <script src="javascripts/ownerprofile.js"></script>
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="stylesheets/navbar.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <nav role = "navigation" class = "navbar navbar-inverse">
+        <div class = "container-fluid">
+            <div class ="navbar-header">
+                <a class = "navbar-brand" href= "#">
+                    <img src="images/paw.png" class ="logo">
+                </a>
+                <button type ="button" class ="navbar-toggle" data-target ="#navbarCollapse" data-toggle = "collapse">
+                    <span class ="sr-only">Toggle navigation</span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                    <span class ="icon bar"></span>
+                </button>
+                
+            </div>
+            <div class="navbar-collapse collapse" id ="navbarCollapse">
+                <ul class ="nav navbar-nav">
+                    <li><a href="./profile">Edit Profile</a></li>
+                </ul>
+                <ul class ="nav navbar-nav pull-right" id="right">
+                    <li><a href="../logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Services Available</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-services">
+                                        <thead>
+                                            <tr>
+                                                <th>Services_ID</th>
+                                                <th>Caretaker Name</th>
+                                                <th>Rating</th>
+                                                <th>Pet Type</th>
+                                                <th>Start Date</th>
+                                                <th>End Date</th>
+                                                <th>MinWage</th>
+                                                <th>Actions</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <% for(var i=0; i < service.length; i++) { %>
+                                                    <tr>
+                                                      <!-- <th scope="row">1</th> -->
+                                                      <td><%= service[i].service_id %></td>
+                                                      <td><%= service[i].name %></td>
+                                                      <td><%= service[i].rating %></td>
+                                                      <td><%= service[i].pettype %></td>
+                                                      <td><%= service[i].starting %></td>
+                                                      <td><%= service[i].ending %></td>
+                                                      <td><%= service[i].minwage %></td>
+                                                      <td> <button type="button" class="btn btn-info view-all-bids" data-toggle="collapse" data-target="#bidsTable">View All Bids</button></td>
+                                                    </tr>
+                                                    
+                                                 <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+        </div>
+
+
+        <section class="content" >
+                <h1>View All Bids</h1>
+                <div class="col-lg-10 col-lg-offset-1">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="table-container">
+                                <table class="table table-allbids">
+                                    <thead>
+                                        <tr>
+                                            <th>Bid_id</th>
+                                            <th>Owner_id</th>
+                                            <th>Starting</th>
+                                            <th>Ending</th>
+                                            <th>Offer </th>
+                                            <th>Bid Status</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            <% for(var i=0; i < viewBids.length; i++) { %>
+                                                <tr>
+                                                    <td><%= viewBids[i].bid_id %></td>
+                                                    <td><%= viewBids[i].owner_id %></td>
+                                                    <td><%= viewBids[i].starting %></td>
+                                                    <td><%= viewBids[i].ending %></td>
+                                                    <td><%= viewBids[i].money %></td>
+                                                    <td><%= viewBids[i].status %></td>
+                                                </tr>
+                                            <% } %>  
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        
+    <div class="container">
+        <div class="row">
+    
+            <section class="content">
+                <h1>My Bids</h1>
+                <!-- <div class="col-lg-11 col-lg-offset-1">
+                    <div class="panel panel-default">
+                        <div class="panel-body"> -->
+                            <div class="pull-right">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-success btn-filter" data-target="2">Successful</button>
+                                    <button type="button" class="btn btn-warning btn-filter" data-target="1">Pending</button>
+                                    <button type="button" class="btn btn-danger btn-filter" data-target="0">Rejected</button>
+                                </div>
+                            </div>
+                            <div class="pull-left">
+                                <div class="add-btn">
+                                    <button type="button" class="btn btn-info add-new-bid"><i class="fa fa-plus"></i> Add New Bid</button>
+                                </div>
+                            </div>
+                            <div class="table-container">
+                                <table class="table table-bids" id="bids">
+                                    <thead>
+                                        <tr>
+                                            <th>bid_id</th>
+                                            <th>pid_id</th>
+                                            <th>service_id</th>
+                                            <th>Offered</th>
+                                            <th>Caretaker</th>
+                                            <th>Bid Status</th>
+                                            <th>Starting</th>
+                                            <th>Ending</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <% for(var i=0; i < bids.length; i++) { %>
+                                        <tr id="bid" data-status="<%=bids[i].status%>">
+                                            <td ><%=bids[i].bid_id    %></td>
+                                            <td ><%=bids[i].pet_id    %></td>
+                                            <td ><%=bids[i].service_id    %></td>
+                                            <td ><%=bids[i].money    %></td>
+                                            <td ><%=bids[i].name    %></td>
+                                            <td ><%=bids[i].status    %></td>
+                                            <td ><%=bids[i].starting    %></td>
+                                            <td ><%=bids[i].ending    %></td>
+                                            <td > 
+                                                <a class="add bid" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                <a class="delete bid" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <!-- </div>
+                    </div>
+                </div> -->
+            </section>
+            
+        </div>
+    </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>My Pets</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <div class="pull-left">
+                                        <div class="add-btn">
+                                            <button type="button" class="btn btn-info add-new-pet"><i class="fa fa-plus"></i> Add New Pet</button>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-pets">
+                                            <thead>
+                                                <tr>
+                                                    <th>Pid</th>
+                                                    <th>Name</th>
+                                                    <th>Bio</th>
+                                                    <th>Type</th>
+                                                    <th>Born</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% for(var i=0; i < pets.length; i++) { %>
+                                                <tr data-status="<%=pets[i].status%>">
+                                                    <td><%=pets[i].pet_id    %></td>
+                                                    <td><%=pets[i].name    %></td>
+                                                    <td><%=pets[i].biography    %></td>
+                                                    <td><%=pets[i].type    %></td>
+                                                    <td><%=pets[i].born    %></td>
+                                                    <td>
+                                                        <a class="add pet" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>
+                                                        <a class="edit pet" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                                                        <a class="update pet" title="Update" data-toggle="tooltip"><i class="material-icons">add</i></a>
+
+
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+    </div>
+
+    <div class="container">
+            <div class="row">
+        
+                <section class="content">
+                    <h1>Task History</h1>
+                    <div class="col-lg-10 col-lg-offset-1">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="table-container">
+                                    <table class="table table-tasks">
+                                            <thead>
+                                                <tr>
+                                                    <th>Task ID</th>
+                                                    <th>Task Status</th>
+                                                    <th>Caretaker Name</th>
+                                                    <th>Phone</th>
+                                                    <th>Starting</th>
+                                                    <th>Ending</th>
+                                                    <th>Money</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% for(var i=0; i < tasks.length; i++) { %>
+                                                <tr data-status="<%=tasks[i].status%>">
+                                                    <td><%=tasks[i].task_id    %></td>
+                                                    <td><%=tasks[i].status      %></td>
+                                                    <td><%=tasks[i].caretakername    %></td>
+                                                    <td><%=tasks[i].phone    %></td>
+                                                    <td><%=tasks[i].starting    %></td>
+                                                    <td><%=tasks[i].ending    %></td>
+                                                    <td><%=tasks[i].money    %></td>
+                                                    <td>
+                                                        <button class="ReviewBtn">Review</button>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                            </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+            </div>
+    </div>
+
+    <div class="container">
+    <div class="dialog" id="myReviewDialog">
+        <h1>Review Caretaker</h1>
+        <h3 id="careTakerName"></h2>
+
+        <textarea id = "careTakerReviewForm" placeholder="Please leave a review here"></textarea>
+
+          <!-- Rating Stars Box -->
+        <div class='rating-stars text-center'>
+            <ul id='stars'>
+            <li class='star' title='Poor' data-value='1'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Fair' data-value='2'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Good' data-value='3'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='Excellent' data-value='4'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            <li class='star' title='WOW!!!' data-value='5'>
+                <i class='fa fa-star fa-fw'></i>
+            </li>
+            </ul>
+        </div>
+
+
+        <div class='success-box'>
+                <div class='clearfix'></div>
+                <div style="text-align: center"><img alt='tick image' width='32' src='data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeD0iMHB4IiB5PSIwcHgiIHZpZXdCb3g9IjAgMCA0MjYuNjY3IDQyNi42NjciIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDQyNi42NjcgNDI2LjY2NzsiIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MTJweCIgaGVpZ2h0PSI1MTJweCI+CjxwYXRoIHN0eWxlPSJmaWxsOiM2QUMyNTk7IiBkPSJNMjEzLjMzMywwQzk1LjUxOCwwLDAsOTUuNTE0LDAsMjEzLjMzM3M5NS41MTgsMjEzLjMzMywyMTMuMzMzLDIxMy4zMzMgIGMxMTcuODI4LDAsMjEzLjMzMy05NS41MTQsMjEzLjMzMy0yMTMuMzMzUzMzMS4xNTcsMCwyMTMuMzMzLDB6IE0xNzQuMTk5LDMyMi45MThsLTkzLjkzNS05My45MzFsMzEuMzA5LTMxLjMwOWw2Mi42MjYsNjIuNjIyICBsMTQwLjg5NC0xNDAuODk4bDMxLjMwOSwzMS4zMDlMMTc0LjE5OSwzMjIuOTE4eiIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K'/></div>
+                <div class='text-message'></div>
+                <div class='clearfix'></div>
+        </div>
+
+        <input type="button" value="Close" id="btnCloseReview">
+
+    </div>
+    </div>
+
+    <div id="chartContainer" style="height: 370px; max-width: 920px; margin: 30px auto;"></div>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>
