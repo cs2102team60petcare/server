@@ -1,0 +1,104 @@
+/* Style body elements  by adding background image and set it to cover, add font-family*/
+body {
+    font-family: Arvo, serif;
+    background-size: cover;
+}
+/*Style Brand*/
+.logo {
+    height:30px;
+}
+/*Style navigation bar*/
+.navbar-inverse{
+    background: rgb(0, 0, 0);
+}
+
+.navbar-nav li{
+    color: white;
+    font-size: 17px;
+    margin-right: 35px;
+    padding: 10px 0;
+    
+}
+
+#right li{
+    margin-left: 1120px;
+ 
+}
+
+.nav li:hover{
+    border-bottom: 1px solid #00DBFF;
+    padding-bottom: 9px;
+    cursor: pointer;
+}
+/*Style jumbotron*/
+.jumbotron{
+    background: transparent;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 10px;
+    letter-spacing: 1px;
+}
+
+/*Limit width of icon section*/
+.container {
+    max-width: 1000px;
+}
+/*Style icons section using bootstrap grid system*/
+.bodyimage{
+    height: 100px;
+}
+
+.col-md-4{
+    margin-left: 80px;
+    margin-right: 80px;
+    text-align:center;
+    color: #fff;
+}
+
+.icons p{
+    font-size: 15px;
+}
+/*Style contact button*/
+/*
+.find {
+    text-align:center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    background-color: rgba(0,219,255, 0.5);
+    border:none;
+    border-radius: 10px;
+    color: white;
+    font-size:18px; 
+    padding: 10px;
+    letter-spacing: 1.3px;
+
+}
+
+.btn:hover {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border: none;
+}
+*/
+/*Style footer*/
+.footer{  
+    background-color: rgba(0,0,0,0.5);
+    color: grey;
+    font-size: 15px;
+    padding: 10px 0px;
+}
+
+.footer p{
+    text-align: justify;
+}
+
+/*use media queries to change icons size in small devices*/
+@media (max-width: 768px){
+    .bodyimage{
+        height:70px;
+    }
+}
