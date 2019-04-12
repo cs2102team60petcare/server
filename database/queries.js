@@ -89,7 +89,7 @@ module.exports = {
   retractBidUpdate1: 'UPDATE Bids SET status=0 WHERE owner_id=$1 and bid_id=$2;',
   retractBidUpdate2: 'UPDATE Bids SET status=1 WHERE owner_id<>$1 and service_id=$2;',
   retractBidUpdate3: 'UPDATE Services SET status=1 WHERE service_id=$1;',
-  retractBidUpdate4: 'DELETE FROM Task where task_id=$1;',
+  retractBidUpdate4: 'DELETE FROM Tasks where bid_id=$1;',
 
   // Use when caretaker accepts a bid
   // make sure no other accepted bids present
