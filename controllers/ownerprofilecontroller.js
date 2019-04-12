@@ -57,11 +57,7 @@ exports.deleteBid = function (req, res, next) {
     var ownerID = req.user.user_id
     var bidID = req.body.bid_id
     var serviceID = req.body.service_id
-    console.log(req.body)
-    console.log(ownerID)
-    console.log(bidID)
-    console.log(serviceID)
-
+ 
     try {
       await client.query('BEGIN')
       await client.query(queries.retractBidUpdate1, [ownerID, bidID])

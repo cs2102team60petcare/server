@@ -226,7 +226,7 @@
 	INSERT INTO services (caretaker_id, starting, ending, minWage, status) VALUES (1, '2019-04-14 10:00:00', '2019-04-14 16:00:00', 50, 2);
 	insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-14 10:00:00', '2019-04-14 16:00:00', 300, 4, 2, 9, 0); 
 	insert into bids (starting, ending, money, owner_id, pet_id, service_id, status) values ('2019-04-14 10:00:00', '2019-04-14 16:00:00', 320, 3, 1, 9, 2); 
-	insert into TASKS (bid_id, status) values (9, 1); 
+	insert into TASKS (bid_id, status) values (10, 1); 
 
 	-- 1 available services for caretakerA (2 pending bids); same time careTakerB is offering but only 1 bid
 	-- Both Kevin and SJ going to the same party, and both JJ and Saif were not invited? 
@@ -320,7 +320,7 @@
 	returns trigger as $$ begin 
 		if (select ending from Bids where bid_id=old.bid_id) < NOW() then raise exception 'Cant delete if task is finished'; return null; 
 		elseif old.status=2 then raise exception 'Cant delete as task is finished.'; return null; 
-		else return new; end if; 
+		else return old; end if; 
 	end; $$ language plpgsql; 
 
 	create trigger deletingTask
