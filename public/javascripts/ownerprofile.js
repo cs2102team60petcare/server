@@ -36,7 +36,6 @@ $(document).ready(function () {
         if (!result) {
           alert('No bids')
         } else {
-          alert('All Bids')
           $('.table-allbids').find('tbody').empty()
           var bidsData = res.bidsDataValues
           for (var i = 0; i < bidsData.length; i++) {
