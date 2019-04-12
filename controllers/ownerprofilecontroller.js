@@ -64,7 +64,7 @@ exports.deleteBid = function (req, res, next) {
 
     try {
       await client.query('BEGIN')
-      await client.query(queries.retractBidUpdate1, [bidID])
+      await client.query(queries.retractBidUpdate1, [ownerID, bidID])
       await client.query(queries.retractBidUpdate2, [ownerID, serviceID])
       await client.query(queries.retractBidUpdate3, [serviceID])
       await client.query(queries.retractBidUpdate4, [bidID])
