@@ -15,7 +15,8 @@ module.exports = {
 
   signupCareTakerInsert: 'INSERT INTO caretakers (user_id) VALUES ($1);',
   careTakerLikesInsert: 'INSERT INTO likes (caretaker_id, type) VALUES ($1, $2);',
-  careTakerLikesRemove: 'DELETE FROM likes where caretaker_id=$1 and type=$2;',
+  careTakerLikesRemove: 'DELETE FROM likes where caretaker_id=$1;',
+
 
   // WARNING: Use signupPetInsert with the next query in a transaction
   signupPetInsert: 'INSERT INTO pets (name, type, biography, born) VALUES ($1, $2, $3, $4) RETURNING *;',
