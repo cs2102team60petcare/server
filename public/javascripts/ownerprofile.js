@@ -36,7 +36,6 @@ $(document).ready(function () {
         if (!result) {
           alert('No bids')
         } else {
-          alert('All Bids')
           $('.table-allbids').find('tbody').empty()
           var bidsData = res.bidsDataValues
           for (var i = 0; i < bidsData.length; i++) {
@@ -55,7 +54,6 @@ $(document).ready(function () {
                       '<td>' + status + '</td>' +
                       '<tr>'
             $('.table-allbids').append(row)
-
           }
         }
       }
@@ -375,6 +373,7 @@ $(document).ready(function () {
   }
 
   var multipleData = []
+  var days = ['Monday', 'Tuesday' , 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   var colors = ['#Ffd700', '#Ffa500', '#40e0d0', '#00ff7f', '#FFC0CB', '#00ff00', '#C6e2ff']
   for (var dataKey in xData) {
     if (xData.hasOwnProperty(dataKey)) {
@@ -383,7 +382,7 @@ $(document).ready(function () {
       var dataColumn = {
         type: 'line',
         showInLegend: true,
-        name: 'Demand by Hour',
+        name: days[dataKey - 1],
         markerType: 'square',
         color: colors[parseInt(dataKey) - 1],
         dataPoints: dataValue

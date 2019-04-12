@@ -7,8 +7,8 @@ $(document).ready(function () {
     userDetails.each(function () {
       var inputName = $(this).attr('id')
       if (inputName != 'role') {
-        var inputChange = '<input type="text" name="' + inputName + '">'
-        $(this).html(inputChange)  
+        var inputChange = '<input type="text" name="' + inputName + '"' + 'value = "' + $(this).text().trim() + '">'
+        $(this).html(inputChange)
       }
     })
     $('#updateProfile').show()
@@ -28,12 +28,12 @@ $(document).ready(function () {
       type: 'POST',
       data: userDataUpdate,
       success: function (res) {
+        var result = res.Updated
         if (!result) {
           alert('Profile not updated')
         } else {
           alert('Profile updated')
           userInputs.each(function () {
-
             var val = $(this).val()
             $(this).html(val)
           })
