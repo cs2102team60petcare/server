@@ -31,10 +31,19 @@ exports.updateProfile = function (req, res, next) {
     var email = req.body.email
     var phone = req.body.phone
     var address = req.body.address
-
+    var role = req.user.role
+    console.log(req)
     try {
       await client.query('BEGIN')
+      if (role == 'CARETAKER') {
+        var petPreference = req.body.pet_type
+        await client.query(queries.careTakerLikesRemove, [userID])
+        for (var i = 0; i < petPreference.length; i++) {
+          await client.query(queries.careTakerLikesInsert, [userID, petPreference[i]])
+        }
+      } 
       const { rows } = await client.query(queries.userProfileUpdate, [name, email, phone, { address }, userID])
+      
       await client.query('COMMIT')
       res.json({ 'Updated': true,
         'Data': rows[0]
