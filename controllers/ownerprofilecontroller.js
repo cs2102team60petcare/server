@@ -186,9 +186,21 @@ exports.getOwnerProfile = function (req, res, next) {
         var bidsData = data[2]
         var tasksData = data[3]
         var graphData = data[4].rows.concat(data[5].rows, data[6].rows, data[7].rows, data[8].rows, data[9].rows, data[10].rows)
+        var exists = []
+        for (item in graphData) {
+          exists.push([graphData[item].day, graphData[item].hour])
+        }
 
+        for (var i=1; i<8; i++) {
+          for (var j=0; j<25; j++) {
+            if (exists.includes([i, j]) == false) {
+              graphData.push({day: i, hour:j, ratio: 0})
+            }
+          }
+        }
 
-        console.log(graphData)
+        graphData.sort(function(a, b){return (b.day*100+b.hour) - (a.day*100+a.hour)})
+        
         res.render('ownerprofile', {
           service: serviceData.rows,
           bids: bidsData.rows,
